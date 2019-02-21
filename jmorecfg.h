@@ -212,7 +212,7 @@ typedef short INT16;
 #ifndef XMD_H			/* X11/xmd.h correctly defines INT32 */
 #ifndef _BASETSD_H_		/* Microsoft defines it in basetsd.h */
 #ifndef _BASETSD_H		/* MinGW is slightly different */
-#ifndef QGLOBAL_H		/* Qt defines it in qglobal.h */
+#ifndef QLJPEG9_GLOBAL_H		/* Qt defines it in qglobal.h */
 typedef long INT32;
 #endif
 #endif
@@ -226,7 +226,7 @@ typedef long INT32;
  * can change this datatype.
  */
 
-typedef unsigned int JDIMENSION;
+typedef unsigned int LJPEG9_JDIMENSION;
 
 #define JPEG_MAX_DIMENSION  65500L  /* a tad under 64K to prevent overflows */
 
@@ -239,12 +239,12 @@ typedef unsigned int JDIMENSION;
  */
 
 /* a function called through method pointers: */
-#define METHODDEF(type)		static type
+#define LJPEG9_METHODDEF(type)		static type
 /* a function used only in its module: */
 #define LOCAL(type)		static type
 /* a function referenced thru EXTERNs: */
-#define GLOBAL(type)		type
-/* a reference to a GLOBAL function: */
+#define LJPEG9_GLOBAL(type)		type
+/* a reference to a LJPEG9_GLOBAL function: */
 #define EXTERN(type)		extern type
 
 
@@ -255,9 +255,9 @@ typedef unsigned int JDIMENSION;
  */
 
 #ifdef HAVE_PROTOTYPES
-#define JMETHOD(type,methodname,arglist)  type (*methodname) arglist
+#define LJPEG9_JMETHOD(type,methodname,arglist)  type (*methodname) arglist
 #else
-#define JMETHOD(type,methodname,arglist)  type (*methodname) ()
+#define LJPEG9_JMETHOD(type,methodname,arglist)  type (*methodname) ()
 #endif
 
 
@@ -304,7 +304,7 @@ typedef void noreturn_t;
  */
 
 #ifndef HAVE_BOOLEAN
-#if defined FALSE || defined TRUE || defined QGLOBAL_H
+#if defined FALSE || defined TRUE || defined QLJPEG9_GLOBAL_H
 /* Qt3 defines FALSE and TRUE as "const" variables in qglobal.h */
 typedef int boolean;
 #ifndef FALSE			/* in case these macros already exist */

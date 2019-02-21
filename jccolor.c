@@ -95,7 +95,7 @@ typedef my_color_converter * my_cconvert_ptr;
  * Initialize for RGB->YCC colorspace conversion.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 rgb_ycc_start (j_compress_ptr cinfo)
 {
   my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
@@ -139,18 +139,18 @@ rgb_ycc_start (j_compress_ptr cinfo)
  * offset required on that side.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 rgb_ycc_convert (j_compress_ptr cinfo,
-		 JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
-		 JDIMENSION output_row, int num_rows)
+		 LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+		 LJPEG9_JDIMENSION output_row, int num_rows)
 {
   my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
   register INT32 * ctab = cconvert->rgb_ycc_tab;
   register int r, g, b;
   register JSAMPROW inptr;
   register JSAMPROW outptr0, outptr1, outptr2;
-  register JDIMENSION col;
-  JDIMENSION num_cols = cinfo->image_width;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_JDIMENSION num_cols = cinfo->image_width;
 
   while (--num_rows >= 0) {
     inptr = *input_buf++;
@@ -195,18 +195,18 @@ rgb_ycc_convert (j_compress_ptr cinfo,
  * We assume rgb_ycc_start has been called (we only use the Y tables).
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 rgb_gray_convert (j_compress_ptr cinfo,
-		  JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
-		  JDIMENSION output_row, int num_rows)
+		  LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+		  LJPEG9_JDIMENSION output_row, int num_rows)
 {
   my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
   register INT32 * ctab = cconvert->rgb_ycc_tab;
   register int r, g, b;
   register JSAMPROW inptr;
   register JSAMPROW outptr;
-  register JDIMENSION col;
-  JDIMENSION num_cols = cinfo->image_width;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_JDIMENSION num_cols = cinfo->image_width;
 
   while (--num_rows >= 0) {
     inptr = *input_buf++;
@@ -233,18 +233,18 @@ rgb_gray_convert (j_compress_ptr cinfo,
  * We assume rgb_ycc_start has been called.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 cmyk_ycck_convert (j_compress_ptr cinfo,
-		   JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
-		   JDIMENSION output_row, int num_rows)
+		   LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+		   LJPEG9_JDIMENSION output_row, int num_rows)
 {
   my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
   register INT32 * ctab = cconvert->rgb_ycc_tab;
   register int r, g, b;
   register JSAMPROW inptr;
   register JSAMPROW outptr0, outptr1, outptr2, outptr3;
-  register JDIMENSION col;
-  JDIMENSION num_cols = cinfo->image_width;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_JDIMENSION num_cols = cinfo->image_width;
 
   while (--num_rows >= 0) {
     inptr = *input_buf++;
@@ -291,16 +291,16 @@ cmyk_ycck_convert (j_compress_ptr cinfo,
  * normalization by modulo calculation.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 rgb_rgb1_convert (j_compress_ptr cinfo,
-		  JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
-		  JDIMENSION output_row, int num_rows)
+		  LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+		  LJPEG9_JDIMENSION output_row, int num_rows)
 {
   register int r, g, b;
   register JSAMPROW inptr;
   register JSAMPROW outptr0, outptr1, outptr2;
-  register JDIMENSION col;
-  JDIMENSION num_cols = cinfo->image_width;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_JDIMENSION num_cols = cinfo->image_width;
 
   while (--num_rows >= 0) {
     inptr = *input_buf++;
@@ -330,16 +330,16 @@ rgb_rgb1_convert (j_compress_ptr cinfo,
  * The source can be either plain grayscale or YCC (since Y == gray).
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 grayscale_convert (j_compress_ptr cinfo,
-		   JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
-		   JDIMENSION output_row, int num_rows)
+		   LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+		   LJPEG9_JDIMENSION output_row, int num_rows)
 {
   int instride = cinfo->input_components;
   register JSAMPROW inptr;
   register JSAMPROW outptr;
-  register JDIMENSION col;
-  JDIMENSION num_cols = cinfo->image_width;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_JDIMENSION num_cols = cinfo->image_width;
 
   while (--num_rows >= 0) {
     inptr = *input_buf++;
@@ -358,15 +358,15 @@ grayscale_convert (j_compress_ptr cinfo,
  * to separate-planes representation.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 rgb_convert (j_compress_ptr cinfo,
-	     JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
-	     JDIMENSION output_row, int num_rows)
+	     LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+	     LJPEG9_JDIMENSION output_row, int num_rows)
 {
   register JSAMPROW inptr;
   register JSAMPROW outptr0, outptr1, outptr2;
-  register JDIMENSION col;
-  JDIMENSION num_cols = cinfo->image_width;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_JDIMENSION num_cols = cinfo->image_width;
 
   while (--num_rows >= 0) {
     inptr = *input_buf++;
@@ -391,17 +391,17 @@ rgb_convert (j_compress_ptr cinfo,
  * We assume input_components == num_components.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 null_convert (j_compress_ptr cinfo,
-	      JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
-	      JDIMENSION output_row, int num_rows)
+	      LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+	      LJPEG9_JDIMENSION output_row, int num_rows)
 {
   int ci;
   register int nc = cinfo->num_components;
   register JSAMPROW inptr;
   register JSAMPROW outptr;
-  register JDIMENSION col;
-  JDIMENSION num_cols = cinfo->image_width;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_JDIMENSION num_cols = cinfo->image_width;
 
   while (--num_rows >= 0) {
     /* It seems fastest to make a separate pass for each component. */
@@ -423,7 +423,7 @@ null_convert (j_compress_ptr cinfo,
  * Empty method for start_pass.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 null_method (j_compress_ptr cinfo)
 {
   /* no work needed */
@@ -434,7 +434,7 @@ null_method (j_compress_ptr cinfo)
  * Module initialization routine for input colorspace conversion.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_color_converter (j_compress_ptr cinfo)
 {
   my_cconvert_ptr cconvert;

@@ -77,7 +77,7 @@ extern char * getenv JPP((const char * name));
 
 /*
  * We allocate objects from "pools", where each pool is gotten with a single
- * request to jpeg_get_small() or jpeg_get_large().  There is no per-object
+ * request to LJPEG9_jpeg_get_small() or LJPEG9_jpeg_get_large().  There is no per-object
  * overhead within a pool, except for alignment padding.  Each pool has a
  * header with a link to the next pool of the same class.
  * Small and large pool headers are identical except that the latter's
@@ -129,13 +129,13 @@ typedef struct {
   jvirt_sarray_ptr virt_sarray_list;
   jvirt_barray_ptr virt_barray_list;
 
-  /* This counts total space obtained from jpeg_get_small/large */
+  /* This counts total space obtained from LJPEG9_jpeg_get_small/large */
   long total_space_allocated;
 
   /* alloc_sarray and alloc_barray set this value for use by virtual
    * array routines.
    */
-  JDIMENSION last_rowsperchunk;	/* from most recent alloc_sarray/barray */
+  LJPEG9_JDIMENSION last_rowsperchunk;	/* from most recent alloc_sarray/barray */
 } my_memory_mgr;
 
 typedef my_memory_mgr * my_mem_ptr;
@@ -149,14 +149,14 @@ typedef my_memory_mgr * my_mem_ptr;
  */
 
 struct jvirt_sarray_control {
-  JSAMPARRAY mem_buffer;	/* => the in-memory buffer */
-  JDIMENSION rows_in_array;	/* total virtual array height */
-  JDIMENSION samplesperrow;	/* width of array (and of memory buffer) */
-  JDIMENSION maxaccess;		/* max rows accessed by access_virt_sarray */
-  JDIMENSION rows_in_mem;	/* height of memory buffer */
-  JDIMENSION rowsperchunk;	/* allocation chunk size in mem_buffer */
-  JDIMENSION cur_start_row;	/* first logical row # in the buffer */
-  JDIMENSION first_undef_row;	/* row # of first uninitialized row */
+  LJPEG9_JSAMPARRAY mem_buffer;	/* => the in-memory buffer */
+  LJPEG9_JDIMENSION rows_in_array;	/* total virtual array height */
+  LJPEG9_JDIMENSION samplesperrow;	/* width of array (and of memory buffer) */
+  LJPEG9_JDIMENSION maxaccess;		/* max rows accessed by access_virt_sarray */
+  LJPEG9_JDIMENSION rows_in_mem;	/* height of memory buffer */
+  LJPEG9_JDIMENSION rowsperchunk;	/* allocation chunk size in mem_buffer */
+  LJPEG9_JDIMENSION cur_start_row;	/* first logical row # in the buffer */
+  LJPEG9_JDIMENSION first_undef_row;	/* row # of first uninitialized row */
   boolean pre_zero;		/* pre-zero mode requested? */
   boolean dirty;		/* do current buffer contents need written? */
   boolean b_s_open;		/* is backing-store data valid? */
@@ -166,13 +166,13 @@ struct jvirt_sarray_control {
 
 struct jvirt_barray_control {
   JBLOCKARRAY mem_buffer;	/* => the in-memory buffer */
-  JDIMENSION rows_in_array;	/* total virtual array height */
-  JDIMENSION blocksperrow;	/* width of array (and of memory buffer) */
-  JDIMENSION maxaccess;		/* max rows accessed by access_virt_barray */
-  JDIMENSION rows_in_mem;	/* height of memory buffer */
-  JDIMENSION rowsperchunk;	/* allocation chunk size in mem_buffer */
-  JDIMENSION cur_start_row;	/* first logical row # in the buffer */
-  JDIMENSION first_undef_row;	/* row # of first uninitialized row */
+  LJPEG9_JDIMENSION rows_in_array;	/* total virtual array height */
+  LJPEG9_JDIMENSION blocksperrow;	/* width of array (and of memory buffer) */
+  LJPEG9_JDIMENSION maxaccess;		/* max rows accessed by access_virt_barray */
+  LJPEG9_JDIMENSION rows_in_mem;	/* height of memory buffer */
+  LJPEG9_JDIMENSION rowsperchunk;	/* allocation chunk size in mem_buffer */
+  LJPEG9_JDIMENSION cur_start_row;	/* first logical row # in the buffer */
+  LJPEG9_JDIMENSION first_undef_row;	/* row # of first uninitialized row */
   boolean pre_zero;		/* pre-zero mode requested? */
   boolean dirty;		/* do current buffer contents need written? */
   boolean b_s_open;		/* is backing-store data valid? */
@@ -254,7 +254,7 @@ static const size_t extra_pool_slop[JPOOL_NUMPOOLS] =
 #define MIN_SLOP  50		/* greater than 0 to avoid futile looping */
 
 
-METHODDEF(void *)
+LJPEG9_METHODDEF(void *)
 alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 /* Allocate a "small" object */
 {
@@ -297,12 +297,12 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
       slop = (size_t) (MAX_ALLOC_CHUNK-min_request);
     /* Try to get space, if fail reduce slop and try again */
     for (;;) {
-      hdr_ptr = (small_pool_ptr) jpeg_get_small(cinfo, min_request + slop);
+      hdr_ptr = (small_pool_ptr) LJPEG9_jpeg_get_small(cinfo, min_request + slop);
       if (hdr_ptr != NULL)
 	break;
       slop /= 2;
       if (slop < MIN_SLOP)	/* give up when it gets real small */
-	out_of_memory(cinfo, 2); /* jpeg_get_small failed */
+	out_of_memory(cinfo, 2); /* LJPEG9_jpeg_get_small failed */
     }
     mem->total_space_allocated += min_request + slop;
     /* Success, initialize the new pool header and add to end of list */
@@ -332,14 +332,14 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
  * except that FAR pointers are used on 80x86.  However the pool
  * management heuristics are quite different.  We assume that each
  * request is large enough that it may as well be passed directly to
- * jpeg_get_large; the pool management just links everything together
+ * LJPEG9_jpeg_get_large; the pool management just links everything together
  * so that we can free it all on demand.
- * Note: the major use of "large" objects is in JSAMPARRAY and JBLOCKARRAY
+ * Note: the major use of "large" objects is in LJPEG9_JSAMPARRAY and JBLOCKARRAY
  * structures.  The routines that create these structures (see below)
  * deliberately bunch rows together to ensure a large request size.
  */
 
-METHODDEF(void FAR *)
+LJPEG9_METHODDEF(void FAR *)
 alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 /* Allocate a "large" object */
 {
@@ -360,10 +360,10 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
   if (pool_id < 0 || pool_id >= JPOOL_NUMPOOLS)
     ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
 
-  hdr_ptr = (large_pool_ptr) jpeg_get_large(cinfo, sizeofobject +
+  hdr_ptr = (large_pool_ptr) LJPEG9_jpeg_get_large(cinfo, sizeofobject +
 					    SIZEOF(large_pool_hdr));
   if (hdr_ptr == NULL)
-    out_of_memory(cinfo, 4);	/* jpeg_get_large failed */
+    out_of_memory(cinfo, 4);	/* LJPEG9_jpeg_get_large failed */
   mem->total_space_allocated += sizeofobject + SIZEOF(large_pool_hdr);
 
   /* Success, initialize the new pool header and add to list */
@@ -392,15 +392,15 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
  * a virtual array.
  */
 
-METHODDEF(JSAMPARRAY)
+LJPEG9_METHODDEF(LJPEG9_JSAMPARRAY)
 alloc_sarray (j_common_ptr cinfo, int pool_id,
-	      JDIMENSION samplesperrow, JDIMENSION numrows)
+	      LJPEG9_JDIMENSION samplesperrow, LJPEG9_JDIMENSION numrows)
 /* Allocate a 2-D sample array */
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
-  JSAMPARRAY result;
+  LJPEG9_JSAMPARRAY result;
   JSAMPROW workspace;
-  JDIMENSION rowsperchunk, currow, i;
+  LJPEG9_JDIMENSION rowsperchunk, currow, i;
   long ltemp;
 
   /* Calculate max # of rows allowed in one allocation chunk */
@@ -409,13 +409,13 @@ alloc_sarray (j_common_ptr cinfo, int pool_id,
   if (ltemp <= 0)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
   if (ltemp < (long) numrows)
-    rowsperchunk = (JDIMENSION) ltemp;
+    rowsperchunk = (LJPEG9_JDIMENSION) ltemp;
   else
     rowsperchunk = numrows;
   mem->last_rowsperchunk = rowsperchunk;
 
   /* Get space for row pointers (small object) */
-  result = (JSAMPARRAY) alloc_small(cinfo, pool_id,
+  result = (LJPEG9_JSAMPARRAY) alloc_small(cinfo, pool_id,
 				    (size_t) (numrows * SIZEOF(JSAMPROW)));
 
   /* Get the rows themselves (large objects) */
@@ -440,15 +440,15 @@ alloc_sarray (j_common_ptr cinfo, int pool_id,
  * This is essentially the same as the code for sample arrays, above.
  */
 
-METHODDEF(JBLOCKARRAY)
+LJPEG9_METHODDEF(JBLOCKARRAY)
 alloc_barray (j_common_ptr cinfo, int pool_id,
-	      JDIMENSION blocksperrow, JDIMENSION numrows)
+	      LJPEG9_JDIMENSION blocksperrow, LJPEG9_JDIMENSION numrows)
 /* Allocate a 2-D coefficient-block array */
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
   JBLOCKARRAY result;
   JBLOCKROW workspace;
-  JDIMENSION rowsperchunk, currow, i;
+  LJPEG9_JDIMENSION rowsperchunk, currow, i;
   long ltemp;
 
   /* Calculate max # of rows allowed in one allocation chunk */
@@ -457,7 +457,7 @@ alloc_barray (j_common_ptr cinfo, int pool_id,
   if (ltemp <= 0)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
   if (ltemp < (long) numrows)
-    rowsperchunk = (JDIMENSION) ltemp;
+    rowsperchunk = (LJPEG9_JDIMENSION) ltemp;
   else
     rowsperchunk = numrows;
   mem->last_rowsperchunk = rowsperchunk;
@@ -520,10 +520,10 @@ alloc_barray (j_common_ptr cinfo, int pool_id,
  */
 
 
-METHODDEF(jvirt_sarray_ptr)
+LJPEG9_METHODDEF(jvirt_sarray_ptr)
 request_virt_sarray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
-		     JDIMENSION samplesperrow, JDIMENSION numrows,
-		     JDIMENSION maxaccess)
+		     LJPEG9_JDIMENSION samplesperrow, LJPEG9_JDIMENSION numrows,
+		     LJPEG9_JDIMENSION maxaccess)
 /* Request a virtual 2-D sample array */
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
@@ -550,10 +550,10 @@ request_virt_sarray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
 }
 
 
-METHODDEF(jvirt_barray_ptr)
+LJPEG9_METHODDEF(jvirt_barray_ptr)
 request_virt_barray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
-		     JDIMENSION blocksperrow, JDIMENSION numrows,
-		     JDIMENSION maxaccess)
+		     LJPEG9_JDIMENSION blocksperrow, LJPEG9_JDIMENSION numrows,
+		     LJPEG9_JDIMENSION maxaccess)
 /* Request a virtual 2-D coefficient-block array */
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
@@ -580,7 +580,7 @@ request_virt_barray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 realize_virt_arrays (j_common_ptr cinfo)
 /* Allocate the in-memory buffers for any unrealized virtual arrays */
 {
@@ -592,7 +592,7 @@ realize_virt_arrays (j_common_ptr cinfo)
 
   /* Compute the minimum space needed (maxaccess rows in each buffer)
    * and the maximum space needed (full image height in each buffer).
-   * These may be of use to the system-dependent jpeg_mem_available routine.
+   * These may be of use to the system-dependent LJPEG9_jpeg_mem_available routine.
    */
   space_per_minheight = 0;
   maximum_space = 0;
@@ -617,7 +617,7 @@ realize_virt_arrays (j_common_ptr cinfo)
     return;			/* no unrealized arrays, no work */
 
   /* Determine amount of memory to actually use; this is system-dependent. */
-  avail_mem = jpeg_mem_available(cinfo, space_per_minheight, maximum_space,
+  avail_mem = LJPEG9_jpeg_mem_available(cinfo, space_per_minheight, maximum_space,
 				 mem->total_space_allocated);
 
   /* If the maximum space needed is available, make all the buffers full
@@ -629,7 +629,7 @@ realize_virt_arrays (j_common_ptr cinfo)
   else {
     max_minheights = avail_mem / space_per_minheight;
     /* If there doesn't seem to be enough space, try to get the minimum
-     * anyway.  This allows a "stub" implementation of jpeg_mem_available().
+     * anyway.  This allows a "stub" implementation of LJPEG9_jpeg_mem_available().
      */
     if (max_minheights <= 0)
       max_minheights = 1;
@@ -645,8 +645,8 @@ realize_virt_arrays (j_common_ptr cinfo)
 	sptr->rows_in_mem = sptr->rows_in_array;
       } else {
 	/* It doesn't fit in memory, create backing store. */
-	sptr->rows_in_mem = (JDIMENSION) (max_minheights * sptr->maxaccess);
-	jpeg_open_backing_store(cinfo, & sptr->b_s_info,
+	sptr->rows_in_mem = (LJPEG9_JDIMENSION) (max_minheights * sptr->maxaccess);
+	LJPEG9_jpeg_open_backing_store(cinfo, & sptr->b_s_info,
 				(long) sptr->rows_in_array *
 				(long) sptr->samplesperrow *
 				(long) SIZEOF(JSAMPLE));
@@ -669,8 +669,8 @@ realize_virt_arrays (j_common_ptr cinfo)
 	bptr->rows_in_mem = bptr->rows_in_array;
       } else {
 	/* It doesn't fit in memory, create backing store. */
-	bptr->rows_in_mem = (JDIMENSION) (max_minheights * bptr->maxaccess);
-	jpeg_open_backing_store(cinfo, & bptr->b_s_info,
+	bptr->rows_in_mem = (LJPEG9_JDIMENSION) (max_minheights * bptr->maxaccess);
+	LJPEG9_jpeg_open_backing_store(cinfo, & bptr->b_s_info,
 				(long) bptr->rows_in_array *
 				(long) bptr->blocksperrow *
 				(long) SIZEOF(JBLOCK));
@@ -753,16 +753,16 @@ do_barray_io (j_common_ptr cinfo, jvirt_barray_ptr ptr, boolean writing)
 }
 
 
-METHODDEF(JSAMPARRAY)
+LJPEG9_METHODDEF(LJPEG9_JSAMPARRAY)
 access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
-		    JDIMENSION start_row, JDIMENSION num_rows,
+		    LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION num_rows,
 		    boolean writable)
 /* Access the part of a virtual sample array starting at start_row */
 /* and extending for num_rows rows.  writable is true if  */
 /* caller intends to modify the accessed area. */
 {
-  JDIMENSION end_row = start_row + num_rows;
-  JDIMENSION undef_row;
+  LJPEG9_JDIMENSION end_row = start_row + num_rows;
+  LJPEG9_JDIMENSION undef_row;
 
   /* debugging check */
   if (end_row > ptr->rows_in_array || num_rows > ptr->maxaccess ||
@@ -795,7 +795,7 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
       ltemp = (long) end_row - (long) ptr->rows_in_mem;
       if (ltemp < 0)
 	ltemp = 0;		/* don't fall off front end of file */
-      ptr->cur_start_row = (JDIMENSION) ltemp;
+      ptr->cur_start_row = (LJPEG9_JDIMENSION) ltemp;
     }
     /* Read in the selected part of the array.
      * During the initial write pass, we will do no actual read
@@ -838,16 +838,16 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
 }
 
 
-METHODDEF(JBLOCKARRAY)
+LJPEG9_METHODDEF(JBLOCKARRAY)
 access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
-		    JDIMENSION start_row, JDIMENSION num_rows,
+		    LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION num_rows,
 		    boolean writable)
 /* Access the part of a virtual block array starting at start_row */
 /* and extending for num_rows rows.  writable is true if  */
 /* caller intends to modify the accessed area. */
 {
-  JDIMENSION end_row = start_row + num_rows;
-  JDIMENSION undef_row;
+  LJPEG9_JDIMENSION end_row = start_row + num_rows;
+  LJPEG9_JDIMENSION undef_row;
 
   /* debugging check */
   if (end_row > ptr->rows_in_array || num_rows > ptr->maxaccess ||
@@ -880,7 +880,7 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
       ltemp = (long) end_row - (long) ptr->rows_in_mem;
       if (ltemp < 0)
 	ltemp = 0;		/* don't fall off front end of file */
-      ptr->cur_start_row = (JDIMENSION) ltemp;
+      ptr->cur_start_row = (LJPEG9_JDIMENSION) ltemp;
     }
     /* Read in the selected part of the array.
      * During the initial write pass, we will do no actual read
@@ -927,7 +927,7 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
  * Release all objects belonging to a specified pool.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 free_pool (j_common_ptr cinfo, int pool_id)
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
@@ -973,7 +973,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     space_freed = lhdr_ptr->hdr.bytes_used +
 		  lhdr_ptr->hdr.bytes_left +
 		  SIZEOF(large_pool_hdr);
-    jpeg_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
+    LJPEG9_jpeg_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     lhdr_ptr = next_lhdr_ptr;
   }
@@ -987,7 +987,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     space_freed = shdr_ptr->hdr.bytes_used +
 		  shdr_ptr->hdr.bytes_left +
 		  SIZEOF(small_pool_hdr);
-    jpeg_free_small(cinfo, (void *) shdr_ptr, space_freed);
+    LJPEG9_jpeg_free_small(cinfo, (void *) shdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     shdr_ptr = next_shdr_ptr;
   }
@@ -999,7 +999,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
  * Note that this cannot be called unless cinfo->mem is non-NULL.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 self_destruct (j_common_ptr cinfo)
 {
   int pool;
@@ -1013,10 +1013,10 @@ self_destruct (j_common_ptr cinfo)
   }
 
   /* Release the memory manager control block too. */
-  jpeg_free_small(cinfo, (void *) cinfo->mem, SIZEOF(my_memory_mgr));
+  LJPEG9_jpeg_free_small(cinfo, (void *) cinfo->mem, SIZEOF(my_memory_mgr));
   cinfo->mem = NULL;		/* ensures I will be called only once */
 
-  jpeg_mem_term(cinfo);		/* system-dependent cleanup */
+  LJPEG9_jpeg_mem_term(cinfo);		/* system-dependent cleanup */
 }
 
 
@@ -1025,7 +1025,7 @@ self_destruct (j_common_ptr cinfo)
  * When this is called, only the error manager pointer is valid in cinfo!
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_memory_mgr (j_common_ptr cinfo)
 {
   my_mem_ptr mem;
@@ -1054,13 +1054,13 @@ jinit_memory_mgr (j_common_ptr cinfo)
       (MAX_ALLOC_CHUNK % SIZEOF(ALIGN_TYPE)) != 0)
     ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
 
-  max_to_use = jpeg_mem_init(cinfo); /* system-dependent initialization */
+  max_to_use = LJPEG9_jpeg_mem_init(cinfo); /* system-dependent initialization */
 
   /* Attempt to allocate memory manager's control block */
-  mem = (my_mem_ptr) jpeg_get_small(cinfo, SIZEOF(my_memory_mgr));
+  mem = (my_mem_ptr) LJPEG9_jpeg_get_small(cinfo, SIZEOF(my_memory_mgr));
 
   if (mem == NULL) {
-    jpeg_mem_term(cinfo);	/* system-dependent cleanup */
+    LJPEG9_jpeg_mem_term(cinfo);	/* system-dependent cleanup */
     ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 0);
   }
 
@@ -1096,7 +1096,7 @@ jinit_memory_mgr (j_common_ptr cinfo)
   cinfo->mem = & mem->pub;
 
   /* Check for an environment variable JPEGMEM; if found, override the
-   * default max_memory setting from jpeg_mem_init.  Note that the
+   * default max_memory setting from LJPEG9_jpeg_mem_init.  Note that the
    * surrounding application may again override this value.
    * If your system doesn't support getenv(), define NO_GETENV to disable
    * this feature.

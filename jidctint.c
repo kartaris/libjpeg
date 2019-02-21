@@ -169,10 +169,10 @@
  * cK represents sqrt(2) * cos(K*pi/16).
  */
 
-GLOBAL(void)
-jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_islow (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12, tmp13;
@@ -430,10 +430,10 @@ jpeg_idct_islow (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/14).
  */
 
-GLOBAL(void)
-jpeg_idct_7x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_7x7 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12, tmp13;
   INT32 z1, z2, z3;
@@ -579,10 +579,10 @@ jpeg_idct_7x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/12).
  */
 
-GLOBAL(void)
-jpeg_idct_6x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_6x6 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12;
   INT32 z1, z2, z3;
@@ -700,10 +700,10 @@ jpeg_idct_6x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/10).
  */
 
-GLOBAL(void)
-jpeg_idct_5x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_5x5 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp10, tmp11, tmp12;
   INT32 z1, z2, z3;
@@ -815,10 +815,10 @@ jpeg_idct_5x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/16) [refers to 8-point IDCT].
  */
 
-GLOBAL(void)
-jpeg_idct_4x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_4x4 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp2, tmp10, tmp12;
   INT32 z1, z2, z3;
@@ -920,10 +920,10 @@ jpeg_idct_4x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/6).
  */
 
-GLOBAL(void)
-jpeg_idct_3x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_3x3 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp2, tmp10, tmp12;
   JCOEFPTR inptr;
@@ -1009,10 +1009,10 @@ jpeg_idct_3x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * Multiplication-less algorithm.
  */
 
-GLOBAL(void)
-jpeg_idct_2x2 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_2x2 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5;
   ISLOW_MULT_TYPE * quantptr;
@@ -1064,10 +1064,10 @@ jpeg_idct_2x2 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * average pixel value, which is one-eighth of the DC coefficient.
  */
 
-GLOBAL(void)
-jpeg_idct_1x1 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_1x1 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   int dcval;
   ISLOW_MULT_TYPE * quantptr;
@@ -1091,10 +1091,10 @@ jpeg_idct_1x1 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/18).
  */
 
-GLOBAL(void)
-jpeg_idct_9x9 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_9x9 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13, tmp14;
   INT32 z1, z2, z3, z4;
@@ -1262,10 +1262,10 @@ jpeg_idct_9x9 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/20).
  */
 
-GLOBAL(void)
-jpeg_idct_10x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_10x10 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24;
@@ -1457,10 +1457,10 @@ jpeg_idct_10x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/22).
  */
 
-GLOBAL(void)
-jpeg_idct_11x11 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_11x11 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
@@ -1651,10 +1651,10 @@ jpeg_idct_11x11 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/24).
  */
 
-GLOBAL(void)
-jpeg_idct_12x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_12x12 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
@@ -1867,10 +1867,10 @@ jpeg_idct_12x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/26).
  */
 
-GLOBAL(void)
-jpeg_idct_13x13 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_13x13 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
@@ -2095,10 +2095,10 @@ jpeg_idct_13x13 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/28).
  */
 
-GLOBAL(void)
-jpeg_idct_14x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_14x14 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
@@ -2321,10 +2321,10 @@ jpeg_idct_14x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/30).
  */
 
-GLOBAL(void)
-jpeg_idct_15x15 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_15x15 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
@@ -2563,10 +2563,10 @@ jpeg_idct_15x15 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * cK represents sqrt(2) * cos(K*pi/32).
  */
 
-GLOBAL(void)
-jpeg_idct_16x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_16x16 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
@@ -2824,10 +2824,10 @@ jpeg_idct_16x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 8-point IDCT in pass 1 (columns), 16-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_16x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_16x8 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
@@ -3099,10 +3099,10 @@ jpeg_idct_16x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 7-point IDCT in pass 1 (columns), 14-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_14x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_14x7 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
@@ -3296,10 +3296,10 @@ jpeg_idct_14x7 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 6-point IDCT in pass 1 (columns), 12-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_12x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_12x6 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
@@ -3474,10 +3474,10 @@ jpeg_idct_12x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 5-point IDCT in pass 1 (columns), 10-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_10x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_10x5 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24;
@@ -3637,10 +3637,10 @@ jpeg_idct_10x5 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 4-point IDCT in pass 1 (columns), 8-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_8x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_8x4 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12, tmp13;
@@ -3795,10 +3795,10 @@ jpeg_idct_8x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 3-point IDCT in pass 1 (columns), 6-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_6x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_6x3 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12;
   INT32 z1, z2, z3;
@@ -3907,10 +3907,10 @@ jpeg_idct_6x3 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 2-point IDCT in pass 1 (columns), 4-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_4x2 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_4x2 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp2, tmp10, tmp12;
   INT32 z1, z2, z3;
@@ -3998,10 +3998,10 @@ jpeg_idct_4x2 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 1-point IDCT in pass 1 (columns), 2-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_2x1 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_2x1 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1;
   ISLOW_MULT_TYPE * quantptr;
@@ -4040,10 +4040,10 @@ jpeg_idct_2x1 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 16-point IDCT in pass 1 (columns), 8-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_8x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_8x16 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
@@ -4262,10 +4262,10 @@ jpeg_idct_8x16 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 14-point IDCT in pass 1 (columns), 7-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_7x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_7x14 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
@@ -4447,10 +4447,10 @@ jpeg_idct_7x14 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 12-point IDCT in pass 1 (columns), 6-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_6x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_6x12 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
@@ -4613,10 +4613,10 @@ jpeg_idct_6x12 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 10-point IDCT in pass 1 (columns), 5-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_5x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_5x10 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		JCOEFPTR coef_block,
-		JSAMPARRAY output_buf, JDIMENSION output_col)
+		LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
   INT32 tmp20, tmp21, tmp22, tmp23, tmp24;
@@ -4767,10 +4767,10 @@ jpeg_idct_5x10 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 8-point IDCT in pass 1 (columns), 4-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_4x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_4x8 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12, tmp13;
@@ -4952,10 +4952,10 @@ jpeg_idct_4x8 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 6-point IDCT in pass 1 (columns), 3-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_3x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_3x6 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12;
   INT32 z1, z2, z3;
@@ -5058,10 +5058,10 @@ jpeg_idct_3x6 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 4-point IDCT in pass 1 (columns), 2-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_2x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_2x4 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp2, tmp10, tmp12;
   INT32 z1, z2, z3;
@@ -5143,10 +5143,10 @@ jpeg_idct_2x4 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  * 2-point IDCT in pass 1 (columns), 1-point in pass 2 (rows).
  */
 
-GLOBAL(void)
-jpeg_idct_1x2 (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_1x2 (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	       JCOEFPTR coef_block,
-	       JSAMPARRAY output_buf, JDIMENSION output_col)
+	       LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   INT32 tmp0, tmp1;
   ISLOW_MULT_TYPE * quantptr;

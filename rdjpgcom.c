@@ -19,7 +19,7 @@
 #include <locale.h>		/* Bill Allombert: use locale for isprint */
 #endif
 #include <ctype.h>		/* to declare isupper(), tolower() */
-#ifdef USE_SETMODE
+#ifdef LJPEG9_USE_SETMODE
 #include <fcntl.h>		/* to declare setmode()'s parameter macros */
 /* If you have setmode() but not <io.h>, just delete this line: */
 #include <io.h>			/* to declare setmode() */
@@ -45,8 +45,8 @@
 #endif
 #endif
 
-#ifndef EXIT_FAILURE		/* define exit() codes if not provided */
-#define EXIT_FAILURE  1
+#ifndef LJPEG9_EXIT_FAILURE		/* define exit() codes if not provided */
+#define LJPEG9_EXIT_FAILURE  1
 #endif
 #ifndef EXIT_SUCCESS
 #ifdef VMS
@@ -69,7 +69,7 @@ static FILE * infile;		/* input JPEG file */
 
 
 /* Error exit handler */
-#define ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(EXIT_FAILURE))
+#define ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(LJPEG9_EXIT_FAILURE))
 
 
 /* Read one byte, testing for EOF */
@@ -417,12 +417,12 @@ usage (void)
   fprintf(stderr, "  -raw        Display non-printable characters in comments (unsafe)\n");
   fprintf(stderr, "  -verbose    Also display dimensions of JPEG image\n");
 
-  exit(EXIT_FAILURE);
+  exit(LJPEG9_EXIT_FAILURE);
 }
 
 
 static int
-keymatch (char * arg, const char * keyword, int minchars)
+LJPEG9_keymatch (char * arg, const char * keyword, int minchars)
 /* Case-insensitive matching of (possibly abbreviated) keyword switches. */
 /* keyword is the constant keyword (must be lower case already), */
 /* minchars is length of minimum legal abbreviation. */
@@ -472,9 +472,9 @@ main (int argc, char **argv)
     if (arg[0] != '-')
       break;			/* not switch, must be file name */
     arg++;			/* advance over '-' */
-    if (keymatch(arg, "verbose", 1)) {
+    if (LJPEG9_keymatch(arg, "verbose", 1)) {
       verbose++;
-    } else if (keymatch(arg, "raw", 1)) {
+    } else if (LJPEG9_keymatch(arg, "raw", 1)) {
       raw = 1;
     } else
       usage();
@@ -489,17 +489,17 @@ main (int argc, char **argv)
   if (argn < argc) {
     if ((infile = fopen(argv[argn], READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s\n", progname, argv[argn]);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
     }
   } else {
     /* default input file is stdin */
-#ifdef USE_SETMODE		/* need to hack file mode? */
+#ifdef LJPEG9_USE_SETMODE		/* need to hack file mode? */
     setmode(fileno(stdin), O_BINARY);
 #endif
-#ifdef USE_FDOPEN		/* need to re-open in binary mode? */
+#ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
     if ((infile = fdopen(fileno(stdin), READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open stdin\n", progname);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
     }
 #else
     infile = stdin;

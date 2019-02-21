@@ -19,7 +19,7 @@
 
 #include "cdjpeg.h"		/* Common decls for cjpeg/djpeg applications */
 
-#ifdef BMP_SUPPORTED
+#ifdef LJPEG9_BMP_SUPPORTED
 
 
 /*
@@ -42,15 +42,15 @@
 /* Private version of data destination object */
 
 typedef struct {
-  struct djpeg_dest_struct pub;	/* public fields */
+  struct LJPEG9_djpeg_dest_struct pub;	/* public fields */
 
   boolean is_os2;		/* saves the OS2 format request flag */
 
   jvirt_sarray_ptr whole_image;	/* needed to reverse row order */
-  JDIMENSION data_width;	/* JSAMPLEs per row */
-  JDIMENSION row_width;		/* physical width of one row in the BMP file */
+  LJPEG9_JDIMENSION data_width;	/* JSAMPLEs per row */
+  LJPEG9_JDIMENSION row_width;		/* physical width of one row in the BMP file */
   int pad_bytes;		/* number of padding bytes needed per row */
-  JDIMENSION cur_output_row;	/* next row# to write to virtual array */
+  LJPEG9_JDIMENSION cur_output_row;	/* next row# to write to virtual array */
 } bmp_dest_struct;
 
 typedef bmp_dest_struct * bmp_dest_ptr;
@@ -58,7 +58,7 @@ typedef bmp_dest_struct * bmp_dest_ptr;
 
 /* Forward declarations */
 LOCAL(void) write_colormap
-	JPP((j_decompress_ptr cinfo, bmp_dest_ptr dest,
+	JPP((LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest,
 	     int map_colors, int map_entry_size));
 
 
@@ -67,21 +67,21 @@ LOCAL(void) write_colormap
  * In this module rows_supplied will always be 1.
  */
 
-METHODDEF(void)
-put_pixel_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
-		JDIMENSION rows_supplied)
+LJPEG9_METHODDEF(void)
+put_pixel_rows (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo,
+		LJPEG9_JDIMENSION rows_supplied)
 /* This version is for writing 24-bit pixels */
 {
   bmp_dest_ptr dest = (bmp_dest_ptr) dinfo;
-  JSAMPARRAY image_ptr;
+  LJPEG9_JSAMPARRAY image_ptr;
   register JSAMPROW inptr, outptr;
-  register JDIMENSION col;
+  register LJPEG9_JDIMENSION col;
   int pad;
 
   /* Access next row in virtual array */
   image_ptr = (*cinfo->mem->access_virt_sarray)
     ((j_common_ptr) cinfo, dest->whole_image,
-     dest->cur_output_row, (JDIMENSION) 1, TRUE);
+     dest->cur_output_row, (LJPEG9_JDIMENSION) 1, TRUE);
   dest->cur_output_row++;
 
   /* Transfer data.  Note destination values must be in BGR order
@@ -102,21 +102,21 @@ put_pixel_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
     *outptr++ = 0;
 }
 
-METHODDEF(void)
-put_gray_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
-	       JDIMENSION rows_supplied)
+LJPEG9_METHODDEF(void)
+put_gray_rows (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo,
+	       LJPEG9_JDIMENSION rows_supplied)
 /* This version is for grayscale OR quantized color output */
 {
   bmp_dest_ptr dest = (bmp_dest_ptr) dinfo;
-  JSAMPARRAY image_ptr;
+  LJPEG9_JSAMPARRAY image_ptr;
   register JSAMPROW inptr, outptr;
-  register JDIMENSION col;
+  register LJPEG9_JDIMENSION col;
   int pad;
 
   /* Access next row in virtual array */
   image_ptr = (*cinfo->mem->access_virt_sarray)
     ((j_common_ptr) cinfo, dest->whole_image,
-     dest->cur_output_row, (JDIMENSION) 1, TRUE);
+     dest->cur_output_row, (LJPEG9_JDIMENSION) 1, TRUE);
   dest->cur_output_row++;
 
   /* Transfer data. */
@@ -138,8 +138,8 @@ put_gray_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
  * In this module we may as well postpone everything until finish_output.
  */
 
-METHODDEF(void)
-start_output_bmp (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
+LJPEG9_METHODDEF(void)
+start_output_bmp (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 {
   /* no work here */
 }
@@ -154,7 +154,7 @@ start_output_bmp (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
  */
 
 LOCAL(void)
-write_bmp_header (j_decompress_ptr cinfo, bmp_dest_ptr dest)
+write_bmp_header (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest)
 /* Write a Windows-style BMP file header, including colormap if needed */
 {
   char bmpfileheader[14];
@@ -227,7 +227,7 @@ write_bmp_header (j_decompress_ptr cinfo, bmp_dest_ptr dest)
 
 
 LOCAL(void)
-write_os2_header (j_decompress_ptr cinfo, bmp_dest_ptr dest)
+write_os2_header (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest)
 /* Write an OS2-style BMP file header, including colormap if needed */
 {
   char bmpfileheader[14];
@@ -289,10 +289,10 @@ write_os2_header (j_decompress_ptr cinfo, bmp_dest_ptr dest)
  */
 
 LOCAL(void)
-write_colormap (j_decompress_ptr cinfo, bmp_dest_ptr dest,
+write_colormap (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest,
 		int map_colors, int map_entry_size)
 {
-  JSAMPARRAY colormap = cinfo->colormap;
+  LJPEG9_JSAMPARRAY colormap = cinfo->colormap;
   int num_colors = cinfo->actual_number_of_colors;
   FILE * outfile = dest->pub.output_file;
   int i;
@@ -329,7 +329,7 @@ write_colormap (j_decompress_ptr cinfo, bmp_dest_ptr dest,
   }
   /* Pad colormap with zeros to ensure specified number of colormap entries */ 
   if (i > map_colors)
-    ERREXIT1(cinfo, JERR_TOO_MANY_COLORS, i);
+    ERREXIT1(cinfo, LJPEG9_JERR_TOO_MANY_COLORS, i);
   for (; i < map_colors; i++) {
     putc(0, outfile);
     putc(0, outfile);
@@ -340,16 +340,16 @@ write_colormap (j_decompress_ptr cinfo, bmp_dest_ptr dest,
 }
 
 
-METHODDEF(void)
-finish_output_bmp (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
+LJPEG9_METHODDEF(void)
+finish_output_bmp (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 {
   bmp_dest_ptr dest = (bmp_dest_ptr) dinfo;
   register FILE * outfile = dest->pub.output_file;
-  JSAMPARRAY image_ptr;
+  LJPEG9_JSAMPARRAY image_ptr;
   register JSAMPROW data_ptr;
-  JDIMENSION row;
-  register JDIMENSION col;
-  cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
+  LJPEG9_JDIMENSION row;
+  register LJPEG9_JDIMENSION col;
+  LJPEG9_cd_progress_ptr progress = (LJPEG9_cd_progress_ptr) cinfo->progress;
 
   /* Write the header and colormap */
   if (dest->is_os2)
@@ -362,10 +362,10 @@ finish_output_bmp (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
     if (progress != NULL) {
       progress->pub.pass_counter = (long) (cinfo->output_height - row);
       progress->pub.pass_limit = (long) cinfo->output_height;
-      (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+      (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
     }
     image_ptr = (*cinfo->mem->access_virt_sarray)
-      ((j_common_ptr) cinfo, dest->whole_image, row-1, (JDIMENSION) 1, FALSE);
+      ((j_common_ptr) cinfo, dest->whole_image, row-1, (LJPEG9_JDIMENSION) 1, FALSE);
     data_ptr = image_ptr[0];
     for (col = dest->row_width; col > 0; col--) {
       putc(GETJSAMPLE(*data_ptr), outfile);
@@ -386,11 +386,11 @@ finish_output_bmp (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
  * The module selection routine for BMP format output.
  */
 
-GLOBAL(djpeg_dest_ptr)
-jinit_write_bmp (j_decompress_ptr cinfo, boolean is_os2)
+LJPEG9_GLOBAL(LJPEG9_djpeg_dest_ptr)
+LJPEG9_jinit_write_bmp (LJPEG9_j_decompress_ptr cinfo, boolean is_os2)
 {
   bmp_dest_ptr dest;
-  JDIMENSION row_width;
+  LJPEG9_JDIMENSION row_width;
 
   /* Create module interface object, fill in method pointers */
   dest = (bmp_dest_ptr)
@@ -424,19 +424,19 @@ jinit_write_bmp (j_decompress_ptr cinfo, boolean is_os2)
   /* Allocate space for inversion array, prepare for write pass */
   dest->whole_image = (*cinfo->mem->request_virt_sarray)
     ((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
-     row_width, cinfo->output_height, (JDIMENSION) 1);
+     row_width, cinfo->output_height, (LJPEG9_JDIMENSION) 1);
   dest->cur_output_row = 0;
   if (cinfo->progress != NULL) {
-    cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
+    LJPEG9_cd_progress_ptr progress = (LJPEG9_cd_progress_ptr) cinfo->progress;
     progress->total_extra_passes++; /* count file input as separate pass */
   }
 
   /* Create decompressor output buffer. */
   dest->pub.buffer = (*cinfo->mem->alloc_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, row_width, (JDIMENSION) 1);
+    ((j_common_ptr) cinfo, JPOOL_IMAGE, row_width, (LJPEG9_JDIMENSION) 1);
   dest->pub.buffer_height = 1;
 
-  return (djpeg_dest_ptr) dest;
+  return (LJPEG9_djpeg_dest_ptr) dest;
 }
 
-#endif /* BMP_SUPPORTED */
+#endif /* LJPEG9_BMP_SUPPORTED */

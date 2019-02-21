@@ -484,7 +484,7 @@ emit_adobe_app14 (j_compress_ptr cinfo)
  * Counting the parameter bytes properly is the caller's responsibility.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_marker_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
 /* Emit an arbitrary marker header */
 {
@@ -496,7 +496,7 @@ write_marker_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
   emit_2bytes(cinfo, (int) (datalen + 2));	/* total length */
 }
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_marker_byte (j_compress_ptr cinfo, int val)
 /* Emit one byte of marker parameters following write_marker_header */
 {
@@ -515,7 +515,7 @@ write_marker_byte (j_compress_ptr cinfo, int val)
  * jpeg_start_compress returns.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_file_header (j_compress_ptr cinfo)
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
@@ -541,7 +541,7 @@ write_file_header (j_compress_ptr cinfo)
  * try to error-check the quant table numbers as soon as they see the SOF.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_frame_header (j_compress_ptr cinfo)
 {
   int ci, prec;
@@ -609,7 +609,7 @@ write_frame_header (j_compress_ptr cinfo)
  * Compressed data will be written following the SOS.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_scan_header (j_compress_ptr cinfo)
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
@@ -653,7 +653,7 @@ write_scan_header (j_compress_ptr cinfo)
  * Write datastream trailer.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_file_trailer (j_compress_ptr cinfo)
 {
   emit_marker(cinfo, M_EOI);
@@ -667,7 +667,7 @@ write_file_trailer (j_compress_ptr cinfo)
  * emitted.  Note that all tables will be marked sent_table = TRUE at exit.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_tables_only (j_compress_ptr cinfo)
 {
   int i;
@@ -696,7 +696,7 @@ write_tables_only (j_compress_ptr cinfo)
  * Initialize the marker writer module.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_marker_writer (j_compress_ptr cinfo)
 {
   my_marker_ptr marker;

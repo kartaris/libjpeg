@@ -42,7 +42,7 @@
 
 /* Create the add-on message string table. */
 
-#define JMESSAGE(code,string)	string ,
+#define LJPEG9_JMESSAGE(code,string)	string ,
 
 static const char * const cdjpeg_message_table[] = {
 #include "cderror.h"
@@ -54,7 +54,7 @@ static const char * const cdjpeg_message_table[] = {
  * This list defines the known output image formats
  * (not all of which need be supported by a given version).
  * You can change the default output format by defining DEFAULT_FMT;
- * indeed, you had better do so if you undefine PPM_SUPPORTED.
+ * indeed, you had better do so if you undefine LJPEG9_PPM_SUPPORTED.
  */
 
 typedef enum {
@@ -105,27 +105,27 @@ usage (void)
 #ifdef IDCT_SCALING_SUPPORTED
   fprintf(stderr, "  -scale M/N     Scale output image by fraction M/N, eg, 1/8\n");
 #endif
-#ifdef BMP_SUPPORTED
+#ifdef LJPEG9_BMP_SUPPORTED
   fprintf(stderr, "  -bmp           Select BMP output format (Windows style)%s\n",
 	  (DEFAULT_FMT == FMT_BMP ? " (default)" : ""));
 #endif
-#ifdef GIF_SUPPORTED
+#ifdef LJPEG9_GIF_SUPPORTED
   fprintf(stderr, "  -gif           Select GIF output format%s\n",
 	  (DEFAULT_FMT == FMT_GIF ? " (default)" : ""));
 #endif
-#ifdef BMP_SUPPORTED
+#ifdef LJPEG9_BMP_SUPPORTED
   fprintf(stderr, "  -os2           Select BMP output format (OS/2 style)%s\n",
 	  (DEFAULT_FMT == FMT_OS2 ? " (default)" : ""));
 #endif
-#ifdef PPM_SUPPORTED
+#ifdef LJPEG9_PPM_SUPPORTED
   fprintf(stderr, "  -pnm           Select PBMPLUS (PPM/PGM) output format%s\n",
 	  (DEFAULT_FMT == FMT_PPM ? " (default)" : ""));
 #endif
-#ifdef RLE_SUPPORTED
+#ifdef LJPEG9_RLE_SUPPORTED
   fprintf(stderr, "  -rle           Select Utah RLE output format%s\n",
 	  (DEFAULT_FMT == FMT_RLE ? " (default)" : ""));
 #endif
-#ifdef TARGA_SUPPORTED
+#ifdef LJPEG9_TARGA_SUPPORTED
   fprintf(stderr, "  -targa         Select Targa output format%s\n",
 	  (DEFAULT_FMT == FMT_TARGA ? " (default)" : ""));
 #endif
@@ -155,12 +155,12 @@ usage (void)
   fprintf(stderr, "  -maxmemory N   Maximum memory to use (in kbytes)\n");
   fprintf(stderr, "  -outfile name  Specify name for output file\n");
   fprintf(stderr, "  -verbose  or  -debug   Emit debug output\n");
-  exit(EXIT_FAILURE);
+  exit(LJPEG9_EXIT_FAILURE);
 }
 
 
 LOCAL(int)
-parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
+parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
 		int last_file_arg_seen, boolean for_real)
 /* Parse optional switches.
  * Returns argv[] index of first file-name argument (== argc if none).
@@ -193,12 +193,12 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
     }
     arg++;			/* advance past switch marker character */
 
-    if (keymatch(arg, "bmp", 1)) {
+    if (LJPEG9_keymatch(arg, "bmp", 1)) {
       /* BMP output format. */
       requested_fmt = FMT_BMP;
 
-    } else if (keymatch(arg, "colors", 1) || keymatch(arg, "colours", 1) ||
-	       keymatch(arg, "quantize", 1) || keymatch(arg, "quantise", 1)) {
+    } else if (LJPEG9_keymatch(arg, "colors", 1) || LJPEG9_keymatch(arg, "colours", 1) ||
+	       LJPEG9_keymatch(arg, "quantize", 1) || LJPEG9_keymatch(arg, "quantise", 1)) {
       /* Do color quantization. */
       int val;
 
@@ -209,33 +209,33 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
       cinfo->desired_number_of_colors = val;
       cinfo->quantize_colors = TRUE;
 
-    } else if (keymatch(arg, "dct", 2)) {
+    } else if (LJPEG9_keymatch(arg, "dct", 2)) {
       /* Select IDCT algorithm. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
-      if (keymatch(argv[argn], "int", 1)) {
+      if (LJPEG9_keymatch(argv[argn], "int", 1)) {
 	cinfo->dct_method = JDCT_ISLOW;
-      } else if (keymatch(argv[argn], "fast", 2)) {
+      } else if (LJPEG9_keymatch(argv[argn], "fast", 2)) {
 	cinfo->dct_method = JDCT_IFAST;
-      } else if (keymatch(argv[argn], "float", 2)) {
+      } else if (LJPEG9_keymatch(argv[argn], "float", 2)) {
 	cinfo->dct_method = JDCT_FLOAT;
       } else
 	usage();
 
-    } else if (keymatch(arg, "dither", 2)) {
+    } else if (LJPEG9_keymatch(arg, "dither", 2)) {
       /* Select dithering algorithm. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
-      if (keymatch(argv[argn], "fs", 2)) {
+      if (LJPEG9_keymatch(argv[argn], "fs", 2)) {
 	cinfo->dither_mode = JDITHER_FS;
-      } else if (keymatch(argv[argn], "none", 2)) {
+      } else if (LJPEG9_keymatch(argv[argn], "none", 2)) {
 	cinfo->dither_mode = JDITHER_NONE;
-      } else if (keymatch(argv[argn], "ordered", 2)) {
+      } else if (LJPEG9_keymatch(argv[argn], "ordered", 2)) {
 	cinfo->dither_mode = JDITHER_ORDERED;
       } else
 	usage();
 
-    } else if (keymatch(arg, "debug", 1) || keymatch(arg, "verbose", 1)) {
+    } else if (LJPEG9_keymatch(arg, "debug", 1) || LJPEG9_keymatch(arg, "verbose", 1)) {
       /* Enable debug printouts. */
       /* On first -d, print version identification */
       static boolean printed_version = FALSE;
@@ -247,7 +247,7 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
       }
       cinfo->err->trace_level++;
 
-    } else if (keymatch(arg, "fast", 1)) {
+    } else if (LJPEG9_keymatch(arg, "fast", 1)) {
       /* Select recommended processing options for quick-and-dirty output. */
       cinfo->two_pass_quantize = FALSE;
       cinfo->dither_mode = JDITHER_ORDERED;
@@ -256,15 +256,15 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
       cinfo->dct_method = JDCT_FASTEST;
       cinfo->do_fancy_upsampling = FALSE;
 
-    } else if (keymatch(arg, "gif", 1)) {
+    } else if (LJPEG9_keymatch(arg, "gif", 1)) {
       /* GIF output format. */
       requested_fmt = FMT_GIF;
 
-    } else if (keymatch(arg, "grayscale", 2) || keymatch(arg, "greyscale",2)) {
+    } else if (LJPEG9_keymatch(arg, "grayscale", 2) || LJPEG9_keymatch(arg, "greyscale",2)) {
       /* Force monochrome output. */
       cinfo->out_color_space = JCS_GRAYSCALE;
 
-    } else if (keymatch(arg, "map", 3)) {
+    } else if (LJPEG9_keymatch(arg, "map", 3)) {
       /* Quantize to a color map taken from an input file. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
@@ -274,9 +274,9 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
 
 	if ((mapfile = fopen(argv[argn], READ_BINARY)) == NULL) {
 	  fprintf(stderr, "%s: can't open %s\n", progname, argv[argn]);
-	  exit(EXIT_FAILURE);
+	  exit(LJPEG9_EXIT_FAILURE);
 	}
-	read_color_map(cinfo, mapfile);
+	LJPEG9_read_color_map(cinfo, mapfile);
 	fclose(mapfile);
 	cinfo->quantize_colors = TRUE;
 #else
@@ -284,7 +284,7 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
 #endif
       }
 
-    } else if (keymatch(arg, "maxmemory", 3)) {
+    } else if (LJPEG9_keymatch(arg, "maxmemory", 3)) {
       /* Maximum memory in Kb (or Mb with 'm'). */
       long lval;
       char ch = 'x';
@@ -297,33 +297,33 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
 	lval *= 1000L;
       cinfo->mem->max_memory_to_use = lval * 1000L;
 
-    } else if (keymatch(arg, "nosmooth", 3)) {
+    } else if (LJPEG9_keymatch(arg, "nosmooth", 3)) {
       /* Suppress fancy upsampling. */
       cinfo->do_fancy_upsampling = FALSE;
 
-    } else if (keymatch(arg, "onepass", 3)) {
+    } else if (LJPEG9_keymatch(arg, "onepass", 3)) {
       /* Use fast one-pass quantization. */
       cinfo->two_pass_quantize = FALSE;
 
-    } else if (keymatch(arg, "os2", 3)) {
+    } else if (LJPEG9_keymatch(arg, "os2", 3)) {
       /* BMP output format (OS/2 flavor). */
       requested_fmt = FMT_OS2;
 
-    } else if (keymatch(arg, "outfile", 4)) {
+    } else if (LJPEG9_keymatch(arg, "outfile", 4)) {
       /* Set output file name. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
       outfilename = argv[argn];	/* save it away for later use */
 
-    } else if (keymatch(arg, "pnm", 1) || keymatch(arg, "ppm", 1)) {
+    } else if (LJPEG9_keymatch(arg, "pnm", 1) || LJPEG9_keymatch(arg, "ppm", 1)) {
       /* PPM/PGM output format. */
       requested_fmt = FMT_PPM;
 
-    } else if (keymatch(arg, "rle", 1)) {
+    } else if (LJPEG9_keymatch(arg, "rle", 1)) {
       /* RLE output format. */
       requested_fmt = FMT_RLE;
 
-    } else if (keymatch(arg, "scale", 1)) {
+    } else if (LJPEG9_keymatch(arg, "scale", 1)) {
       /* Scale the output image by a fraction M/N. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
@@ -331,7 +331,7 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
 		 &cinfo->scale_num, &cinfo->scale_denom) < 1)
 	usage();
 
-    } else if (keymatch(arg, "targa", 1)) {
+    } else if (LJPEG9_keymatch(arg, "targa", 1)) {
       /* Targa output format. */
       requested_fmt = FMT_TARGA;
 
@@ -352,7 +352,7 @@ parse_switches (j_decompress_ptr cinfo, int argc, char **argv,
  */
 
 LOCAL(unsigned int)
-jpeg_getc (j_decompress_ptr cinfo)
+jpeg_getc (LJPEG9_j_decompress_ptr cinfo)
 /* Read next byte */
 {
   struct jpeg_source_mgr * datasrc = cinfo->src;
@@ -366,8 +366,8 @@ jpeg_getc (j_decompress_ptr cinfo)
 }
 
 
-METHODDEF(boolean)
-print_text_marker (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(boolean)
+print_text_marker (LJPEG9_j_decompress_ptr cinfo)
 {
   boolean traceit = (cinfo->err->trace_level >= 1);
   INT32 length;
@@ -426,14 +426,14 @@ main (int argc, char **argv)
 {
   struct jpeg_decompress_struct cinfo;
   struct jpeg_error_mgr jerr;
-#ifdef PROGRESS_REPORT
-  struct cdjpeg_progress_mgr progress;
+#ifdef LJPEG9_PROGRESS_REPORT
+  struct LJPEG9_cdjpeg_progress_mgr progress;
 #endif
   int file_index;
-  djpeg_dest_ptr dest_mgr = NULL;
+  LJPEG9_djpeg_dest_ptr dest_mgr = NULL;
   FILE * input_file;
   FILE * output_file;
-  JDIMENSION num_scanlines;
+  LJPEG9_JDIMENSION num_scanlines;
 
   /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
@@ -450,7 +450,7 @@ main (int argc, char **argv)
   /* Add some application-specific error messages (from cderror.h) */
   jerr.addon_message_table = cdjpeg_message_table;
   jerr.first_addon_message = JMSG_FIRSTADDONCODE;
-  jerr.last_addon_message = JMSG_LASTADDONCODE;
+  jerr.last_addon_message = LJPEG9_JMSG_LASTADDONCODE;
 
   /* Insert custom marker processor for COM and APP12.
    * APP12 is used by some digital camera makers for textual info,
@@ -462,8 +462,8 @@ main (int argc, char **argv)
   jpeg_set_marker_processor(&cinfo, JPEG_APP0+12, print_text_marker);
 
   /* Now safe to enable signal catcher. */
-#ifdef NEED_SIGNAL_CATCHER
-  enable_signal_catcher((j_common_ptr) &cinfo);
+#ifdef LJPEG9_NEED_SIGNAL_CATCHER
+  LJPEG9_enable_signal_catcher((j_common_ptr) &cinfo);
 #endif
 
   /* Scan command line to find file names. */
@@ -504,26 +504,26 @@ main (int argc, char **argv)
   if (file_index < argc) {
     if ((input_file = fopen(argv[file_index], READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index]);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
     }
   } else {
     /* default input file is stdin */
-    input_file = read_stdin();
+    input_file = LJPEG9_read_stdin();
   }
 
   /* Open the output file. */
   if (outfilename != NULL) {
     if ((output_file = fopen(outfilename, WRITE_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s\n", progname, outfilename);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
     }
   } else {
     /* default output file is stdout */
-    output_file = write_stdout();
+    output_file = LJPEG9_write_stdout();
   }
 
-#ifdef PROGRESS_REPORT
-  start_progress_monitor((j_common_ptr) &cinfo, &progress);
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_start_progress_monitor((j_common_ptr) &cinfo, &progress);
 #endif
 
   /* Specify data source for decompression */
@@ -539,32 +539,32 @@ main (int argc, char **argv)
    * option settings (for instance, GIF wants to force color quantization).
    */
   switch (requested_fmt) {
-#ifdef BMP_SUPPORTED
+#ifdef LJPEG9_BMP_SUPPORTED
   case FMT_BMP:
-    dest_mgr = jinit_write_bmp(&cinfo, FALSE);
+    dest_mgr = LJPEG9_jinit_write_bmp(&cinfo, FALSE);
     break;
   case FMT_OS2:
-    dest_mgr = jinit_write_bmp(&cinfo, TRUE);
+    dest_mgr = LJPEG9_jinit_write_bmp(&cinfo, TRUE);
     break;
 #endif
-#ifdef GIF_SUPPORTED
+#ifdef LJPEG9_GIF_SUPPORTED
   case FMT_GIF:
-    dest_mgr = jinit_write_gif(&cinfo);
+    dest_mgr = LJPEG9_jinit_write_gif(&cinfo);
     break;
 #endif
-#ifdef PPM_SUPPORTED
+#ifdef LJPEG9_PPM_SUPPORTED
   case FMT_PPM:
-    dest_mgr = jinit_write_ppm(&cinfo);
+    dest_mgr = LJPEG9_jinit_write_ppm(&cinfo);
     break;
 #endif
-#ifdef RLE_SUPPORTED
+#ifdef LJPEG9_RLE_SUPPORTED
   case FMT_RLE:
-    dest_mgr = jinit_write_rle(&cinfo);
+    dest_mgr = LJPEG9_jinit_write_rle(&cinfo);
     break;
 #endif
-#ifdef TARGA_SUPPORTED
+#ifdef LJPEG9_TARGA_SUPPORTED
   case FMT_TARGA:
-    dest_mgr = jinit_write_targa(&cinfo);
+    dest_mgr = LJPEG9_jinit_write_targa(&cinfo);
     break;
 #endif
   default:
@@ -586,7 +586,7 @@ main (int argc, char **argv)
     (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);
   }
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
   /* Hack: count final pass as done in case finish_output does an extra pass.
    * The library won't have updated completed_passes.
    */
@@ -607,8 +607,8 @@ main (int argc, char **argv)
   if (output_file != stdout)
     fclose(output_file);
 
-#ifdef PROGRESS_REPORT
-  end_progress_monitor((j_common_ptr) &cinfo);
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_end_progress_monitor((j_common_ptr) &cinfo);
 #endif
 
   /* All done. */

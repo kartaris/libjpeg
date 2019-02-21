@@ -146,7 +146,7 @@ test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
 
 # Global variables:
 EXIT_SUCCESS=0
-EXIT_FAILURE=1
+LJPEG9_EXIT_FAILURE=1
 EXIT_MISMATCH=63  # $? = 63 is used to indicate version mismatch to missing.
 EXIT_SKIP=77	  # $? = 77 is used to indicate a skipped test to automake.
 
@@ -483,7 +483,7 @@ func_warning ()
 func_fatal_error ()
 {
     func_error ${1+"$@"}
-    exit $EXIT_FAILURE
+    exit $LJPEG9_EXIT_FAILURE
 }
 
 # func_fatal_help arg...
@@ -1204,7 +1204,7 @@ func_enable_tag "$optarg"
     if test -n "$opt_dlopen" && test "$opt_mode" != execute; then
       func_error "unrecognized option \`-dlopen'"
       $ECHO "$help" 1>&2
-      exit $EXIT_FAILURE
+      exit $LJPEG9_EXIT_FAILURE
     fi
 
     # Change the help message to a mode-specific one.
@@ -1214,7 +1214,7 @@ func_enable_tag "$optarg"
 
 
   # Bail if the options were screwed
-  $exit_cmd $EXIT_FAILURE
+  $exit_cmd $LJPEG9_EXIT_FAILURE
 }
 
 
@@ -2164,7 +2164,7 @@ avoid parallel builds (make -j) in this platform, or get a better
 compiler."
 
 	$opt_dry_run || $RM $removelist
-	exit $EXIT_FAILURE
+	exit $LJPEG9_EXIT_FAILURE
       fi
       func_append removelist " $output_obj"
       $ECHO "$srcfile" > "$lockfile"
@@ -2172,7 +2172,7 @@ compiler."
 
     $opt_dry_run || $RM $removelist
     func_append removelist " $lockfile"
-    trap '$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE' 1 2 15
+    trap '$opt_dry_run || $RM $removelist; exit $LJPEG9_EXIT_FAILURE' 1 2 15
 
     func_to_tool_file "$srcfile" func_convert_file_msys_to_w32
     srcfile=$func_to_tool_file_result
@@ -2199,7 +2199,7 @@ compiler."
       fi
 
       func_show_eval_locale "$command"	\
-          'test -n "$output_obj" && $RM $removelist; exit $EXIT_FAILURE'
+          'test -n "$output_obj" && $RM $removelist; exit $LJPEG9_EXIT_FAILURE'
 
       if test "$need_locks" = warn &&
 	 test "X`cat $lockfile 2>/dev/null`" != "X$srcfile"; then
@@ -2218,7 +2218,7 @@ avoid parallel builds (make -j) in this platform, or get a better
 compiler."
 
 	$opt_dry_run || $RM $removelist
-	exit $EXIT_FAILURE
+	exit $LJPEG9_EXIT_FAILURE
       fi
 
       # Just move the object if needed, then go on to compile the next one
@@ -2248,7 +2248,7 @@ compiler."
       # Suppress compiler output if we already did a PIC compilation.
       func_append command "$suppress_output"
       func_show_eval_locale "$command" \
-        '$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE'
+        '$opt_dry_run || $RM $removelist; exit $LJPEG9_EXIT_FAILURE'
 
       if test "$need_locks" = warn &&
 	 test "X`cat $lockfile 2>/dev/null`" != "X$srcfile"; then
@@ -2267,7 +2267,7 @@ avoid parallel builds (make -j) in this platform, or get a better
 compiler."
 
 	$opt_dry_run || $RM $removelist
-	exit $EXIT_FAILURE
+	exit $LJPEG9_EXIT_FAILURE
       fi
 
       # Just move the object if needed
@@ -4835,7 +4835,7 @@ lt_fatal (const char *file, int line, const char *message, ...)
 {
   va_list ap;
   va_start (ap, message);
-  lt_error_core (EXIT_FAILURE, file, line, "FATAL", message, ap);
+  lt_error_core (LJPEG9_EXIT_FAILURE, file, line, "FATAL", message, ap);
   va_end (ap);
 }
 
@@ -9042,7 +9042,7 @@ EOF
 	    cwrappersource="$output_path/$objdir/lt-$output_name.c"
 	    cwrapper="$output_path/$output_name.exe"
 	    $RM $cwrappersource $cwrapper
-	    trap "$RM $cwrappersource $cwrapper; exit $EXIT_FAILURE" 1 2 15
+	    trap "$RM $cwrappersource $cwrapper; exit $LJPEG9_EXIT_FAILURE" 1 2 15
 
 	    func_emit_cwrapperexe_src > $cwrappersource
 
@@ -9058,7 +9058,7 @@ EOF
 	    # Now, create the wrapper script for func_source use:
 	    func_ltwrapper_scriptname $cwrapper
 	    $RM $func_ltwrapper_scriptname_result
-	    trap "$RM $func_ltwrapper_scriptname_result; exit $EXIT_FAILURE" 1 2 15
+	    trap "$RM $func_ltwrapper_scriptname_result; exit $LJPEG9_EXIT_FAILURE" 1 2 15
 	    $opt_dry_run || {
 	      # note: this script will not be executed, so do not chmod.
 	      if test "x$build" = "x$host" ; then
@@ -9070,7 +9070,7 @@ EOF
 	  ;;
 	  * )
 	    $RM $output
-	    trap "$RM $output; exit $EXIT_FAILURE" 1 2 15
+	    trap "$RM $output; exit $LJPEG9_EXIT_FAILURE" 1 2 15
 
 	    func_emit_wrapper no > $output
 	    chmod +x $output
@@ -9621,7 +9621,7 @@ test -z "$exec_cmd" && \
 
 if test -n "$exec_cmd"; then
   eval exec "$exec_cmd"
-  exit $EXIT_FAILURE
+  exit $LJPEG9_EXIT_FAILURE
 fi
 
 exit $exit_status

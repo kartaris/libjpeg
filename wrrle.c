@@ -18,7 +18,7 @@
 
 #include "cdjpeg.h"		/* Common decls for cjpeg/djpeg applications */
 
-#ifdef RLE_SUPPORTED
+#ifdef LJPEG9_RLE_SUPPORTED
 
 /* rle.h is provided by the Utah Raster Toolkit. */
 
@@ -51,7 +51,7 @@
 #define CMAPLENGTH	(1<<(CMAPBITS))
 
 typedef struct {
-  struct djpeg_dest_struct pub; /* public fields */
+  struct LJPEG9_djpeg_dest_struct pub; /* public fields */
 
   jvirt_sarray_ptr image;	/* virtual array to store the output image */
   rle_map *colormap;	 	/* RLE-style color map, or NULL if none */
@@ -62,9 +62,9 @@ typedef struct {
 typedef rle_dest_struct * rle_dest_ptr;
 
 /* Forward declarations */
-METHODDEF(void) rle_put_pixel_rows
-    JPP((j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
-	 JDIMENSION rows_supplied));
+LJPEG9_METHODDEF(void) rle_put_pixel_rows
+    JPP((LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo,
+	 LJPEG9_JDIMENSION rows_supplied));
 
 
 /*
@@ -73,14 +73,14 @@ METHODDEF(void) rle_put_pixel_rows
  * In this module it's easier to wait till finish_output to write anything.
  */
 
-METHODDEF(void)
-start_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
+LJPEG9_METHODDEF(void)
+start_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 {
   rle_dest_ptr dest = (rle_dest_ptr) dinfo;
   size_t cmapsize;
   int i, ci;
-#ifdef PROGRESS_REPORT
-  cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_cd_progress_ptr progress = (LJPEG9_cd_progress_ptr) cinfo->progress;
 #endif
 
   /*
@@ -130,12 +130,12 @@ start_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
 
   /* Set the output buffer to the first row */
   dest->pub.buffer = (*cinfo->mem->access_virt_sarray)
-    ((j_common_ptr) cinfo, dest->image, (JDIMENSION) 0, (JDIMENSION) 1, TRUE);
+    ((j_common_ptr) cinfo, dest->image, (LJPEG9_JDIMENSION) 0, (LJPEG9_JDIMENSION) 1, TRUE);
   dest->pub.buffer_height = 1;
 
   dest->pub.put_pixel_rows = rle_put_pixel_rows;
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
   if (progress != NULL) {
     progress->total_extra_passes++;  /* count file writing as separate pass */
   }
@@ -149,16 +149,16 @@ start_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
  * This routine just saves the data away in a virtual array.
  */
 
-METHODDEF(void)
-rle_put_pixel_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
-		    JDIMENSION rows_supplied)
+LJPEG9_METHODDEF(void)
+rle_put_pixel_rows (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo,
+		    LJPEG9_JDIMENSION rows_supplied)
 {
   rle_dest_ptr dest = (rle_dest_ptr) dinfo;
 
   if (cinfo->output_scanline < cinfo->output_height) {
     dest->pub.buffer = (*cinfo->mem->access_virt_sarray)
       ((j_common_ptr) cinfo, dest->image,
-       cinfo->output_scanline, (JDIMENSION) 1, TRUE);
+       cinfo->output_scanline, (LJPEG9_JDIMENSION) 1, TRUE);
   }
 }
 
@@ -168,8 +168,8 @@ rle_put_pixel_rows (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo,
  * Here is where we really output the RLE file.
  */
 
-METHODDEF(void)
-finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
+LJPEG9_METHODDEF(void)
+finish_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 {
   rle_dest_ptr dest = (rle_dest_ptr) dinfo;
   rle_hdr header;		/* Output file information */
@@ -178,8 +178,8 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
   char cmapcomment[80];
   int row, col;
   int ci;
-#ifdef PROGRESS_REPORT
-  cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_cd_progress_ptr progress = (LJPEG9_cd_progress_ptr) cinfo->progress;
 #endif
 
   /* Initialize the header info */
@@ -211,11 +211,11 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
    * and (b) we are not on a machine where FAR pointers differ from regular.
    */
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
   if (progress != NULL) {
     progress->pub.pass_limit = cinfo->output_height;
     progress->pub.pass_counter = 0;
-    (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+    (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
   }
 #endif
 
@@ -223,12 +223,12 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
     for (row = cinfo->output_height-1; row >= 0; row--) {
       rle_row = (rle_pixel **) (*cinfo->mem->access_virt_sarray)
         ((j_common_ptr) cinfo, dest->image,
-	 (JDIMENSION) row, (JDIMENSION) 1, FALSE);
+	 (LJPEG9_JDIMENSION) row, (LJPEG9_JDIMENSION) 1, FALSE);
       rle_putrow(rle_row, (int) cinfo->output_width, &header);
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
       }
 #endif
     }
@@ -237,7 +237,7 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
       rle_row = (rle_pixel **) dest->rle_row;
       output_row = * (*cinfo->mem->access_virt_sarray)
         ((j_common_ptr) cinfo, dest->image,
-	 (JDIMENSION) row, (JDIMENSION) 1, FALSE);
+	 (LJPEG9_JDIMENSION) row, (LJPEG9_JDIMENSION) 1, FALSE);
       red = rle_row[0];
       green = rle_row[1];
       blue = rle_row[2];
@@ -247,16 +247,16 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
         *blue++ = GETJSAMPLE(*output_row++);
       }
       rle_putrow(rle_row, (int) cinfo->output_width, &header);
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
       }
 #endif
     }
   }
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
   if (progress != NULL)
     progress->completed_extra_passes++;
 #endif
@@ -273,8 +273,8 @@ finish_output_rle (j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
  * The module selection routine for RLE format output.
  */
 
-GLOBAL(djpeg_dest_ptr)
-jinit_write_rle (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(LJPEG9_djpeg_dest_ptr)
+LJPEG9_jinit_write_rle (LJPEG9_j_decompress_ptr cinfo)
 {
   rle_dest_ptr dest;
 
@@ -291,15 +291,15 @@ jinit_write_rle (j_decompress_ptr cinfo)
   /* Allocate a work array for output to the RLE library. */
   dest->rle_row = (*cinfo->mem->alloc_sarray)
     ((j_common_ptr) cinfo, JPOOL_IMAGE,
-     cinfo->output_width, (JDIMENSION) cinfo->output_components);
+     cinfo->output_width, (LJPEG9_JDIMENSION) cinfo->output_components);
 
   /* Allocate a virtual array to hold the image. */
   dest->image = (*cinfo->mem->request_virt_sarray)
     ((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
-     (JDIMENSION) (cinfo->output_width * cinfo->output_components),
-     cinfo->output_height, (JDIMENSION) 1);
+     (LJPEG9_JDIMENSION) (cinfo->output_width * cinfo->output_components),
+     cinfo->output_height, (LJPEG9_JDIMENSION) 1);
 
-  return (djpeg_dest_ptr) dest;
+  return (LJPEG9_djpeg_dest_ptr) dest;
 }
 
-#endif /* RLE_SUPPORTED */
+#endif /* LJPEG9_RLE_SUPPORTED */

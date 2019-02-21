@@ -15,120 +15,120 @@
 
 /*
  * To define the enum list of message codes, include this file without
- * defining macro JMESSAGE.  To create a message string table, include it
- * again with a suitable JMESSAGE definition (see jerror.c for an example).
+ * defining macro LJPEG9_JMESSAGE.  To create a message string table, include it
+ * again with a suitable LJPEG9_JMESSAGE definition (see jerror.c for an example).
  */
-#ifndef JMESSAGE
-#ifndef CDERROR_H
-#define CDERROR_H
+#ifndef LJPEG9_JMESSAGE
+#ifndef LJPEG9_CDERROR_H
+#define LJPEG9_CDERROR_H
 /* First time through, define the enum list */
-#define JMAKE_ENUM_LIST
+#define LJPEG9_JMAKE_ENUM_LIST
 #else
-/* Repeated inclusions of this file are no-ops unless JMESSAGE is defined */
-#define JMESSAGE(code,string)
-#endif /* CDERROR_H */
-#endif /* JMESSAGE */
+/* Repeated inclusions of this file are no-ops unless LJPEG9_JMESSAGE is defined */
+#define LJPEG9_JMESSAGE(code,string)
+#endif /* LJPEG9_CDERROR_H */
+#endif /* LJPEG9_JMESSAGE */
 
-#ifdef JMAKE_ENUM_LIST
+#ifdef LJPEG9_JMAKE_ENUM_LIST
 
 typedef enum {
 
-#define JMESSAGE(code,string)	code ,
+#define LJPEG9_JMESSAGE(code,string)	code ,
 
-#endif /* JMAKE_ENUM_LIST */
+#endif /* LJPEG9_JMAKE_ENUM_LIST */
 
-JMESSAGE(JMSG_FIRSTADDONCODE=1000, NULL) /* Must be first entry! */
+LJPEG9_JMESSAGE(JMSG_FIRSTADDONCODE=1000, NULL) /* Must be first entry! */
 
-#ifdef BMP_SUPPORTED
-JMESSAGE(JERR_BMP_BADCMAP, "Unsupported BMP colormap format")
-JMESSAGE(JERR_BMP_BADDEPTH, "Only 8- and 24-bit BMP files are supported")
-JMESSAGE(JERR_BMP_BADHEADER, "Invalid BMP file: bad header length")
-JMESSAGE(JERR_BMP_BADPLANES, "Invalid BMP file: biPlanes not equal to 1")
-JMESSAGE(JERR_BMP_COLORSPACE, "BMP output must be grayscale or RGB")
-JMESSAGE(JERR_BMP_COMPRESSED, "Sorry, compressed BMPs not yet supported")
-JMESSAGE(JERR_BMP_EMPTY, "Empty BMP image")
-JMESSAGE(JERR_BMP_NOT, "Not a BMP file - does not start with BM")
-JMESSAGE(JTRC_BMP, "%ux%u 24-bit BMP image")
-JMESSAGE(JTRC_BMP_MAPPED, "%ux%u 8-bit colormapped BMP image")
-JMESSAGE(JTRC_BMP_OS2, "%ux%u 24-bit OS2 BMP image")
-JMESSAGE(JTRC_BMP_OS2_MAPPED, "%ux%u 8-bit colormapped OS2 BMP image")
-#endif /* BMP_SUPPORTED */
+#ifdef LJPEG9_BMP_SUPPORTED
+LJPEG9_JMESSAGE(JERR_BMP_BADCMAP, "Unsupported BMP colormap format")
+LJPEG9_JMESSAGE(JERR_BMP_BADDEPTH, "Only 8- and 24-bit BMP files are supported")
+LJPEG9_JMESSAGE(JERR_BMP_BADHEADER, "Invalid BMP file: bad header length")
+LJPEG9_JMESSAGE(JERR_BMP_BADPLANES, "Invalid BMP file: biPlanes not equal to 1")
+LJPEG9_JMESSAGE(JERR_BMP_COLORSPACE, "BMP output must be grayscale or RGB")
+LJPEG9_JMESSAGE(JERR_BMP_COMPRESSED, "Sorry, compressed BMPs not yet supported")
+LJPEG9_JMESSAGE(JERR_BMP_EMPTY, "Empty BMP image")
+LJPEG9_JMESSAGE(JERR_BMP_NOT, "Not a BMP file - does not start with BM")
+LJPEG9_JMESSAGE(JTRC_BMP, "%ux%u 24-bit BMP image")
+LJPEG9_JMESSAGE(JTRC_BMP_MAPPED, "%ux%u 8-bit colormapped BMP image")
+LJPEG9_JMESSAGE(JTRC_BMP_OS2, "%ux%u 24-bit OS2 BMP image")
+LJPEG9_JMESSAGE(JTRC_BMP_OS2_MAPPED, "%ux%u 8-bit colormapped OS2 BMP image")
+#endif /* LJPEG9_BMP_SUPPORTED */
 
-#ifdef GIF_SUPPORTED
-JMESSAGE(JERR_GIF_BUG, "GIF output got confused")
-JMESSAGE(JERR_GIF_CODESIZE, "Bogus GIF codesize %d")
-JMESSAGE(JERR_GIF_COLORSPACE, "GIF output must be grayscale or RGB")
-JMESSAGE(JERR_GIF_IMAGENOTFOUND, "Too few images in GIF file")
-JMESSAGE(JERR_GIF_NOT, "Not a GIF file")
-JMESSAGE(JTRC_GIF, "%ux%ux%d GIF image")
-JMESSAGE(JTRC_GIF_BADVERSION,
+#ifdef LJPEG9_GIF_SUPPORTED
+LJPEG9_JMESSAGE(JERR_GIF_BUG, "GIF output got confused")
+LJPEG9_JMESSAGE(JERR_GIF_CODESIZE, "Bogus GIF codesize %d")
+LJPEG9_JMESSAGE(JERR_GIF_COLORSPACE, "GIF output must be grayscale or RGB")
+LJPEG9_JMESSAGE(JERR_GIF_IMAGENOTFOUND, "Too few images in GIF file")
+LJPEG9_JMESSAGE(JERR_GIF_NOT, "Not a GIF file")
+LJPEG9_JMESSAGE(JTRC_GIF, "%ux%ux%d GIF image")
+LJPEG9_JMESSAGE(JTRC_GIF_BADVERSION,
 	 "Warning: unexpected GIF version number '%c%c%c'")
-JMESSAGE(JTRC_GIF_EXTENSION, "Ignoring GIF extension block of type 0x%02x")
-JMESSAGE(JTRC_GIF_NONSQUARE, "Caution: nonsquare pixels in input")
-JMESSAGE(JWRN_GIF_BADDATA, "Corrupt data in GIF file")
-JMESSAGE(JWRN_GIF_CHAR, "Bogus char 0x%02x in GIF file, ignoring")
-JMESSAGE(JWRN_GIF_ENDCODE, "Premature end of GIF image")
-JMESSAGE(JWRN_GIF_NOMOREDATA, "Ran out of GIF bits")
-#endif /* GIF_SUPPORTED */
+LJPEG9_JMESSAGE(JTRC_GIF_EXTENSION, "Ignoring GIF extension block of type 0x%02x")
+LJPEG9_JMESSAGE(JTRC_GIF_NONSQUARE, "Caution: nonsquare pixels in input")
+LJPEG9_JMESSAGE(JWRN_GIF_BADDATA, "Corrupt data in GIF file")
+LJPEG9_JMESSAGE(JWRN_GIF_CHAR, "Bogus char 0x%02x in GIF file, ignoring")
+LJPEG9_JMESSAGE(JWRN_GIF_ENDCODE, "Premature end of GIF image")
+LJPEG9_JMESSAGE(JWRN_GIF_NOMOREDATA, "Ran out of GIF bits")
+#endif /* LJPEG9_GIF_SUPPORTED */
 
-#ifdef PPM_SUPPORTED
-JMESSAGE(JERR_PPM_COLORSPACE, "PPM output must be grayscale or RGB")
-JMESSAGE(JERR_PPM_NONNUMERIC, "Nonnumeric data in PPM file")
-JMESSAGE(JERR_PPM_NOT, "Not a PPM/PGM file")
-JMESSAGE(JTRC_PGM, "%ux%u PGM image")
-JMESSAGE(JTRC_PGM_TEXT, "%ux%u text PGM image")
-JMESSAGE(JTRC_PPM, "%ux%u PPM image")
-JMESSAGE(JTRC_PPM_TEXT, "%ux%u text PPM image")
-#endif /* PPM_SUPPORTED */
+#ifdef LJPEG9_PPM_SUPPORTED
+LJPEG9_JMESSAGE(JERR_PPM_COLORSPACE, "PPM output must be grayscale or RGB")
+LJPEG9_JMESSAGE(JERR_PPM_NONNUMERIC, "Nonnumeric data in PPM file")
+LJPEG9_JMESSAGE(JERR_PPM_NOT, "Not a PPM/PGM file")
+LJPEG9_JMESSAGE(JTRC_PGM, "%ux%u PGM image")
+LJPEG9_JMESSAGE(JTRC_PGM_TEXT, "%ux%u text PGM image")
+LJPEG9_JMESSAGE(JTRC_PPM, "%ux%u PPM image")
+LJPEG9_JMESSAGE(JTRC_PPM_TEXT, "%ux%u text PPM image")
+#endif /* LJPEG9_PPM_SUPPORTED */
 
-#ifdef RLE_SUPPORTED
-JMESSAGE(JERR_RLE_BADERROR, "Bogus error code from RLE library")
-JMESSAGE(JERR_RLE_COLORSPACE, "RLE output must be grayscale or RGB")
-JMESSAGE(JERR_RLE_DIMENSIONS, "Image dimensions (%ux%u) too large for RLE")
-JMESSAGE(JERR_RLE_EMPTY, "Empty RLE file")
-JMESSAGE(JERR_RLE_EOF, "Premature EOF in RLE header")
-JMESSAGE(JERR_RLE_MEM, "Insufficient memory for RLE header")
-JMESSAGE(JERR_RLE_NOT, "Not an RLE file")
-JMESSAGE(JERR_RLE_TOOMANYCHANNELS, "Cannot handle %d output channels for RLE")
-JMESSAGE(JERR_RLE_UNSUPPORTED, "Cannot handle this RLE setup")
-JMESSAGE(JTRC_RLE, "%ux%u full-color RLE file")
-JMESSAGE(JTRC_RLE_FULLMAP, "%ux%u full-color RLE file with map of length %d")
-JMESSAGE(JTRC_RLE_GRAY, "%ux%u grayscale RLE file")
-JMESSAGE(JTRC_RLE_MAPGRAY, "%ux%u grayscale RLE file with map of length %d")
-JMESSAGE(JTRC_RLE_MAPPED, "%ux%u colormapped RLE file with map of length %d")
-#endif /* RLE_SUPPORTED */
+#ifdef LJPEG9_RLE_SUPPORTED
+LJPEG9_JMESSAGE(JERR_RLE_BADERROR, "Bogus error code from RLE library")
+LJPEG9_JMESSAGE(JERR_RLE_COLORSPACE, "RLE output must be grayscale or RGB")
+LJPEG9_JMESSAGE(JERR_RLE_DIMENSIONS, "Image dimensions (%ux%u) too large for RLE")
+LJPEG9_JMESSAGE(JERR_RLE_EMPTY, "Empty RLE file")
+LJPEG9_JMESSAGE(JERR_RLE_EOF, "Premature EOF in RLE header")
+LJPEG9_JMESSAGE(JERR_RLE_MEM, "Insufficient memory for RLE header")
+LJPEG9_JMESSAGE(JERR_RLE_NOT, "Not an RLE file")
+LJPEG9_JMESSAGE(JERR_RLE_TOOMANYCHANNELS, "Cannot handle %d output channels for RLE")
+LJPEG9_JMESSAGE(JERR_RLE_UNSUPPORTED, "Cannot handle this RLE setup")
+LJPEG9_JMESSAGE(JTRC_RLE, "%ux%u full-color RLE file")
+LJPEG9_JMESSAGE(JTRC_RLE_FULLMAP, "%ux%u full-color RLE file with map of length %d")
+LJPEG9_JMESSAGE(JTRC_RLE_GRAY, "%ux%u grayscale RLE file")
+LJPEG9_JMESSAGE(JTRC_RLE_MAPGRAY, "%ux%u grayscale RLE file with map of length %d")
+LJPEG9_JMESSAGE(JTRC_RLE_MAPPED, "%ux%u colormapped RLE file with map of length %d")
+#endif /* LJPEG9_RLE_SUPPORTED */
 
-#ifdef TARGA_SUPPORTED
-JMESSAGE(JERR_TGA_BADCMAP, "Unsupported Targa colormap format")
-JMESSAGE(JERR_TGA_BADPARMS, "Invalid or unsupported Targa file")
-JMESSAGE(JERR_TGA_COLORSPACE, "Targa output must be grayscale or RGB")
-JMESSAGE(JTRC_TGA, "%ux%u RGB Targa image")
-JMESSAGE(JTRC_TGA_GRAY, "%ux%u grayscale Targa image")
-JMESSAGE(JTRC_TGA_MAPPED, "%ux%u colormapped Targa image")
+#ifdef LJPEG9_TARGA_SUPPORTED
+LJPEG9_JMESSAGE(JERR_TGA_BADCMAP, "Unsupported Targa colormap format")
+LJPEG9_JMESSAGE(JERR_TGA_BADPARMS, "Invalid or unsupported Targa file")
+LJPEG9_JMESSAGE(JERR_TGA_COLORSPACE, "Targa output must be grayscale or RGB")
+LJPEG9_JMESSAGE(JTRC_TGA, "%ux%u RGB Targa image")
+LJPEG9_JMESSAGE(JTRC_TGA_GRAY, "%ux%u grayscale Targa image")
+LJPEG9_JMESSAGE(JTRC_TGA_MAPPED, "%ux%u colormapped Targa image")
 #else
-JMESSAGE(JERR_TGA_NOTCOMP, "Targa support was not compiled")
-#endif /* TARGA_SUPPORTED */
+LJPEG9_JMESSAGE(LJPEG9_JERR_TGA_NOTCOMP, "Targa support was not compiled")
+#endif /* LJPEG9_TARGA_SUPPORTED */
 
-JMESSAGE(JERR_BAD_CMAP_FILE,
+LJPEG9_JMESSAGE(LJPEG9_JERR_BAD_CMAP_FILE,
 	 "Color map file is invalid or of unsupported format")
-JMESSAGE(JERR_TOO_MANY_COLORS,
+LJPEG9_JMESSAGE(LJPEG9_JERR_TOO_MANY_COLORS,
 	 "Output file format cannot handle %d colormap entries")
-JMESSAGE(JERR_UNGETC_FAILED, "ungetc failed")
-#ifdef TARGA_SUPPORTED
-JMESSAGE(JERR_UNKNOWN_FORMAT,
+LJPEG9_JMESSAGE(LJPEG9_JERR_UNGETC_FAILED, "ungetc failed")
+#ifdef LJPEG9_TARGA_SUPPORTED
+LJPEG9_JMESSAGE(LJPEG9_JERR_UNKNOWN_FORMAT,
 	 "Unrecognized input file format --- perhaps you need -targa")
 #else
-JMESSAGE(JERR_UNKNOWN_FORMAT, "Unrecognized input file format")
+LJPEG9_JMESSAGE(LJPEG9_JERR_UNKNOWN_FORMAT, "Unrecognized input file format")
 #endif
-JMESSAGE(JERR_UNSUPPORTED_FORMAT, "Unsupported output file format")
+LJPEG9_JMESSAGE(JERR_UNSUPPORTED_FORMAT, "Unsupported output file format")
 
-#ifdef JMAKE_ENUM_LIST
+#ifdef LJPEG9_JMAKE_ENUM_LIST
 
-  JMSG_LASTADDONCODE
-} ADDON_MESSAGE_CODE;
+  LJPEG9_JMSG_LASTADDONCODE
+} LJPEG9_ADDON_MESSAGE_CODE;
 
-#undef JMAKE_ENUM_LIST
-#endif /* JMAKE_ENUM_LIST */
+#undef LJPEG9_JMAKE_ENUM_LIST
+#endif /* LJPEG9_JMAKE_ENUM_LIST */
 
-/* Zap JMESSAGE macro so that future re-inclusions do nothing by default */
-#undef JMESSAGE
+/* Zap LJPEG9_JMESSAGE macro so that future re-inclusions do nothing by default */
+#undef LJPEG9_JMESSAGE

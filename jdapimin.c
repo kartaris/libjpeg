@@ -27,8 +27,8 @@
  * The error manager must already be set up (in case memory manager fails).
  */
 
-GLOBAL(void)
-jpeg_CreateDecompress (j_decompress_ptr cinfo, int version, size_t structsize)
+LJPEG9_GLOBAL(void)
+jpeg_CreateDecompress (LJPEG9_j_decompress_ptr cinfo, int version, size_t structsize)
 {
   int i;
 
@@ -88,8 +88,8 @@ jpeg_CreateDecompress (j_decompress_ptr cinfo, int version, size_t structsize)
  * Destruction of a JPEG decompression object
  */
 
-GLOBAL(void)
-jpeg_destroy_decompress (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jpeg_destroy_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
   jpeg_destroy((j_common_ptr) cinfo); /* use common routine */
 }
@@ -100,8 +100,8 @@ jpeg_destroy_decompress (j_decompress_ptr cinfo)
  * but don't destroy the object itself.
  */
 
-GLOBAL(void)
-jpeg_abort_decompress (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jpeg_abort_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
   jpeg_abort((j_common_ptr) cinfo); /* use common routine */
 }
@@ -112,7 +112,7 @@ jpeg_abort_decompress (j_decompress_ptr cinfo)
  */
 
 LOCAL(void)
-default_decompress_parms (j_decompress_ptr cinfo)
+default_decompress_parms (LJPEG9_j_decompress_ptr cinfo)
 {
   int cid0, cid1, cid2;
 
@@ -241,8 +241,8 @@ default_decompress_parms (j_decompress_ptr cinfo)
  * extra error checking.
  */
 
-GLOBAL(int)
-jpeg_read_header (j_decompress_ptr cinfo, boolean require_image)
+LJPEG9_GLOBAL(int)
+jpeg_read_header (LJPEG9_j_decompress_ptr cinfo, boolean require_image)
 {
   int retcode;
 
@@ -287,8 +287,8 @@ jpeg_read_header (j_decompress_ptr cinfo, boolean require_image)
  * method.
  */
 
-GLOBAL(int)
-jpeg_consume_input (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(int)
+jpeg_consume_input (LJPEG9_j_decompress_ptr cinfo)
 {
   int retcode = JPEG_SUSPENDED;
 
@@ -334,8 +334,8 @@ jpeg_consume_input (j_decompress_ptr cinfo)
  * Have we finished reading the input file?
  */
 
-GLOBAL(boolean)
-jpeg_input_complete (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(boolean)
+jpeg_input_complete (LJPEG9_j_decompress_ptr cinfo)
 {
   /* Check for valid jpeg object */
   if (cinfo->global_state < DSTATE_START ||
@@ -349,8 +349,8 @@ jpeg_input_complete (j_decompress_ptr cinfo)
  * Is there more than one scan?
  */
 
-GLOBAL(boolean)
-jpeg_has_multiple_scans (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(boolean)
+jpeg_has_multiple_scans (LJPEG9_j_decompress_ptr cinfo)
 {
   /* Only valid after jpeg_read_header completes */
   if (cinfo->global_state < DSTATE_READY ||
@@ -369,8 +369,8 @@ jpeg_has_multiple_scans (j_decompress_ptr cinfo)
  * a suspending data source is used.
  */
 
-GLOBAL(boolean)
-jpeg_finish_decompress (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(boolean)
+jpeg_finish_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
   if ((cinfo->global_state == DSTATE_SCANNING ||
        cinfo->global_state == DSTATE_RAW_OK) && ! cinfo->buffered_image) {

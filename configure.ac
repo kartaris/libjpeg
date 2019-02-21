@@ -216,7 +216,7 @@ int possibly_dupli_function () { return 1; }
 ], [],
             [AC_MSG_RESULT(ok)],
             [AC_MSG_RESULT(short)
-             AC_DEFINE([NEED_SHORT_EXTERNAL_NAMES], [1],
+             AC_DEFINE([LJPEG9_NEED_SHORT_EXTERNAL_NAMES], [1],
                        [Linker requires that global names be unique in
                         first 15 characters.])])
 
@@ -342,7 +342,7 @@ if test "x$MAXMEM" != xno; then
 
     # Test for the need to remove temporary files using a signal handler
     # (for cjpeg/djpeg)
-    AC_DEFINE([NEED_SIGNAL_CATCHER], [1],
+    AC_DEFINE([LJPEG9_NEED_SIGNAL_CATCHER], [1],
               [Need signal handler to clean up temporary files.])
     AC_MSG_CHECKING([for 'mktemp()'])
     AC_TRY_LINK([], [ char fname[80]; mktemp(fname); ],

@@ -49,7 +49,7 @@ typedef my_comp_master * my_master_ptr;
  * Hence it mustn't do anything that can't be done twice.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
 /* Do computations that are needed before master selection phase */
 {
@@ -73,121 +73,121 @@ jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
     cinfo->min_DCT_v_scaled_size = 1;
   } else if (cinfo->scale_num * 2 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/2 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 2L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 2L);
     cinfo->min_DCT_h_scaled_size = 2;
     cinfo->min_DCT_v_scaled_size = 2;
   } else if (cinfo->scale_num * 3 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/3 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 3L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 3L);
     cinfo->min_DCT_h_scaled_size = 3;
     cinfo->min_DCT_v_scaled_size = 3;
   } else if (cinfo->scale_num * 4 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/4 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 4L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 4L);
     cinfo->min_DCT_h_scaled_size = 4;
     cinfo->min_DCT_v_scaled_size = 4;
   } else if (cinfo->scale_num * 5 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/5 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 5L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 5L);
     cinfo->min_DCT_h_scaled_size = 5;
     cinfo->min_DCT_v_scaled_size = 5;
   } else if (cinfo->scale_num * 6 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/6 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 6L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 6L);
     cinfo->min_DCT_h_scaled_size = 6;
     cinfo->min_DCT_v_scaled_size = 6;
   } else if (cinfo->scale_num * 7 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/7 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 7L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 7L);
     cinfo->min_DCT_h_scaled_size = 7;
     cinfo->min_DCT_v_scaled_size = 7;
   } else if (cinfo->scale_num * 8 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/8 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 8L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 8L);
     cinfo->min_DCT_h_scaled_size = 8;
     cinfo->min_DCT_v_scaled_size = 8;
   } else if (cinfo->scale_num * 9 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/9 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 9L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 9L);
     cinfo->min_DCT_h_scaled_size = 9;
     cinfo->min_DCT_v_scaled_size = 9;
   } else if (cinfo->scale_num * 10 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/10 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 10L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 10L);
     cinfo->min_DCT_h_scaled_size = 10;
     cinfo->min_DCT_v_scaled_size = 10;
   } else if (cinfo->scale_num * 11 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/11 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 11L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 11L);
     cinfo->min_DCT_h_scaled_size = 11;
     cinfo->min_DCT_v_scaled_size = 11;
   } else if (cinfo->scale_num * 12 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/12 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 12L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 12L);
     cinfo->min_DCT_h_scaled_size = 12;
     cinfo->min_DCT_v_scaled_size = 12;
   } else if (cinfo->scale_num * 13 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/13 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 13L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 13L);
     cinfo->min_DCT_h_scaled_size = 13;
     cinfo->min_DCT_v_scaled_size = 13;
   } else if (cinfo->scale_num * 14 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/14 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 14L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 14L);
     cinfo->min_DCT_h_scaled_size = 14;
     cinfo->min_DCT_v_scaled_size = 14;
   } else if (cinfo->scale_num * 15 >= cinfo->scale_denom * cinfo->block_size) {
     /* Provide block_size/15 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 15L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 15L);
     cinfo->min_DCT_h_scaled_size = 15;
     cinfo->min_DCT_v_scaled_size = 15;
   } else {
     /* Provide block_size/16 scaling */
-    cinfo->jpeg_width = (JDIMENSION)
+    cinfo->jpeg_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width * cinfo->block_size, 16L);
-    cinfo->jpeg_height = (JDIMENSION)
+    cinfo->jpeg_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height * cinfo->block_size, 16L);
     cinfo->min_DCT_h_scaled_size = 16;
     cinfo->min_DCT_v_scaled_size = 16;
@@ -316,18 +316,18 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
 	compptr->DCT_v_scaled_size = compptr->DCT_h_scaled_size * 2;
 
     /* Size in DCT blocks */
-    compptr->width_in_blocks = (JDIMENSION)
+    compptr->width_in_blocks = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->jpeg_width * (long) compptr->h_samp_factor,
 		    (long) (cinfo->max_h_samp_factor * cinfo->block_size));
-    compptr->height_in_blocks = (JDIMENSION)
+    compptr->height_in_blocks = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->jpeg_height * (long) compptr->v_samp_factor,
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
     /* Size in samples */
-    compptr->downsampled_width = (JDIMENSION)
+    compptr->downsampled_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->jpeg_width *
 		    (long) (compptr->h_samp_factor * compptr->DCT_h_scaled_size),
 		    (long) (cinfo->max_h_samp_factor * cinfo->block_size));
-    compptr->downsampled_height = (JDIMENSION)
+    compptr->downsampled_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->jpeg_height *
 		    (long) (compptr->v_samp_factor * compptr->DCT_v_scaled_size),
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
@@ -340,7 +340,7 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
   /* Compute number of fully interleaved MCU rows (number of times that
    * main controller will call coefficient controller).
    */
-  cinfo->total_iMCU_rows = (JDIMENSION)
+  cinfo->total_iMCU_rows = (LJPEG9_JDIMENSION)
     jdiv_round_up((long) cinfo->jpeg_height,
 		  (long) (cinfo->max_v_samp_factor * cinfo->block_size));
 }
@@ -604,10 +604,10 @@ per_scan_setup (j_compress_ptr cinfo)
 	       MAX_COMPS_IN_SCAN);
     
     /* Overall image size in MCUs */
-    cinfo->MCUs_per_row = (JDIMENSION)
+    cinfo->MCUs_per_row = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->jpeg_width,
 		    (long) (cinfo->max_h_samp_factor * cinfo->block_size));
-    cinfo->MCU_rows_in_scan = (JDIMENSION)
+    cinfo->MCU_rows_in_scan = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->jpeg_height,
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
     
@@ -655,7 +655,7 @@ per_scan_setup (j_compress_ptr cinfo)
  * required.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 prepare_for_pass (j_compress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
@@ -743,7 +743,7 @@ prepare_for_pass (j_compress_ptr cinfo)
  * In multi-pass processing, this routine is not used.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 pass_startup (j_compress_ptr cinfo)
 {
   cinfo->master->call_pass_startup = FALSE; /* reset flag so call only once */
@@ -757,7 +757,7 @@ pass_startup (j_compress_ptr cinfo)
  * Finish up at end of pass.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 finish_pass_master (j_compress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
@@ -797,7 +797,7 @@ finish_pass_master (j_compress_ptr cinfo)
  * Initialize master compression control.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_c_master_control (j_compress_ptr cinfo, boolean transcode_only)
 {
   my_master_ptr master;

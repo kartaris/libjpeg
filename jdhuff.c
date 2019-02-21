@@ -92,7 +92,7 @@ typedef struct {		/* Bitreading working state within an MCU */
   bit_buf_type get_buffer;	/* current bit-extraction buffer */
   int bits_left;		/* # of unused bits in it */
   /* Pointer needed by jpeg_fill_bit_buffer. */
-  j_decompress_ptr cinfo;	/* back link to decompress master record */
+  LJPEG9_j_decompress_ptr cinfo;	/* back link to decompress master record */
 } bitread_working_state;
 
 /* Macros to declare and load/save bitread local variables. */
@@ -320,7 +320,7 @@ static const int jpeg_zigzag_order2[2][2] = {
  */
 
 LOCAL(void)
-jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
+jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
 			 d_derived_tbl ** pdtbl)
 {
   JHUFF_TBL *htbl;
@@ -470,7 +470,7 @@ jpeg_fill_bit_buffer (bitread_working_state * state,
   /* Copy heavily used state fields into locals (hopefully registers) */
   register const JOCTET * next_input_byte = state->next_input_byte;
   register size_t bytes_in_buffer = state->bytes_in_buffer;
-  j_decompress_ptr cinfo = state->cinfo;
+  LJPEG9_j_decompress_ptr cinfo = state->cinfo;
 
   /* Attempt to load at least MIN_GET_BITS bits into get_buffer. */
   /* (It is assumed that no request will be for more than that many bits.) */
@@ -631,8 +631,8 @@ jpeg_huff_decode (bitread_working_state * state,
  * Finish up at the end of a Huffman-compressed scan.
  */
 
-METHODDEF(void)
-finish_pass_huff (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(void)
+finish_pass_huff (LJPEG9_j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
 
@@ -649,7 +649,7 @@ finish_pass_huff (j_decompress_ptr cinfo)
  */
 
 LOCAL(boolean)
-process_restart (j_decompress_ptr cinfo)
+process_restart (LJPEG9_j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int ci;
@@ -704,8 +704,8 @@ process_restart (j_decompress_ptr cinfo)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
-decode_mcu_DC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_DC_first (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {   
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int Al = cinfo->Al;
@@ -775,8 +775,8 @@ decode_mcu_DC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
-decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_AC_first (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {   
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   register int s, k, r;
@@ -863,8 +863,8 @@ decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * although the spec is not very clear on the point.
  */
 
-METHODDEF(boolean)
-decode_mcu_DC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_DC_refine (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {   
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int p1, blkn;
@@ -910,8 +910,8 @@ decode_mcu_DC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * MCU decoding for AC successive approximation refinement scan.
  */
 
-METHODDEF(boolean)
-decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_AC_refine (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {   
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   register int s, k, r;
@@ -1067,8 +1067,8 @@ undoit:
  * partial blocks.
  */
 
-METHODDEF(boolean)
-decode_mcu_sub (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_sub (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   const int * natural_order;
@@ -1195,8 +1195,8 @@ decode_mcu_sub (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * full-size blocks.
  */
 
-METHODDEF(boolean)
-decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int blkn;
@@ -1318,8 +1318,8 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * Initialize for a Huffman-compressed scan.
  */
 
-METHODDEF(void)
-start_pass_huff_decoder (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(void)
+start_pass_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int ci, blkn, tbl, i;
@@ -1517,8 +1517,8 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
  * Module initialization routine for Huffman entropy decoding.
  */
 
-GLOBAL(void)
-jinit_huff_decoder (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jinit_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy;
   int i;

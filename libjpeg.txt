@@ -213,7 +213,7 @@ A 2-D array of pixels is formed by making a list of pointers to the starts of
 scanlines; so the scanlines need not be physically adjacent in memory.  Even
 if you process just one scanline at a time, you must make a one-element
 pointer array to conform to this structure.  Pointers to JSAMPLE rows are of
-type JSAMPROW, and the pointer to the pointer array is of type JSAMPARRAY.
+type JSAMPROW, and the pointer to the pointer array is of type LJPEG9_JSAMPARRAY.
 
 The library accepts or supplies one or more complete scanlines per call.
 It is not possible to process part of a row at a time.  Scanlines are always
@@ -235,7 +235,7 @@ colormapped.  But you can ask the decompressor to perform on-the-fly color
 quantization to deliver colormapped output.)  If you request colormapped
 output then the returned data array contains a single JSAMPLE per pixel;
 its value is an index into a color map.  The color map is represented as
-a 2-D JSAMPARRAY in which each row holds the values of one color component,
+a 2-D LJPEG9_JSAMPARRAY in which each row holds the values of one color component,
 that is, colormap[i][j] is the value of the i'th color component for pixel
 value (map index) j.  Note that since the colormap indexes are stored in
 JSAMPLEs, the maximum number of colors is limited by the size of JSAMPLE
@@ -1059,8 +1059,8 @@ also call jpeg_calc_jpeg_dimensions() to obtain the values that will result
 from the current parameter settings.  This can be useful if you are trying
 to pick a scaling ratio that will get close to a desired target size.
 
-JDIMENSION jpeg_width		Actual dimensions of output image.
-JDIMENSION jpeg_height
+LJPEG9_JDIMENSION jpeg_width		Actual dimensions of output image.
+LJPEG9_JDIMENSION jpeg_height
 
 
 Per-component parameters are stored in the struct cinfo.comp_info[i] for
@@ -1115,8 +1115,8 @@ processing.
 The following fields in the JPEG object are set by jpeg_read_header() and
 may be useful to the application in choosing decompression parameters:
 
-JDIMENSION image_width			Width and height of image
-JDIMENSION image_height
+LJPEG9_JDIMENSION image_width			Width and height of image
+LJPEG9_JDIMENSION image_height
 int num_components			Number of color components
 J_COLOR_SPACE jpeg_color_space		Colorspace of image
 boolean saw_JFIF_marker			TRUE if a JFIF APP0 marker was seen
@@ -1197,7 +1197,7 @@ selects a suitable color map and sets these two fields itself.
 [Implementation restriction: at present, an externally supplied colormap is
 only accepted for 3-component output color spaces.]
 
-JSAMPARRAY colormap
+LJPEG9_JSAMPARRAY colormap
 	The color map, represented as a 2-D pixel array of out_color_components
 	rows and actual_number_of_colors columns.  Ignored if not quantizing.
 	CAUTION: if the JPEG library creates its own colormap, the storage
@@ -1246,8 +1246,8 @@ close to a desired target size.  It's also important if you are using the
 JPEG library's memory manager to allocate output buffer space, because you
 are supposed to request such buffers *before* jpeg_start_decompress().
 
-JDIMENSION output_width		Actual dimensions of output image.
-JDIMENSION output_height
+LJPEG9_JDIMENSION output_width		Actual dimensions of output image.
+LJPEG9_JDIMENSION output_height
 int out_color_components	Number of color components in out_color_space.
 int output_components		Number of color components returned.
 int rec_outbuf_height		Recommended height of scanline buffer.
@@ -1552,13 +1552,13 @@ address and total size in private fields not visible to the library.
 
 A data source manager provides five methods:
 
-init_source (j_decompress_ptr cinfo)
+init_source (LJPEG9_j_decompress_ptr cinfo)
 	Initialize source.  This is called by jpeg_read_header() before any
 	data is actually read.  Unlike init_destination(), it may leave
 	bytes_in_buffer set to 0 (in which case a fill_input_buffer() call
 	will occur immediately).
 
-fill_input_buffer (j_decompress_ptr cinfo)
+fill_input_buffer (LJPEG9_j_decompress_ptr cinfo)
 	This is called whenever bytes_in_buffer has reached zero and more
 	data is wanted.  In typical applications, it should read fresh data
 	into the buffer (ignoring the current state of next_input_byte and
@@ -1569,7 +1569,7 @@ fill_input_buffer (j_decompress_ptr cinfo)
 	if TRUE is returned.  A FALSE return should only be used when I/O
 	suspension is desired (this mode is discussed in the next section).
 
-skip_input_data (j_decompress_ptr cinfo, long num_bytes)
+skip_input_data (LJPEG9_j_decompress_ptr cinfo, long num_bytes)
 	Skip num_bytes worth of data.  The buffer pointer and count should
 	be advanced over num_bytes input bytes, refilling the buffer as
 	needed.  This is used to skip over a potentially large amount of
@@ -1579,7 +1579,7 @@ skip_input_data (j_decompress_ptr cinfo, long num_bytes)
 	skips are uncommon.  bytes_in_buffer may be zero on return.
 	A zero or negative skip count should be treated as a no-op.
 
-resync_to_restart (j_decompress_ptr cinfo, int desired)
+resync_to_restart (LJPEG9_j_decompress_ptr cinfo, int desired)
 	This routine is called only when the decompressor has failed to find
 	a restart (RSTn) marker where one is expected.  Its mission is to
 	find a suitable point for resuming decompression.  For most
@@ -1591,7 +1591,7 @@ resync_to_restart (j_decompress_ptr cinfo, int desired)
 	in jdmarker.c if you think you'd like to implement your own resync
 	procedure.
 
-term_source (j_decompress_ptr cinfo)
+term_source (LJPEG9_j_decompress_ptr cinfo)
 	Terminate source --- called by jpeg_finish_decompress() after all
 	data has been read.  Often a no-op.
 
@@ -2539,7 +2539,7 @@ effective length limit is exactly what you set it to be.
 If you want to supply your own marker-reading routine, you do it by calling
 jpeg_set_marker_processor().  A marker processor routine must have the
 signature
-	boolean jpeg_marker_parser_method (j_decompress_ptr cinfo)
+	boolean jpeg_marker_parser_method (LJPEG9_j_decompress_ptr cinfo)
 Although the marker code is not explicitly passed, the routine can find it
 in cinfo->unread_marker.  At the time of call, the marker proper has been
 read from the data source module.  The processor routine is responsible for
@@ -2585,7 +2585,7 @@ in the JPEG file (please read the earlier section on Special color spaces)
 and downsampled to the sampling factors specified in the JPEG parameters.
 You must supply the data in the format used internally by the JPEG library,
 namely a JSAMPIMAGE array.  This is an array of pointers to two-dimensional
-arrays, each of type JSAMPARRAY.  Each 2-D array holds the values for one
+arrays, each of type LJPEG9_JSAMPARRAY.  Each 2-D array holds the values for one
 color component.  This structure is necessary since the components are of
 different sizes.  If the image dimensions are not a multiple of the MCU size,
 you must also pad the data correctly (usually, this is done by replicating
@@ -2615,7 +2615,7 @@ the following:
 
 To pass raw data to the library, call jpeg_write_raw_data() in place of
 jpeg_write_scanlines().  The two routines work similarly except that
-jpeg_write_raw_data takes a JSAMPIMAGE data array rather than JSAMPARRAY.
+jpeg_write_raw_data takes a JSAMPIMAGE data array rather than LJPEG9_JSAMPARRAY.
 The scanlines count passed to and returned from jpeg_write_raw_data is
 measured in terms of the component with the largest v_samp_factor.
 
@@ -2804,7 +2804,7 @@ the callback mechanism for time-critical tasks like mouse tracking, you could
 insert additional calls inside some of the library's inner loops.)
 
 To establish a progress-monitor callback, create a struct jpeg_progress_mgr,
-fill in its progress_monitor field with a pointer to your callback routine,
+fill in its LJPEG9_progress_monitor field with a pointer to your callback routine,
 and set cinfo->progress to point to the struct.  The callback will be called
 whenever cinfo->progress is non-NULL.  (This pointer is set to NULL by
 jpeg_create_compress or jpeg_create_decompress; the library will not change
@@ -2974,7 +2974,7 @@ single instance, since it operates on the level of DCT coefficients and
 not sample values.
 (If you need to include an 8-bit library and a 9-bit to 12-bit library for
 compression or decompression in a single application, you could probably do
-it by defining NEED_SHORT_EXTERNAL_NAMES for just one of the copies.  You'd
+it by defining LJPEG9_NEED_SHORT_EXTERNAL_NAMES for just one of the copies.  You'd
 have to access the 8-bit and the 9-bit to 12-bit copies from separate
 application source files.  This is untested ... if you try it, we'd like to
 hear whether it works!)
@@ -3007,7 +3007,7 @@ You can also save a few K by not having text error messages in the library;
 the standard error message table occupies about 5Kb.  This is particularly
 reasonable for embedded applications where there's no good way to display 
 a message anyway.  To do this, remove the creation of the message table
-(jpeg_std_message_table[]) from jerror.c, and alter format_message to do
+(LJPEG9_jpeg_std_message_table[]) from jerror.c, and alter format_message to do
 something reasonable without it.  You could output the numeric value of the
 message code number, for example.  If you do this, you can also save a couple
 more K by modifying the TRACEMSn() macros in jerror.h to expand to nothing;
@@ -3062,7 +3062,7 @@ replacing that one file.
 
 The code generally assumes that C names must be unique in the first 15
 characters.  However, global function names can be made unique in the
-first 6 characters by defining NEED_SHORT_EXTERNAL_NAMES.
+first 6 characters by defining LJPEG9_NEED_SHORT_EXTERNAL_NAMES.
 
 More info about porting the code may be gleaned by reading jconfig.txt,
 jmorecfg.h, and jinclude.h.

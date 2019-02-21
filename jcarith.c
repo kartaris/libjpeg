@@ -129,7 +129,7 @@ emit_byte (int val, j_compress_ptr cinfo)
  * Finish up at the end of an arithmetic-compressed scan.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 finish_pass (j_compress_ptr cinfo)
 {
   arith_entropy_ptr e = (arith_entropy_ptr) cinfo->entropy;
@@ -358,7 +358,7 @@ emit_restart (j_compress_ptr cinfo, int restart_num)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -447,7 +447,7 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -554,7 +554,7 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * although the spec is not very clear on the point.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -589,7 +589,7 @@ encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * MCU encoding for AC successive approximation refinement scan.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -688,7 +688,7 @@ encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * Encode and output one MCU's worth of arithmetic-compressed coefficients.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -837,7 +837,7 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * Initialize for an arithmetic-compressed scan.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 start_pass (j_compress_ptr cinfo, boolean gather_statistics)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -920,7 +920,7 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
  * Module initialization routine for arithmetic entropy encoding.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_arith_encoder (j_compress_ptr cinfo)
 {
   arith_entropy_ptr entropy;

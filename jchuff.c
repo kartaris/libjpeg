@@ -542,7 +542,7 @@ emit_restart_e (huff_entropy_ptr entropy, int restart_num)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -625,7 +625,7 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -736,7 +736,7 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * although the spec is not very clear on the point.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -779,7 +779,7 @@ encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * MCU encoding for AC successive approximation refinement scan.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -1009,7 +1009,7 @@ encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
  * Encode and output one MCU's worth of Huffman-compressed coefficients.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_huff (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -1066,7 +1066,7 @@ encode_mcu_huff (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * Finish up at the end of a Huffman-compressed scan.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 finish_pass_huff (j_compress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -1190,7 +1190,7 @@ htest_one_block (j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val,
  * No data is actually output, so no suspension return is possible.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 encode_mcu_gather (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -1390,7 +1390,7 @@ jpeg_gen_optimal_table (j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[])
  * Finish up a statistics-gathering pass and create the new Huffman tables.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 finish_pass_gather (j_compress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -1444,7 +1444,7 @@ finish_pass_gather (j_compress_ptr cinfo)
  * just count the Huffman symbols used and generate Huffman code tables.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 start_pass_huff (j_compress_ptr cinfo, boolean gather_statistics)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -1550,7 +1550,7 @@ start_pass_huff (j_compress_ptr cinfo, boolean gather_statistics)
  * Module initialization routine for Huffman entropy encoding.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_huff_encoder (j_compress_ptr cinfo)
 {
   huff_entropy_ptr entropy;

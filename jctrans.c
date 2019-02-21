@@ -35,7 +35,7 @@ LOCAL(void) transencode_coef_controller
  * typically will be realized during this routine and filled afterwards.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jpeg_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
 {
   if (cinfo->global_state != CSTATE_START)
@@ -60,8 +60,8 @@ jpeg_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
  * scan script and Huffman optimization) are left in their default states.
  */
 
-GLOBAL(void)
-jpeg_copy_critical_parameters (j_decompress_ptr srcinfo,
+LJPEG9_GLOBAL(void)
+jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
 			       j_compress_ptr dstinfo)
 {
   JQUANT_TBL ** qtblptr;
@@ -205,8 +205,8 @@ transencode_master_selection (j_compress_ptr cinfo,
 typedef struct {
   struct jpeg_c_coef_controller pub; /* public fields */
 
-  JDIMENSION iMCU_row_num;	/* iMCU row # within image */
-  JDIMENSION mcu_ctr;		/* counts MCUs processed in current row */
+  LJPEG9_JDIMENSION iMCU_row_num;	/* iMCU row # within image */
+  LJPEG9_JDIMENSION mcu_ctr;		/* counts MCUs processed in current row */
   int MCU_vert_offset;		/* counts MCU rows within iMCU row */
   int MCU_rows_per_iMCU_row;	/* number of such rows needed */
 
@@ -248,7 +248,7 @@ start_iMCU_row (j_compress_ptr cinfo)
  * Initialize for a processing pass.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 start_pass_coef (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
@@ -271,15 +271,15 @@ start_pass_coef (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
  * NB: input_buf is ignored; it is likely to be a NULL pointer.
  */
 
-METHODDEF(boolean)
+LJPEG9_METHODDEF(boolean)
 compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-  JDIMENSION MCU_col_num;	/* index of current MCU within row */
-  JDIMENSION last_MCU_col = cinfo->MCUs_per_row - 1;
-  JDIMENSION last_iMCU_row = cinfo->total_iMCU_rows - 1;
+  LJPEG9_JDIMENSION MCU_col_num;	/* index of current MCU within row */
+  LJPEG9_JDIMENSION last_MCU_col = cinfo->MCUs_per_row - 1;
+  LJPEG9_JDIMENSION last_iMCU_row = cinfo->total_iMCU_rows - 1;
   int blkn, ci, xindex, yindex, yoffset, blockcnt;
-  JDIMENSION start_col;
+  LJPEG9_JDIMENSION start_col;
   JBLOCKARRAY buffer[MAX_COMPS_IN_SCAN];
   JBLOCKROW MCU_buffer[C_MAX_BLOCKS_IN_MCU];
   JBLOCKROW buffer_ptr;
@@ -291,7 +291,7 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
     buffer[ci] = (*cinfo->mem->access_virt_barray)
       ((j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
        coef->iMCU_row_num * compptr->v_samp_factor,
-       (JDIMENSION) compptr->v_samp_factor, FALSE);
+       (LJPEG9_JDIMENSION) compptr->v_samp_factor, FALSE);
   }
 
   /* Loop to process one whole iMCU row */

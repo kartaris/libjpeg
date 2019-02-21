@@ -65,18 +65,18 @@ program under the GPL.
 	lpd 2000-04-12 backs out Eggert's changes because of bugs:
 	- concatlits didn't declare the type of its bufend argument;
 	- concatlits didn't recognize when it was inside a comment;
-	- scanstring could scan backward past the beginning of the string; when
-	- the check for \ + newline in scanstring was unnecessary.
+	- LJPEG9_scanstring could scan backward past the beginning of the string; when
+	- the check for \ + newline in LJPEG9_scanstring was unnecessary.
 
 	2000-03-05  Paul Eggert  <eggert@twinsun.com>
 
 	Add support for concatenated string literals.
 	* ansi2knr.c (concatlits): New decl.
 	(main): Invoke concatlits to concatenate string literals.
-	(scanstring): Handle backslash-newline correctly.  Work with
+	(LJPEG9_scanstring): Handle backslash-newline correctly.  Work with
 	character constants.  Fix bug when scanning backwards through
 	backslash-quote.  Check for unterminated strings.
-	(convert1): Parse character constants, too.
+	(LJPEG9_convert1): Parse character constants, too.
 	(appendline, concatlits): New functions.
 	* ansi2knr.1: Document this.
 
@@ -124,7 +124,7 @@ program under the GPL.
 		suggested by Francois Pinard <pinard@iro.umontreal.ca>;
 		properly erase prototype args in function parameters,
 		contributed by Jim Avera <jima@netcom.com>;
-		correct error in writeblanks (it shouldn't erase EOLs)
+		correct error in LJPEG9_writeblanks (it shouldn't erase EOLs)
 	lpd 1989-xx-xx original version
  */
 
@@ -217,13 +217,13 @@ program under the GPL.
 #define isidfirstchar(ch) (is_alpha(ch) || (ch) == '_')
 
 /* Forward references */
-char *ppdirforward();
-char *ppdirbackward();
-char *skipspace();
-char *scanstring();
-int writeblanks();
-int test1();
-int convert1();
+char *LJPEG9_ppdirforward();
+char *LJPEG9_ppdirbackward();
+char *LJPEG9_skipspace();
+char *LJPEG9_scanstring();
+int LJPEG9_writeblanks();
+int LJPEG9_test1();
+int LJPEG9_convert1();
 
 /* The main program */
 int
@@ -309,10 +309,10 @@ main(argc, argv)
 	while ( fgets(line, (unsigned)(buf + bufsize - line), in) != NULL )
 	   {
 test:		line += strlen(line);
-		switch ( test1(buf) )
+		switch ( LJPEG9_test1(buf) )
 		   {
 		case 2:			/* a function header */
-			convert1(buf, out, 1, convert_varargs);
+			LJPEG9_convert1(buf, out, 1, convert_varargs);
 			break;
 		case 1:			/* a function */
 			/* Check for a { at the start of the next line. */
@@ -321,11 +321,11 @@ f:			if ( line >= buf + (bufsize - 1) ) /* overflow check */
 			  goto wl;
 			if ( fgets(line, (unsigned)(buf + bufsize - line), in) == NULL )
 			  goto wl;
-			switch ( *skipspace(ppdirforward(more), 1) )
+			switch ( *LJPEG9_skipspace(LJPEG9_ppdirforward(more), 1) )
 			  {
 			  case '{':
 			    /* Definitely a function header. */
-			    convert1(buf, out, 0, convert_varargs);
+			    LJPEG9_convert1(buf, out, 0, convert_varargs);
 			    fputs(more, out);
 			    break;
 			  case 0:
@@ -376,7 +376,7 @@ wl:			fputs(buf, out);
  * Skip forward or backward over one or more preprocessor directives.
  */
 char *
-ppdirforward(p)
+LJPEG9_ppdirforward(p)
     char *p;
 {
     for (; *p == '#'; ++p) {
@@ -389,7 +389,7 @@ ppdirforward(p)
     return p;
 }
 char *
-ppdirbackward(p, limit)
+LJPEG9_ppdirbackward(p, limit)
     char *p;
     char *limit;
 {
@@ -411,7 +411,7 @@ ppdirbackward(p, limit)
  * in either direction.
  */
 char *
-skipspace(p, dir)
+LJPEG9_skipspace(p, dir)
     char *p;
     int dir;			/* 1 for forward, -1 for backward */
 {
@@ -433,7 +433,7 @@ skipspace(p, dir)
 
 /* Scan over a quoted string, in either direction. */
 char *
-scanstring(p, dir)
+LJPEG9_scanstring(p, dir)
     char *p;
     int dir;
 {
@@ -447,7 +447,7 @@ scanstring(p, dir)
  * Don't overwrite end-of-line characters.
  */
 int
-writeblanks(start, end)
+LJPEG9_writeblanks(start, end)
     char *start;
     char *end;
 {	char *p;
@@ -471,7 +471,7 @@ writeblanks(start, end)
  * prototypes, and confuse the algorithms.
  */
 int
-test1(buf)
+LJPEG9_test1(buf)
     char *buf;
 {	char *p = buf;
 	char *bend;
@@ -480,7 +480,7 @@ test1(buf)
 
 	if ( !isidfirstchar(*p) )
 	  return 0;		/* no name at left margin */
-	bend = skipspace(ppdirbackward(buf + strlen(buf) - 1, buf), -1);
+	bend = LJPEG9_skipspace(LJPEG9_ppdirbackward(buf + strlen(buf) - 1, buf), -1);
 	switch ( *bend )
 	   {
 	   case ';': contin = 0 /*2*/; break;
@@ -492,10 +492,10 @@ test1(buf)
 	while ( isidchar(*p) )
 	  p++;
 	endfn = p;
-	p = skipspace(p, 1);
+	p = LJPEG9_skipspace(p, 1);
 	if ( *p++ != '(' )
 	  return 0;		/* not a function */
-	p = skipspace(p, 1);
+	p = LJPEG9_skipspace(p, 1);
 	if ( *p == ')' )
 	  return 0;		/* no parameters */
 	/* Check that the apparent function name isn't a keyword. */
@@ -529,7 +529,7 @@ test1(buf)
 	       while ( isidchar(*p) )
 		   p++;
 	       len = p - id;
-	       p = skipspace(p, 1);
+	       p = LJPEG9_skipspace(p, 1);
 	       if (*p == ',' ||
 		   (*p == ')' && (len != 4 || strncmp(id, "void", 4)))
 		   )
@@ -543,7 +543,7 @@ test1(buf)
 	if (contin > 0) {
 	    int level = 0;
 
-	    for (p = skipspace(buf, 1); *p; p = skipspace(p + 1, 1))
+	    for (p = LJPEG9_skipspace(buf, 1); *p; p = LJPEG9_skipspace(p + 1, 1))
 		level += (*p == '(' ? 1 : *p == ')' ? -1 : 0);
 	    if (level > 0)
 		contin = -1;
@@ -553,7 +553,7 @@ test1(buf)
 
 /* Convert a recognized function definition or header to K&R syntax. */
 int
-convert1(buf, out, header, convert_varargs)
+LJPEG9_convert1(buf, out, header, convert_varargs)
     char *buf;
     FILE *out;
     int header;			/* Boolean */
@@ -617,10 +617,10 @@ top:	p = endfn;
 				break;
 			   case '/':
 				if (p[1] == '*')
-				    p = skipspace(p, 1) - 1;
+				    p = LJPEG9_skipspace(p, 1) - 1;
 				break;
 			   case '"':
-			       p = scanstring(p, 1) - 1;
+			       p = LJPEG9_scanstring(p, 1) - 1;
 			       break;
 			   default:
 				;
@@ -628,13 +628,13 @@ top:	p = endfn;
 		   }
 		/* Erase any embedded prototype parameters. */
 		if ( lp && rp )
-		  writeblanks(lp + 1, rp);
+		  LJPEG9_writeblanks(lp + 1, rp);
 		p--;			/* back up over terminator */
 		/* Find the name being declared. */
 		/* This is complicated because of procedure and */
 		/* array modifiers. */
 		for ( ; ; )
-		   {	p = skipspace(p - 1, -1);
+		   {	p = LJPEG9_skipspace(p - 1, -1);
 			switch ( *p )
 			   {
 			   case ']':	/* skip array dimension(s) */
@@ -651,18 +651,18 @@ top:	p = endfn;
 				       break;
 				   case '/':
 				       if (p > buf && p[-1] == '*')
-					   p = skipspace(p, -1) + 1;
+					   p = LJPEG9_skipspace(p, -1) + 1;
 				       break;
 				   case '"':
-				       p = scanstring(p, -1) + 1;
+				       p = LJPEG9_scanstring(p, -1) + 1;
 				       break;
 				   default: ;
 				   }
 			   }
-				if ( *p == '(' && *skipspace(p + 1, 1) == '*' )
+				if ( *p == '(' && *LJPEG9_skipspace(p + 1, 1) == '*' )
 				   {	/* We found the name being declared */
 					while ( !isidfirstchar(*p) )
-					  p = skipspace(p, 1) + 1;
+					  p = LJPEG9_skipspace(p, 1) + 1;
 					goto found;
 				   }
 				break;
@@ -678,9 +678,9 @@ found:		if ( *p == '.' && p[-1] == '.' && p[-2] == '.' )
 			else
 			  {	p++;
 				if ( bp == breaks + 1 )	/* sole argument */
-				  writeblanks(breaks[0], p);
+				  LJPEG9_writeblanks(breaks[0], p);
 				else
-				  writeblanks(bp[-1] - 1, p);
+				  LJPEG9_writeblanks(bp[-1] - 1, p);
 				bp--;
 			  }
 		   }
@@ -694,12 +694,12 @@ found:		if ( *p == '.' && p[-1] == '.' && p[-2] == '.' )
 	*bp = p;
 	/* Make a special check for 'void' arglist */
 	if ( bp == breaks+2 )
-	   {	p = skipspace(breaks[0], 1);
+	   {	p = LJPEG9_skipspace(breaks[0], 1);
 		if ( !strncmp(p, "void", 4) )
-		   {	p = skipspace(p+4, 1);
+		   {	p = LJPEG9_skipspace(p+4, 1);
 			if ( p == breaks[2] - 1 )
 			   {	bp = breaks;	/* yup, pretend arglist is empty */
-				writeblanks(breaks[0], p + 1);
+				LJPEG9_writeblanks(breaks[0], p + 1);
 			   }
 		   }
 	   }

@@ -164,10 +164,10 @@
  * Perform dequantization and inverse DCT on one block of coefficients.
  */
 
-GLOBAL(void)
-jpeg_idct_ifast (j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_GLOBAL(void)
+jpeg_idct_ifast (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
-		 JSAMPARRAY output_buf, JDIMENSION output_col)
+		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {
   DCTELEM tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   DCTELEM tmp10, tmp11, tmp12, tmp13;

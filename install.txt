@@ -220,8 +220,8 @@ data fed through stdin/stdout; this is true for some MS-DOS compilers, for
 example.  If you're not on a Unix system, it's safest to assume you need
 two-file style.  (But if your compiler provides either the Posix-standard
 fdopen() library routine or a Microsoft-compatible setmode() routine, you
-can safely use the Unix command line style, by defining USE_FDOPEN or
-USE_SETMODE respectively.)
+can safely use the Unix command line style, by defining LJPEG9_USE_FDOPEN or
+LJPEG9_USE_SETMODE respectively.)
 
 To use the two-file style, make jconfig.h say "#define TWO_FILE_COMMANDLINE".
 
@@ -242,7 +242,7 @@ memory managers:
 		except a Unix machine, you'll need to configure the
 		select_file_name() routine appropriately; see the comments
 		near the head of jmemname.c.  If you use this version, define
-		NEED_SIGNAL_CATCHER in jconfig.h to make sure the temp files
+		LJPEG9_NEED_SIGNAL_CATCHER in jconfig.h to make sure the temp files
 		are removed if the program is aborted.
 
 * jmemnobs.c	(That stands for No Backing Store :-).)  This will compile on
@@ -349,7 +349,7 @@ it's a good idea to check that binary I/O through stdin/stdout actually
 works.  You should get the same results from "djpeg <testorig.jpg >out.ppm"
 as from "djpeg -outfile out.ppm testorig.jpg".  Note that the makefiles all
 use the latter style and therefore do not exercise stdin/stdout!  If this
-check fails, try recompiling with USE_SETMODE or USE_FDOPEN defined.
+check fails, try recompiling with LJPEG9_USE_SETMODE or LJPEG9_USE_FDOPEN defined.
 If it still doesn't work, better use two-file style.
 
 If you chose a memory manager other than jmemnobs.c, you should test that
@@ -399,7 +399,7 @@ OPTIONAL STUFF
 
 Progress monitor:
 
-If you like, you can #define PROGRESS_REPORT (in jconfig.h) to enable display
+If you like, you can #define LJPEG9_PROGRESS_REPORT (in jconfig.h) to enable display
 of percent-done progress reports.  The routine provided in cdjpeg.c merely
 prints percentages to stderr, but you can customize it to do something
 fancier.
@@ -410,7 +410,7 @@ We distribute the software with support for RLE image files (Utah Raster
 Toolkit format) disabled, because the RLE support won't compile without the
 Utah library.  If you have URT version 3.1 or later, you can enable RLE
 support as follows:
-	1.  #define RLE_SUPPORTED in jconfig.h.
+	1.  #define LJPEG9_RLE_SUPPORTED in jconfig.h.
 	2.  Add a -I option to CFLAGS in the Makefile for the directory
 	    containing the URT .h files (typically the "include"
 	    subdirectory of the URT distribution).
@@ -426,7 +426,7 @@ work with deeper than 8-bit data, you can compile the IJG code for 9-bit to
 12-bit operation.
 To do so:
   1. In jmorecfg.h, define BITS_IN_JSAMPLE as 9, 10, 11, or 12 rather than 8.
-  2. In jconfig.h, undefine BMP_SUPPORTED, RLE_SUPPORTED, and TARGA_SUPPORTED,
+  2. In jconfig.h, undefine LJPEG9_BMP_SUPPORTED, LJPEG9_RLE_SUPPORTED, and LJPEG9_TARGA_SUPPORTED,
      because the code for those formats doesn't handle deeper than 8-bit data
      and won't even compile.  (The PPM code does work, as explained below.
      The GIF code works too; it scales 8-bit GIF data to and from 12-bit
@@ -676,7 +676,7 @@ or mirrors thereof; see file /info-mac/dev/src/jpeg-convert-c.hqx.
 
 jmemmac.c is the recommended memory manager back end for Macintosh.  It uses
 NewPtr/DisposePtr instead of malloc/free, and has a Mac-specific
-implementation of jpeg_mem_available().  It also creates temporary files that
+implementation of LJPEG9_jpeg_mem_available().  It also creates temporary files that
 follow Mac conventions.  (That part of the code relies on System-7-or-later OS
 functions.  See the comments in jmemmac.c if you need to run it on System 6.)
 NOTE that USE_MAC_MEMMGR must be defined in jconfig.h to use jmemmac.c.
@@ -696,7 +696,7 @@ The Unix-command-line-style interface can be used by defining USE_CCOMMAND.
 You'll also need to define TWO_FILE_COMMANDLINE to avoid stdin/stdout.
 This means that when using the cjpeg/djpeg programs, you'll have to type the
 input and output file names in the "Arguments" text-edit box, rather than
-using the file radio buttons.  (Perhaps USE_FDOPEN or USE_SETMODE would
+using the file radio buttons.  (Perhaps LJPEG9_USE_FDOPEN or LJPEG9_USE_SETMODE would
 eliminate the problem, but I haven't heard from anyone who's tried it.)
 
 On 680x0 Macs, Metrowerks defines type "double" as a 10-byte IEEE extended
@@ -784,8 +784,8 @@ handle that, reduce MAX_COM_LENGTH as necessary in wrjpgcom.c.
 Most MS-DOS compilers treat stdin/stdout as text files, so you must use
 two-file command line style.  But if your compiler has either fdopen() or
 setmode(), you can use one-file style if you like.  To do this, define
-USE_SETMODE or USE_FDOPEN so that stdin/stdout will be set to binary mode.
-(USE_SETMODE seems to work with more DOS compilers than USE_FDOPEN.)  You
+LJPEG9_USE_SETMODE or LJPEG9_USE_FDOPEN so that stdin/stdout will be set to binary mode.
+(LJPEG9_USE_SETMODE seems to work with more DOS compilers than LJPEG9_USE_FDOPEN.)  You
 should test that I/O through stdin/stdout produces the same results as I/O
 to explicitly named files... the "make test" procedures in the supplied
 makefiles do NOT use stdin/stdout.
@@ -814,7 +814,7 @@ source files, sometimes it will give bogus compile errors.
 Borland C 3.1, but perhaps is fixed in newer releases.)
 
 If you want one-file command line style, just undefine TWO_FILE_COMMANDLINE.
-jconfig.bcc already includes #define USE_SETMODE to make this work.
+jconfig.bcc already includes #define LJPEG9_USE_SETMODE to make this work.
 (fdopen does not work correctly.)
 
 
@@ -824,7 +824,7 @@ makefile.mc6 works with Microsoft C, DOS Visual C++, etc.  It should only
 be used if you want to build a 16-bit (small or medium memory model) program.
 
 If you want one-file command line style, just undefine TWO_FILE_COMMANDLINE.
-jconfig.mc6 already includes #define USE_SETMODE to make this work.
+jconfig.mc6 already includes #define LJPEG9_USE_SETMODE to make this work.
 (fdopen does not work correctly.)
 
 Note that this makefile assumes that the working copy of itself is called
@@ -915,7 +915,7 @@ models only, you'll need to put
 into jconfig.h to limit allocation chunks to 64Kb.  (Without that, you'd
 have to use huge memory model, which slows things down unnecessarily.)
 jmemnobs.c works without modification in large or flat memory models, but to
-use medium model, you need to modify its jpeg_get_large and jpeg_free_large
+use medium model, you need to modify its LJPEG9_jpeg_get_large and LJPEG9_jpeg_free_large
 routines to allocate far memory.  In any case, you might like to replace
 its calls to malloc and free with direct calls on Windows memory allocation
 functions.
@@ -944,21 +944,21 @@ jdatadst.c don't work if you open a file in your application and then pass
 the pointer to the DLL.  One workaround is to make jdatasrc.c/jdatadst.c
 part of your main application rather than part of the DLL.
 
-  3. You'll probably need to modify the macros GLOBAL() and EXTERN() to
+  3. You'll probably need to modify the macros LJPEG9_GLOBAL() and EXTERN() to
 attach suitable linkage keywords to the exported routine names.  Similarly,
-you'll want to modify METHODDEF() and JMETHOD() to ensure function pointers
+you'll want to modify LJPEG9_METHODDEF() and LJPEG9_JMETHOD() to ensure function pointers
 are declared in a way that lets application routines be called back through
 the function pointers.  These macros are in jmorecfg.h.  Typical definitions
 for a 16-bit DLL are:
-	#define GLOBAL(type)		type _far _pascal _loadds _export
+	#define LJPEG9_GLOBAL(type)		type _far _pascal _loadds _export
 	#define EXTERN(type)		extern type _far _pascal _loadds
-	#define METHODDEF(type)		static type _far _pascal
-	#define JMETHOD(type,methodname,arglist)  \
+	#define LJPEG9_METHODDEF(type)		static type _far _pascal
+	#define LJPEG9_JMETHOD(type,methodname,arglist)  \
 		type (_far _pascal *methodname) arglist
 For a 32-bit DLL you may want something like
-	#define GLOBAL(type)		__declspec(dllexport) type
+	#define LJPEG9_GLOBAL(type)		__declspec(dllexport) type
 	#define EXTERN(type)		extern __declspec(dllexport) type
-Although not all the GLOBAL routines are actually intended to be called by
+Although not all the LJPEG9_GLOBAL routines are actually intended to be called by
 the application, the performance cost of making them all DLL entry points is
 negligible.
 

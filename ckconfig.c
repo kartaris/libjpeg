@@ -207,12 +207,12 @@ typedef struct undefined_structure * undef_struct_ptr;
 
 
 /* If you get an error about duplicate names,
- * define NEED_SHORT_EXTERNAL_NAMES.
+ * define LJPEG9_NEED_SHORT_EXTERNAL_NAMES.
  */
 
-#undef NEED_SHORT_EXTERNAL_NAMES
+#undef LJPEG9_NEED_SHORT_EXTERNAL_NAMES
 
-#ifndef NEED_SHORT_EXTERNAL_NAMES
+#ifndef LJPEG9_NEED_SHORT_EXTERNAL_NAMES
 
 int possibly_duplicate_function ()
 {
@@ -352,10 +352,10 @@ int main (argc, argv)
   fprintf(outfile, "#undef NEED_SYS_TYPES_H\n");
 #endif
   fprintf(outfile, "#undef NEED_FAR_POINTERS\n");
-#ifdef NEED_SHORT_EXTERNAL_NAMES
-  fprintf(outfile, "#define NEED_SHORT_EXTERNAL_NAMES\n");
+#ifdef LJPEG9_NEED_SHORT_EXTERNAL_NAMES
+  fprintf(outfile, "#define LJPEG9_NEED_SHORT_EXTERNAL_NAMES\n");
 #else
-  fprintf(outfile, "#undef NEED_SHORT_EXTERNAL_NAMES\n");
+  fprintf(outfile, "#undef LJPEG9_NEED_SHORT_EXTERNAL_NAMES\n");
 #endif
 #ifdef INCOMPLETE_TYPES_BROKEN
   fprintf(outfile, "#define INCOMPLETE_TYPES_BROKEN\n");
@@ -369,15 +369,15 @@ int main (argc, argv)
     fprintf(outfile, "#define RIGHT_SHIFT_IS_UNSIGNED\n");
   fprintf(outfile, "\n#endif /* JPEG_INTERNALS */\n");
   fprintf(outfile, "\n#ifdef JPEG_CJPEG_DJPEG\n\n");
-  fprintf(outfile, "#define BMP_SUPPORTED		/* BMP image file format */\n");
-  fprintf(outfile, "#define GIF_SUPPORTED		/* GIF image file format */\n");
-  fprintf(outfile, "#define PPM_SUPPORTED		/* PBMPLUS PPM/PGM image file format */\n");
-  fprintf(outfile, "#undef RLE_SUPPORTED		/* Utah RLE image file format */\n");
-  fprintf(outfile, "#define TARGA_SUPPORTED		/* Targa image file format */\n\n");
+  fprintf(outfile, "#define LJPEG9_BMP_SUPPORTED		/* BMP image file format */\n");
+  fprintf(outfile, "#define LJPEG9_GIF_SUPPORTED		/* GIF image file format */\n");
+  fprintf(outfile, "#define LJPEG9_PPM_SUPPORTED		/* PBMPLUS PPM/PGM image file format */\n");
+  fprintf(outfile, "#undef LJPEG9_RLE_SUPPORTED		/* Utah RLE image file format */\n");
+  fprintf(outfile, "#define LJPEG9_TARGA_SUPPORTED		/* Targa image file format */\n\n");
   fprintf(outfile, "#undef TWO_FILE_COMMANDLINE	/* You may need this on non-Unix systems */\n");
-  fprintf(outfile, "#undef NEED_SIGNAL_CATCHER	/* Define this if you use jmemname.c */\n");
+  fprintf(outfile, "#undef LJPEG9_NEED_SIGNAL_CATCHER	/* Define this if you use jmemname.c */\n");
   fprintf(outfile, "#undef DONT_USE_B_MODE\n");
-  fprintf(outfile, "/* #define PROGRESS_REPORT */	/* optional */\n");
+  fprintf(outfile, "/* #define LJPEG9_PROGRESS_REPORT */	/* optional */\n");
   fprintf(outfile, "\n#endif /* JPEG_CJPEG_DJPEG */\n");
 
   /* Close the jconfig.h file */

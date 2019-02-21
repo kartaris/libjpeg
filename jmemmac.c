@@ -16,7 +16,7 @@
  * memory available by using CompactMem.  Notice that if left to its
  * own devices, this code can chew up all available space in the
  * application's zone, with the exception of the rather small "slop"
- * factor computed in jpeg_mem_available().  The application can ensure
+ * factor computed in LJPEG9_jpeg_mem_available().  The application can ensure
  * that more space is left over by reducing max_memory_to_use.
  *
  * Large images are swapped to disk using temporary files and System 7.0+'s
@@ -78,14 +78,14 @@ static int next_file_num;	/* to distinguish among several temp files */
  * with relocatable storage.
  */
 
-GLOBAL(void *)
-jpeg_get_small (j_common_ptr cinfo, size_t sizeofobject)
+LJPEG9_GLOBAL(void *)
+LJPEG9_jpeg_get_small (j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void *) NewPtr(sizeofobject);
 }
 
-GLOBAL(void)
-jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
 {
   DisposePtr((Ptr) object);
 }
@@ -98,14 +98,14 @@ jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
  * on rational architectures like the Mac.
  */
 
-GLOBAL(void FAR *)
-jpeg_get_large (j_common_ptr cinfo, size_t sizeofobject)
+LJPEG9_GLOBAL(void FAR *)
+LJPEG9_jpeg_get_large (j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void FAR *) NewPtr(sizeofobject);
 }
 
-GLOBAL(void)
-jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 {
   DisposePtr((Ptr) object);
 }
@@ -115,8 +115,8 @@ jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
  * This routine computes the total memory space available for allocation.
  */
 
-GLOBAL(long)
-jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
+LJPEG9_GLOBAL(long)
+LJPEG9_jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
 		    long max_bytes_needed, long already_allocated)
 {
   long limit = cinfo->mem->max_memory_to_use - already_allocated;
@@ -145,12 +145,12 @@ jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
 /*
  * Backing store (temporary file) management.
  * Backing store objects are only used when the value returned by
- * jpeg_mem_available is less than the total space needed.  You can dispense
+ * LJPEG9_jpeg_mem_available is less than the total space needed.  You can dispense
  * with these routines if you have plenty of virtual memory; see jmemnobs.c.
  */
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 read_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 		    void FAR * buffer_address,
 		    long file_offset, long byte_count)
@@ -168,7 +168,7 @@ read_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 		     void FAR * buffer_address,
 		     long file_offset, long byte_count)
@@ -186,7 +186,7 @@ write_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 close_backing_store (j_common_ptr cinfo, backing_store_ptr info)
 {
   FSClose ( info->temp_file );
@@ -201,8 +201,8 @@ close_backing_store (j_common_ptr cinfo, backing_store_ptr info)
  * and puts the temporary file in there.
  */
 
-GLOBAL(void)
-jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 			 long total_bytes_needed)
 {
   short         tmpRef, vRefNum;
@@ -268,8 +268,8 @@ jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
  * cleanup required.
  */
 
-GLOBAL(long)
-jpeg_mem_init (j_common_ptr cinfo)
+LJPEG9_GLOBAL(long)
+LJPEG9_jpeg_mem_init (j_common_ptr cinfo)
 {
   next_file_num = 0;
 
@@ -282,8 +282,8 @@ jpeg_mem_init (j_common_ptr cinfo)
   return FreeMem();
 }
 
-GLOBAL(void)
-jpeg_mem_term (j_common_ptr cinfo)
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_mem_term (j_common_ptr cinfo)
 {
   /* no work */
 }

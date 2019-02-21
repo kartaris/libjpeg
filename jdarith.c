@@ -62,7 +62,7 @@ typedef arith_entropy_decoder * arith_entropy_ptr;
 
 
 LOCAL(int)
-get_byte (j_decompress_ptr cinfo)
+get_byte (LJPEG9_j_decompress_ptr cinfo)
 /* Read next input byte; we do not support suspension in this module. */
 {
   struct jpeg_source_mgr * src = cinfo->src;
@@ -103,7 +103,7 @@ get_byte (j_decompress_ptr cinfo)
  */
 
 LOCAL(int)
-arith_decode (j_decompress_ptr cinfo, unsigned char *st)
+arith_decode (LJPEG9_j_decompress_ptr cinfo, unsigned char *st)
 {
   register arith_entropy_ptr e = (arith_entropy_ptr) cinfo->entropy;
   register unsigned char nl, nm;
@@ -187,7 +187,7 @@ arith_decode (j_decompress_ptr cinfo, unsigned char *st)
  */
 
 LOCAL(void)
-process_restart (j_decompress_ptr cinfo)
+process_restart (LJPEG9_j_decompress_ptr cinfo)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   int ci;
@@ -238,8 +238,8 @@ process_restart (j_decompress_ptr cinfo)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
-decode_mcu_DC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_DC_first (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   JBLOCKROW block;
@@ -317,8 +317,8 @@ decode_mcu_DC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * or first pass of successive approximation).
  */
 
-METHODDEF(boolean)
-decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_AC_first (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   JBLOCKROW block;
@@ -399,8 +399,8 @@ decode_mcu_AC_first (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * although the spec is not very clear on the point.
  */
 
-METHODDEF(boolean)
-decode_mcu_DC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_DC_refine (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   unsigned char *st;
@@ -432,8 +432,8 @@ decode_mcu_DC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * MCU decoding for AC successive approximation refinement scan.
  */
 
-METHODDEF(boolean)
-decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu_AC_refine (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   JBLOCKROW block;
@@ -507,8 +507,8 @@ decode_mcu_AC_refine (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * Decode one MCU's worth of arithmetic-compressed coefficients.
  */
 
-METHODDEF(boolean)
-decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
+LJPEG9_METHODDEF(boolean)
+decode_mcu (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   jpeg_component_info * compptr;
@@ -639,8 +639,8 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  * Initialize for an arithmetic-compressed scan.
  */
 
-METHODDEF(void)
-start_pass (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(void)
+start_pass (LJPEG9_j_decompress_ptr cinfo)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   int ci, tbl;
@@ -749,8 +749,8 @@ start_pass (j_decompress_ptr cinfo)
  * Finish up at the end of an arithmetic-compressed scan.
  */
 
-METHODDEF(void)
-finish_pass (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(void)
+finish_pass (LJPEG9_j_decompress_ptr cinfo)
 {
   /* no work necessary here */
 }
@@ -760,8 +760,8 @@ finish_pass (j_decompress_ptr cinfo)
  * Module initialization routine for arithmetic entropy decoding.
  */
 
-GLOBAL(void)
-jinit_arith_decoder (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jinit_arith_decoder (LJPEG9_j_decompress_ptr cinfo)
 {
   arith_entropy_ptr entropy;
   int i;

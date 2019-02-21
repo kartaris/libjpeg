@@ -266,8 +266,8 @@ and struct field packing mismatches between library and calling application.
 This change requires applications to be recompiled, but does not require
 any application source code change.
 
-All routine declarations changed to the style "GLOBAL(type) name ...",
-that is, GLOBAL, LOCAL, METHODDEF, EXTERN are now macros taking the
+All routine declarations changed to the style "LJPEG9_GLOBAL(type) name ...",
+that is, LJPEG9_GLOBAL, LOCAL, LJPEG9_METHODDEF, EXTERN are now macros taking the
 routine's return type as an argument.  This makes it possible to add
 Microsoft-style linkage keywords to all the routines by changing just
 these macros.  Note that any application code that was using these macros
@@ -363,7 +363,7 @@ Modify rdppm.c/wrppm.c to handle 2-byte raw PPM/PGM formats for 12-bit data.
 
 Fix several bugs in rdrle.c.
 
-NEED_SHORT_EXTERNAL_NAMES option was broken.
+LJPEG9_NEED_SHORT_EXTERNAL_NAMES option was broken.
 
 Revise jerror.h/jerror.c for more flexibility in message table.
 

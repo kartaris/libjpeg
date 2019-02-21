@@ -90,7 +90,7 @@ usage (void)
 #ifdef C_MULTISCAN_FILES_SUPPORTED
   fprintf(stderr, "  -scans file    Create multi-scan JPEG per script file\n");
 #endif
-  exit(EXIT_FAILURE);
+  exit(LJPEG9_EXIT_FAILURE);
 }
 
 
@@ -112,7 +112,7 @@ select_transform (JXFORM_CODE transform)
 #else
   fprintf(stderr, "%s: sorry, image transformation was not compiled\n",
 	  progname);
-  exit(EXIT_FAILURE);
+  exit(LJPEG9_EXIT_FAILURE);
 #endif
 }
 
@@ -160,30 +160,30 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
     }
     arg++;			/* advance past switch marker character */
 
-    if (keymatch(arg, "arithmetic", 1)) {
+    if (LJPEG9_keymatch(arg, "arithmetic", 1)) {
       /* Use arithmetic coding. */
 #ifdef C_ARITH_CODING_SUPPORTED
       cinfo->arith_code = TRUE;
 #else
       fprintf(stderr, "%s: sorry, arithmetic coding not supported\n",
 	      progname);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
 #endif
 
-    } else if (keymatch(arg, "copy", 2)) {
+    } else if (LJPEG9_keymatch(arg, "copy", 2)) {
       /* Select which extra markers to copy. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
-      if (keymatch(argv[argn], "none", 1)) {
+      if (LJPEG9_keymatch(argv[argn], "none", 1)) {
 	copyoption = JCOPYOPT_NONE;
-      } else if (keymatch(argv[argn], "comments", 1)) {
+      } else if (LJPEG9_keymatch(argv[argn], "comments", 1)) {
 	copyoption = JCOPYOPT_COMMENTS;
-      } else if (keymatch(argv[argn], "all", 1)) {
+      } else if (LJPEG9_keymatch(argv[argn], "all", 1)) {
 	copyoption = JCOPYOPT_ALL;
       } else
 	usage();
 
-    } else if (keymatch(arg, "crop", 2)) {
+    } else if (LJPEG9_keymatch(arg, "crop", 2)) {
       /* Perform lossless cropping. */
 #if TRANSFORMS_SUPPORTED
       if (++argn >= argc)	/* advance to next argument */
@@ -192,13 +192,13 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 	  ! jtransform_parse_crop_spec(&transformoption, argv[argn])) {
 	fprintf(stderr, "%s: bogus -crop argument '%s'\n",
 		progname, argv[argn]);
-	exit(EXIT_FAILURE);
+	exit(LJPEG9_EXIT_FAILURE);
       }
 #else
       select_transform(JXFORM_NONE);	/* force an error */
 #endif
 
-    } else if (keymatch(arg, "debug", 1) || keymatch(arg, "verbose", 1)) {
+    } else if (LJPEG9_keymatch(arg, "debug", 1) || LJPEG9_keymatch(arg, "verbose", 1)) {
       /* Enable debug printouts. */
       /* On first -d, print version identification */
       static boolean printed_version = FALSE;
@@ -210,18 +210,18 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
       }
       cinfo->err->trace_level++;
 
-    } else if (keymatch(arg, "flip", 1)) {
+    } else if (LJPEG9_keymatch(arg, "flip", 1)) {
       /* Mirror left-right or top-bottom. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
-      if (keymatch(argv[argn], "horizontal", 1))
+      if (LJPEG9_keymatch(argv[argn], "horizontal", 1))
 	select_transform(JXFORM_FLIP_H);
-      else if (keymatch(argv[argn], "vertical", 1))
+      else if (LJPEG9_keymatch(argv[argn], "vertical", 1))
 	select_transform(JXFORM_FLIP_V);
       else
 	usage();
 
-    } else if (keymatch(arg, "grayscale", 1) || keymatch(arg, "greyscale",1)) {
+    } else if (LJPEG9_keymatch(arg, "grayscale", 1) || LJPEG9_keymatch(arg, "greyscale",1)) {
       /* Force to grayscale. */
 #if TRANSFORMS_SUPPORTED
       transformoption.force_grayscale = TRUE;
@@ -229,7 +229,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
       select_transform(JXFORM_NONE);	/* force an error */
 #endif
 
-    } else if (keymatch(arg, "maxmemory", 3)) {
+    } else if (LJPEG9_keymatch(arg, "maxmemory", 3)) {
       /* Maximum memory in Kb (or Mb with 'm'). */
       long lval;
       char ch = 'x';
@@ -242,28 +242,28 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 	lval *= 1000L;
       cinfo->mem->max_memory_to_use = lval * 1000L;
 
-    } else if (keymatch(arg, "optimize", 1) || keymatch(arg, "optimise", 1)) {
+    } else if (LJPEG9_keymatch(arg, "optimize", 1) || LJPEG9_keymatch(arg, "optimise", 1)) {
       /* Enable entropy parm optimization. */
 #ifdef ENTROPY_OPT_SUPPORTED
       cinfo->optimize_coding = TRUE;
 #else
       fprintf(stderr, "%s: sorry, entropy optimization was not compiled\n",
 	      progname);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
 #endif
 
-    } else if (keymatch(arg, "outfile", 4)) {
+    } else if (LJPEG9_keymatch(arg, "outfile", 4)) {
       /* Set output file name. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
       outfilename = argv[argn];	/* save it away for later use */
 
-    } else if (keymatch(arg, "perfect", 2)) {
+    } else if (LJPEG9_keymatch(arg, "perfect", 2)) {
       /* Fail if there is any partial edge MCUs that the transform can't
        * handle. */
       transformoption.perfect = TRUE;
 
-    } else if (keymatch(arg, "progressive", 2)) {
+    } else if (LJPEG9_keymatch(arg, "progressive", 2)) {
       /* Select simple progressive mode. */
 #ifdef C_PROGRESSIVE_SUPPORTED
       simple_progressive = TRUE;
@@ -271,10 +271,10 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 #else
       fprintf(stderr, "%s: sorry, progressive output was not compiled\n",
 	      progname);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
 #endif
 
-    } else if (keymatch(arg, "restart", 1)) {
+    } else if (LJPEG9_keymatch(arg, "restart", 1)) {
       /* Restart interval in MCU rows (or in MCUs with 'b'). */
       long lval;
       char ch = 'x';
@@ -293,27 +293,27 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 	/* restart_interval will be computed during startup */
       }
 
-    } else if (keymatch(arg, "rotate", 2)) {
+    } else if (LJPEG9_keymatch(arg, "rotate", 2)) {
       /* Rotate 90, 180, or 270 degrees (measured clockwise). */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
-      if (keymatch(argv[argn], "90", 2))
+      if (LJPEG9_keymatch(argv[argn], "90", 2))
 	select_transform(JXFORM_ROT_90);
-      else if (keymatch(argv[argn], "180", 3))
+      else if (LJPEG9_keymatch(argv[argn], "180", 3))
 	select_transform(JXFORM_ROT_180);
-      else if (keymatch(argv[argn], "270", 3))
+      else if (LJPEG9_keymatch(argv[argn], "270", 3))
 	select_transform(JXFORM_ROT_270);
       else
 	usage();
 
-    } else if (keymatch(arg, "scale", 4)) {
+    } else if (LJPEG9_keymatch(arg, "scale", 4)) {
       /* Scale the output image by a fraction M/N. */
       if (++argn >= argc)	/* advance to next argument */
 	usage();
       scaleoption = argv[argn];
       /* We must postpone processing until decompression startup. */
 
-    } else if (keymatch(arg, "scans", 1)) {
+    } else if (LJPEG9_keymatch(arg, "scans", 1)) {
       /* Set scan script. */
 #ifdef C_MULTISCAN_FILES_SUPPORTED
       if (++argn >= argc)	/* advance to next argument */
@@ -323,22 +323,22 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 #else
       fprintf(stderr, "%s: sorry, multi-scan output was not compiled\n",
 	      progname);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
 #endif
 
-    } else if (keymatch(arg, "transpose", 1)) {
+    } else if (LJPEG9_keymatch(arg, "transpose", 1)) {
       /* Transpose (across UL-to-LR axis). */
       select_transform(JXFORM_TRANSPOSE);
 
-    } else if (keymatch(arg, "transverse", 6)) {
+    } else if (LJPEG9_keymatch(arg, "transverse", 6)) {
       /* Transverse transpose (across UR-to-LL axis). */
       select_transform(JXFORM_TRANSVERSE);
 
-    } else if (keymatch(arg, "trim", 3)) {
+    } else if (LJPEG9_keymatch(arg, "trim", 3)) {
       /* Trim off any partial edge MCUs that the transform can't handle. */
       transformoption.trim = TRUE;
 
-    } else if (keymatch(arg, "wipe", 1)) {
+    } else if (LJPEG9_keymatch(arg, "wipe", 1)) {
 #if TRANSFORMS_SUPPORTED
       if (++argn >= argc)	/* advance to next argument */
 	usage();
@@ -346,7 +346,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 	  ! jtransform_parse_crop_spec(&transformoption, argv[argn])) {
 	fprintf(stderr, "%s: bogus -wipe argument '%s'\n",
 		progname, argv[argn]);
-	exit(EXIT_FAILURE);
+	exit(LJPEG9_EXIT_FAILURE);
       }
       select_transform(JXFORM_WIPE);
 #else
@@ -369,7 +369,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 
 #ifdef C_MULTISCAN_FILES_SUPPORTED
     if (scansarg != NULL)	/* process -scans if it was present */
-      if (! read_scan_script(cinfo, scansarg))
+      if (! LJPEG9_read_scan_script(cinfo, scansarg))
 	usage();
 #endif
   }
@@ -388,8 +388,8 @@ main (int argc, char **argv)
   struct jpeg_decompress_struct srcinfo;
   struct jpeg_compress_struct dstinfo;
   struct jpeg_error_mgr jsrcerr, jdsterr;
-#ifdef PROGRESS_REPORT
-  struct cdjpeg_progress_mgr progress;
+#ifdef LJPEG9_PROGRESS_REPORT
+  struct LJPEG9_cdjpeg_progress_mgr progress;
 #endif
   jvirt_barray_ptr * src_coef_arrays;
   jvirt_barray_ptr * dst_coef_arrays;
@@ -418,8 +418,8 @@ main (int argc, char **argv)
   /* Now safe to enable signal catcher.
    * Note: we assume only the decompression object will have virtual arrays.
    */
-#ifdef NEED_SIGNAL_CATCHER
-  enable_signal_catcher((j_common_ptr) &srcinfo);
+#ifdef LJPEG9_NEED_SIGNAL_CATCHER
+  LJPEG9_enable_signal_catcher((j_common_ptr) &srcinfo);
 #endif
 
   /* Scan command line to find file names.
@@ -462,15 +462,15 @@ main (int argc, char **argv)
   if (file_index < argc) {
     if ((fp = fopen(argv[file_index], READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s for reading\n", progname, argv[file_index]);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
     }
   } else {
     /* default input file is stdin */
-    fp = read_stdin();
+    fp = LJPEG9_read_stdin();
   }
 
-#ifdef PROGRESS_REPORT
-  start_progress_monitor((j_common_ptr) &dstinfo, &progress);
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_start_progress_monitor((j_common_ptr) &dstinfo, &progress);
 #endif
 
   /* Specify data source for decompression */
@@ -496,7 +496,7 @@ main (int argc, char **argv)
    */
   if (!jtransform_request_workspace(&srcinfo, &transformoption)) {
     fprintf(stderr, "%s: transformation is not perfect\n", progname);
-    exit(EXIT_FAILURE);
+    exit(LJPEG9_EXIT_FAILURE);
   }
 #endif
 
@@ -531,11 +531,11 @@ main (int argc, char **argv)
   if (outfilename != NULL) {
     if ((fp = fopen(outfilename, WRITE_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s for writing\n", progname, outfilename);
-      exit(EXIT_FAILURE);
+      exit(LJPEG9_EXIT_FAILURE);
     }
   } else {
     /* default output file is stdout */
-    fp = write_stdout();
+    fp = LJPEG9_write_stdout();
   }
 
   /* Adjust default compression parameters by re-parsing the options */
@@ -567,8 +567,8 @@ main (int argc, char **argv)
   if (fp != stdout)
     fclose(fp);
 
-#ifdef PROGRESS_REPORT
-  end_progress_monitor((j_common_ptr) &dstinfo);
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_end_progress_monitor((j_common_ptr) &dstinfo);
 #endif
 
   /* All done. */

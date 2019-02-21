@@ -79,7 +79,7 @@
 /* Define this if your linker needs global names to be unique in less
  * than the first 15 characters.
  */
-#undef NEED_SHORT_EXTERNAL_NAMES
+#undef LJPEG9_NEED_SHORT_EXTERNAL_NAMES
 
 /* Although a real ANSI C compiler can deal perfectly well with pointers to
  * unspecified structures (see "incomplete types" in the spec), a few pre-ANSI
@@ -130,11 +130,11 @@
 
 /* These defines indicate which image (non-JPEG) file formats are allowed. */
 
-#define BMP_SUPPORTED		/* BMP image file format */
-#define GIF_SUPPORTED		/* GIF image file format */
-#define PPM_SUPPORTED		/* PBMPLUS PPM/PGM image file format */
-#undef RLE_SUPPORTED		/* Utah RLE image file format */
-#define TARGA_SUPPORTED		/* Targa image file format */
+#define LJPEG9_BMP_SUPPORTED		/* BMP image file format */
+#define LJPEG9_GIF_SUPPORTED		/* GIF image file format */
+#define LJPEG9_PPM_SUPPORTED		/* PBMPLUS PPM/PGM image file format */
+#undef LJPEG9_RLE_SUPPORTED		/* Utah RLE image file format */
+#define LJPEG9_TARGA_SUPPORTED		/* Targa image file format */
 
 /* Define this if you want to name both input and output files on the command
  * line, rather than using stdout and optionally stdin.  You MUST do this if
@@ -147,7 +147,7 @@
  * This is crucial under MS-DOS, where the temporary "files" may be areas
  * of extended memory; on most other systems it's not as important.
  */
-#undef NEED_SIGNAL_CATCHER
+#undef LJPEG9_NEED_SIGNAL_CATCHER
 
 /* By default, we open image files with fopen(...,"rb") or fopen(...,"wb").
  * This is necessary on systems that distinguish text files from binary files,
@@ -158,7 +158,7 @@
 
 /* Define this if you want percent-done progress reports from cjpeg/djpeg.
  */
-#undef PROGRESS_REPORT
+#undef LJPEG9_PROGRESS_REPORT
 
 
 #endif /* JPEG_CJPEG_DJPEG */

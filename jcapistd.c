@@ -35,7 +35,7 @@
  * wrong thing.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jpeg_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
 {
   if (cinfo->global_state != CSTATE_START)
@@ -74,11 +74,11 @@ jpeg_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
  * when using a multiple-scanline buffer.
  */
 
-GLOBAL(JDIMENSION)
-jpeg_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
-		      JDIMENSION num_lines)
+LJPEG9_GLOBAL(LJPEG9_JDIMENSION)
+jpeg_write_scanlines (j_compress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
+		      LJPEG9_JDIMENSION num_lines)
 {
-  JDIMENSION row_ctr, rows_left;
+  LJPEG9_JDIMENSION row_ctr, rows_left;
 
   if (cinfo->global_state != CSTATE_SCANNING)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
@@ -89,7 +89,7 @@ jpeg_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
   if (cinfo->progress != NULL) {
     cinfo->progress->pass_counter = (long) cinfo->next_scanline;
     cinfo->progress->pass_limit = (long) cinfo->image_height;
-    (*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
+    (*cinfo->progress->LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
   }
 
   /* Give master control module another chance if this is first call to
@@ -117,11 +117,11 @@ jpeg_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
  * Processes exactly one iMCU row per call, unless suspended.
  */
 
-GLOBAL(JDIMENSION)
+LJPEG9_GLOBAL(LJPEG9_JDIMENSION)
 jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
-		     JDIMENSION num_lines)
+		     LJPEG9_JDIMENSION num_lines)
 {
-  JDIMENSION lines_per_iMCU_row;
+  LJPEG9_JDIMENSION lines_per_iMCU_row;
 
   if (cinfo->global_state != CSTATE_RAW_OK)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
@@ -134,7 +134,7 @@ jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
   if (cinfo->progress != NULL) {
     cinfo->progress->pass_counter = (long) cinfo->next_scanline;
     cinfo->progress->pass_limit = (long) cinfo->image_height;
-    (*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
+    (*cinfo->progress->LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
   }
 
   /* Give master control module another chance if this is first call to

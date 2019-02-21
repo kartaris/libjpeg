@@ -21,7 +21,7 @@
 
 #include "cdjpeg.h"		/* Common decls for cjpeg/djpeg applications */
 
-#ifdef RLE_SUPPORTED
+#ifdef LJPEG9_RLE_SUPPORTED
 
 /* rle.h is provided by the Utah Raster Toolkit. */
 
@@ -62,11 +62,11 @@ typedef enum
 typedef struct _rle_source_struct * rle_source_ptr;
 
 typedef struct _rle_source_struct {
-  struct cjpeg_source_struct pub; /* public fields */
+  struct LJPEG9_cjpeg_source_struct pub; /* public fields */
 
   rle_kind visual;              /* actual type of input file */
   jvirt_sarray_ptr image;       /* virtual array to hold the image */
-  JDIMENSION row;		/* current row # in the virtual array */
+  LJPEG9_JDIMENSION row;		/* current row # in the virtual array */
   rle_hdr header;               /* Input file information */
   rle_pixel** rle_row;          /* holds a row returned by rle_getrow() */
 
@@ -77,13 +77,13 @@ typedef struct _rle_source_struct {
  * Read the file header; return image size and component count.
  */
 
-METHODDEF(void)
-start_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
+LJPEG9_METHODDEF(void)
+start_input_rle (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   rle_source_ptr source = (rle_source_ptr) sinfo;
-  JDIMENSION width, height;
-#ifdef PROGRESS_REPORT
-  cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
+  LJPEG9_JDIMENSION width, height;
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_cd_progress_ptr progress = (LJPEG9_cd_progress_ptr) cinfo->progress;
 #endif
 
   /* Use RLE library routine to get the header info */
@@ -157,16 +157,16 @@ start_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   if (source->visual != GRAYSCALE) {
     source->rle_row = (rle_pixel**) (*cinfo->mem->alloc_sarray)
       ((j_common_ptr) cinfo, JPOOL_IMAGE,
-       (JDIMENSION) width, (JDIMENSION) cinfo->input_components);
+       (LJPEG9_JDIMENSION) width, (LJPEG9_JDIMENSION) cinfo->input_components);
   }
 
   /* request a virtual array to hold the image */
   source->image = (*cinfo->mem->request_virt_sarray)
     ((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
-     (JDIMENSION) (width * source->header.ncolors),
-     (JDIMENSION) height, (JDIMENSION) 1);
+     (LJPEG9_JDIMENSION) (width * source->header.ncolors),
+     (LJPEG9_JDIMENSION) height, (LJPEG9_JDIMENSION) 1);
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
   if (progress != NULL) {
     /* count file input as separate pass */
     progress->total_extra_passes++;
@@ -183,14 +183,14 @@ start_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
  * Used for GRAYSCALE, MAPPEDGRAY, TRUECOLOR, and DIRECTCOLOR images.
  */
 
-METHODDEF(JDIMENSION)
-get_rle_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
+LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
+get_rle_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   rle_source_ptr source = (rle_source_ptr) sinfo;
 
   source->row--;
   source->pub.buffer = (*cinfo->mem->access_virt_sarray)
-    ((j_common_ptr) cinfo, source->image, source->row, (JDIMENSION) 1, FALSE);
+    ((j_common_ptr) cinfo, source->image, source->row, (LJPEG9_JDIMENSION) 1, FALSE);
 
   return 1;
 }
@@ -201,12 +201,12 @@ get_rle_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
  * Used for PSEUDOCOLOR images.
  */
 
-METHODDEF(JDIMENSION)
-get_pseudocolor_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
+LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
+get_pseudocolor_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   rle_source_ptr source = (rle_source_ptr) sinfo;
   JSAMPROW src_row, dest_row;
-  JDIMENSION col;
+  LJPEG9_JDIMENSION col;
   rle_map *colormap;
   int val;
 
@@ -214,7 +214,7 @@ get_pseudocolor_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   dest_row = source->pub.buffer[0];
   source->row--;
   src_row = * (*cinfo->mem->access_virt_sarray)
-    ((j_common_ptr) cinfo, source->image, source->row, (JDIMENSION) 1, FALSE);
+    ((j_common_ptr) cinfo, source->image, source->row, (LJPEG9_JDIMENSION) 1, FALSE);
 
   for (col = cinfo->image_width; col > 0; col--) {
     val = GETJSAMPLE(*src_row++);
@@ -237,17 +237,17 @@ get_pseudocolor_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
  * the appropriate row-reading routine.
  */
 
-METHODDEF(JDIMENSION)
-load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
+LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
+load_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   rle_source_ptr source = (rle_source_ptr) sinfo;
-  JDIMENSION row, col;
+  LJPEG9_JDIMENSION row, col;
   JSAMPROW  scanline, red_ptr, green_ptr, blue_ptr;
   rle_pixel **rle_row;
   rle_map *colormap;
   char channel;
-#ifdef PROGRESS_REPORT
-  cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
+#ifdef LJPEG9_PROGRESS_REPORT
+  LJPEG9_cd_progress_ptr progress = (LJPEG9_cd_progress_ptr) cinfo->progress;
 #endif
 
   colormap = source->header.cmap;
@@ -259,11 +259,11 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
    */
   RLE_CLR_BIT(source->header, RLE_ALPHA); /* don't read the alpha channel */
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
   if (progress != NULL) {
     progress->pub.pass_limit = cinfo->image_height;
     progress->pub.pass_counter = 0;
-    (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+    (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
   }
 #endif
 
@@ -273,12 +273,12 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   case PSEUDOCOLOR:
     for (row = 0; row < cinfo->image_height; row++) {
       rle_row = (rle_pixel **) (*cinfo->mem->access_virt_sarray)
-         ((j_common_ptr) cinfo, source->image, row, (JDIMENSION) 1, TRUE);
+         ((j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
       rle_getrow(&source->header, rle_row);
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
       }
 #endif
     }
@@ -288,7 +288,7 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   case TRUECOLOR:
     for (row = 0; row < cinfo->image_height; row++) {
       scanline = * (*cinfo->mem->access_virt_sarray)
-        ((j_common_ptr) cinfo, source->image, row, (JDIMENSION) 1, TRUE);
+        ((j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
       rle_row = source->rle_row;
       rle_getrow(&source->header, rle_row);
 
@@ -299,10 +299,10 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
         }
       }
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
       }
 #endif
     }
@@ -311,7 +311,7 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
   case DIRECTCOLOR:
     for (row = 0; row < cinfo->image_height; row++) {
       scanline = * (*cinfo->mem->access_virt_sarray)
-        ((j_common_ptr) cinfo, source->image, row, (JDIMENSION) 1, TRUE);
+        ((j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
       rle_getrow(&source->header, rle_row);
 
       red_ptr   = rle_row[0];
@@ -324,16 +324,16 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
         *scanline++ = *blue_ptr++;
       }
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
       }
 #endif
     }
   }
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
   if (progress != NULL)
     progress->completed_extra_passes++;
 #endif
@@ -356,8 +356,8 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
  * Finish up at the end of the file.
  */
 
-METHODDEF(void)
-finish_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
+LJPEG9_METHODDEF(void)
+finish_input_rle (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   /* no work */
 }
@@ -367,8 +367,8 @@ finish_input_rle (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
  * The module selection routine for RLE format input.
  */
 
-GLOBAL(cjpeg_source_ptr)
-jinit_read_rle (j_compress_ptr cinfo)
+LJPEG9_GLOBAL(LJPEG9_cjpeg_source_ptr)
+LJPEG9_jinit_read_rle (j_compress_ptr cinfo)
 {
   rle_source_ptr source;
 
@@ -381,7 +381,7 @@ jinit_read_rle (j_compress_ptr cinfo)
   source->pub.finish_input = finish_input_rle;
   source->pub.get_pixel_rows = load_image;
 
-  return (cjpeg_source_ptr) source;
+  return (LJPEG9_cjpeg_source_ptr) source;
 }
 
-#endif /* RLE_SUPPORTED */
+#endif /* LJPEG9_RLE_SUPPORTED */

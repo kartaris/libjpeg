@@ -11,10 +11,10 @@
 
 #include "cdjpeg.h"		/* Common decls for cjpeg/djpeg applications */
 #include <ctype.h>		/* to declare isupper(), tolower() */
-#ifdef NEED_SIGNAL_CATCHER
+#ifdef LJPEG9_NEED_SIGNAL_CATCHER
 #include <signal.h>		/* to declare signal() */
 #endif
-#ifdef USE_SETMODE
+#ifdef LJPEG9_USE_SETMODE
 #include <fcntl.h>		/* to declare setmode()'s parameter macros */
 /* If you have setmode() but not <io.h>, just delete this line: */
 #include <io.h>			/* to declare setmode() */
@@ -24,34 +24,34 @@
 /*
  * Signal catcher to ensure that temporary files are removed before aborting.
  * NB: for Amiga Manx C this is actually a global routine named _abort();
- * we put "#define signal_catcher _abort" in jconfig.h.  Talk about bogus...
+ * we put "#define LJPEG9_signal_catcher _abort" in jconfig.h.  Talk about bogus...
  */
 
-#ifdef NEED_SIGNAL_CATCHER
+#ifdef LJPEG9_NEED_SIGNAL_CATCHER
 
-static j_common_ptr sig_cinfo;
+static j_common_ptr LJPEG9_sig_cinfo;
 
 void				/* must be global for Manx C */
-signal_catcher (int signum)
+LJPEG9_signal_catcher (int signum)
 {
-  if (sig_cinfo != NULL) {
-    if (sig_cinfo->err != NULL) /* turn off trace output */
-      sig_cinfo->err->trace_level = 0;
-    jpeg_destroy(sig_cinfo);	/* clean up memory allocation & temp files */
+  if (LJPEG9_sig_cinfo != NULL) {
+    if (LJPEG9_sig_cinfo->err != NULL) /* turn off trace output */
+      LJPEG9_sig_cinfo->err->trace_level = 0;
+    jpeg_destroy(LJPEG9_sig_cinfo);	/* clean up memory allocation & temp files */
   }
-  exit(EXIT_FAILURE);
+  exit(LJPEG9_EXIT_FAILURE);
 }
 
 
-GLOBAL(void)
-enable_signal_catcher (j_common_ptr cinfo)
+LJPEG9_GLOBAL(void)
+LJPEG9_enable_signal_catcher (j_common_ptr cinfo)
 {
-  sig_cinfo = cinfo;
+  LJPEG9_sig_cinfo = cinfo;
 #ifdef SIGINT			/* not all systems have SIGINT */
-  signal(SIGINT, signal_catcher);
+  signal(SIGINT, LJPEG9_signal_catcher);
 #endif
 #ifdef SIGTERM			/* not all systems have SIGTERM */
-  signal(SIGTERM, signal_catcher);
+  signal(SIGTERM, LJPEG9_signal_catcher);
 #endif
 }
 
@@ -62,12 +62,12 @@ enable_signal_catcher (j_common_ptr cinfo)
  * Optional progress monitor: display a percent-done figure on stderr.
  */
 
-#ifdef PROGRESS_REPORT
+#ifdef LJPEG9_PROGRESS_REPORT
 
-METHODDEF(void)
-progress_monitor (j_common_ptr cinfo)
+LJPEG9_METHODDEF(void)
+LJPEG9_progress_monitor (j_common_ptr cinfo)
 {
-  cd_progress_ptr prog = (cd_progress_ptr) cinfo->progress;
+  LJPEG9_cd_progress_ptr prog = (LJPEG9_cd_progress_ptr) cinfo->progress;
   int total_passes = prog->pub.total_passes + prog->total_extra_passes;
   int percent_done = (int) (prog->pub.pass_counter*100L/prog->pub.pass_limit);
 
@@ -85,12 +85,12 @@ progress_monitor (j_common_ptr cinfo)
 }
 
 
-GLOBAL(void)
-start_progress_monitor (j_common_ptr cinfo, cd_progress_ptr progress)
+LJPEG9_GLOBAL(void)
+LJPEG9_start_progress_monitor (j_common_ptr cinfo, LJPEG9_cd_progress_ptr progress)
 {
   /* Enable progress display, unless trace output is on */
   if (cinfo->err->trace_level == 0) {
-    progress->pub.progress_monitor = progress_monitor;
+    progress->pub.LJPEG9_progress_monitor = LJPEG9_progress_monitor;
     progress->completed_extra_passes = 0;
     progress->total_extra_passes = 0;
     progress->percent_done = -1;
@@ -99,8 +99,8 @@ start_progress_monitor (j_common_ptr cinfo, cd_progress_ptr progress)
 }
 
 
-GLOBAL(void)
-end_progress_monitor (j_common_ptr cinfo)
+LJPEG9_GLOBAL(void)
+LJPEG9_end_progress_monitor (j_common_ptr cinfo)
 {
   /* Clear away progress display */
   if (cinfo->err->trace_level == 0) {
@@ -118,8 +118,8 @@ end_progress_monitor (j_common_ptr cinfo)
  * minchars is length of minimum legal abbreviation.
  */
 
-GLOBAL(boolean)
-keymatch (char * arg, const char * keyword, int minchars)
+LJPEG9_GLOBAL(boolean)
+LJPEG9_keymatch (char * arg, const char * keyword, int minchars)
 {
   register int ca, ck;
   register int nmatched = 0;
@@ -145,36 +145,36 @@ keymatch (char * arg, const char * keyword, int minchars)
  * Non-Unix systems often require some hacking to get out of text mode.
  */
 
-GLOBAL(FILE *)
-read_stdin (void)
+LJPEG9_GLOBAL(FILE *)
+LJPEG9_read_stdin (void)
 {
   FILE * input_file = stdin;
 
-#ifdef USE_SETMODE		/* need to hack file mode? */
+#ifdef LJPEG9_USE_SETMODE		/* need to hack file mode? */
   setmode(fileno(stdin), O_BINARY);
 #endif
-#ifdef USE_FDOPEN		/* need to re-open in binary mode? */
+#ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
   if ((input_file = fdopen(fileno(stdin), READ_BINARY)) == NULL) {
     fprintf(stderr, "Cannot reopen stdin\n");
-    exit(EXIT_FAILURE);
+    exit(LJPEG9_EXIT_FAILURE);
   }
 #endif
   return input_file;
 }
 
 
-GLOBAL(FILE *)
-write_stdout (void)
+LJPEG9_GLOBAL(FILE *)
+LJPEG9_write_stdout (void)
 {
   FILE * output_file = stdout;
 
-#ifdef USE_SETMODE		/* need to hack file mode? */
+#ifdef LJPEG9_USE_SETMODE		/* need to hack file mode? */
   setmode(fileno(stdout), O_BINARY);
 #endif
-#ifdef USE_FDOPEN		/* need to re-open in binary mode? */
+#ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
   if ((output_file = fdopen(fileno(stdout), WRITE_BINARY)) == NULL) {
     fprintf(stderr, "Cannot reopen stdout\n");
-    exit(EXIT_FAILURE);
+    exit(LJPEG9_EXIT_FAILURE);
   }
 #endif
   return output_file;

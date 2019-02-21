@@ -98,7 +98,7 @@ m4_require([_LT_CHECK_BUILDDIR])dnl
 
 dnl Autoconf doesn't catch unexpanded LT_ macros by default:
 m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
-m4_pattern_allow([^(_LT_EOF|LT_DLGLOBAL|LT_DLLAZY_OR_NOW|LT_MULTI_MODULE)$])dnl
+m4_pattern_allow([^(_LT_EOF|LT_DLLJPEG9_GLOBAL|LT_DLLAZY_OR_NOW|LT_MULTI_MODULE)$])dnl
 dnl aclocal doesn't pull ltoptions.m4, ltsugar.m4, or ltversion.m4
 dnl unless we require an AC_DEFUNed macro:
 AC_REQUIRE([LTOPTIONS_VERSION])dnl
@@ -197,7 +197,7 @@ m4_require([_LT_CMD_RELOAD])dnl
 m4_require([_LT_CHECK_MAGIC_METHOD])dnl
 m4_require([_LT_CHECK_SHAREDLIB_FROM_LINKLIB])dnl
 m4_require([_LT_CMD_OLD_ARCHIVE])dnl
-m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl
+m4_require([_LT_CMD_LJPEG9_GLOBAL_SYMBOLS])dnl
 m4_require([_LT_WITH_SYSROOT])dnl
 
 _LT_CONFIG_LIBTOOL_INIT([
@@ -1776,13 +1776,13 @@ else
 
 #include <stdio.h>
 
-#ifdef RTLD_GLOBAL
-#  define LT_DLGLOBAL		RTLD_GLOBAL
+#ifdef RTLD_LJPEG9_GLOBAL
+#  define LT_DLLJPEG9_GLOBAL		RTLD_LJPEG9_GLOBAL
 #else
-#  ifdef DL_GLOBAL
-#    define LT_DLGLOBAL		DL_GLOBAL
+#  ifdef DL_LJPEG9_GLOBAL
+#    define LT_DLLJPEG9_GLOBAL		DL_LJPEG9_GLOBAL
 #  else
-#    define LT_DLGLOBAL		0
+#    define LT_DLLJPEG9_GLOBAL		0
 #  endif
 #endif
 
@@ -1817,7 +1817,7 @@ int fnord () __attribute__((visibility("default")));
 int fnord () { return 42; }
 int main ()
 {
-  void *self = dlopen (0, LT_DLGLOBAL|LT_DLLAZY_OR_NOW);
+  void *self = dlopen (0, LT_DLLJPEG9_GLOBAL|LT_DLLAZY_OR_NOW);
   int status = $lt_dlunknown;
 
   if (self)
@@ -3620,9 +3620,9 @@ _LT_TAGDECL([no_builtin_flag], [lt_prog_compiler_no_builtin_flag], [1],
 ])# _LT_COMPILER_NO_RTTI
 
 
-# _LT_CMD_GLOBAL_SYMBOLS
+# _LT_CMD_LJPEG9_GLOBAL_SYMBOLS
 # ----------------------
-m4_defun([_LT_CMD_GLOBAL_SYMBOLS],
+m4_defun([_LT_CMD_LJPEG9_GLOBAL_SYMBOLS],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_PROG_AWK])dnl
@@ -3874,7 +3874,7 @@ _LT_DECL([global_symbol_to_c_name_address_lib_prefix],
     [Transform the output of nm in a C name address pair when lib prefix is needed])
 _LT_DECL([], [nm_file_list_spec], [1],
     [Specify filename containing input files for $NM])
-]) # _LT_CMD_GLOBAL_SYMBOLS
+]) # _LT_CMD_LJPEG9_GLOBAL_SYMBOLS
 
 
 # _LT_COMPILER_PIC([TAGNAME])
@@ -4560,12 +4560,12 @@ m4_require([_LT_PATH_MANIFEST_TOOL])dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_EGREP])dnl
 m4_require([_LT_DECL_SED])dnl
-m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl
+m4_require([_LT_CMD_LJPEG9_GLOBAL_SYMBOLS])dnl
 m4_require([_LT_TAG_COMPILER])dnl
 AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
 m4_if([$1], [CXX], [
   _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
-  _LT_TAGVAR(exclude_expsyms, $1)=['_GLOBAL_OFFSET_TABLE_|_GLOBAL__F[ID]_.*']
+  _LT_TAGVAR(exclude_expsyms, $1)=['_LJPEG9_GLOBAL_OFFSET_TABLE_|_LJPEG9_GLOBAL__F[ID]_.*']
   case $host_os in
   aix[[4-9]]*)
     # If we're using GNU nm, then we don't want the "-C" option.
@@ -4588,7 +4588,7 @@ m4_if([$1], [CXX], [
       ;;
     *)
       _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[[BCDGRS]][[ ]]/s/.*[[ ]]\([[^ ]]*\)/\1 DATA/;s/^.*[[ ]]__nm__\([[^ ]]*\)[[ ]][[^ ]]*/\1 DATA/;/^I[[ ]]/d;/^[[AITW]][[ ]]/s/.* //'\'' | sort | uniq > $export_symbols'
-      _LT_TAGVAR(exclude_expsyms, $1)=['[_]+GLOBAL_OFFSET_TABLE_|[_]+GLOBAL__[FID]_.*|[_]+head_[A-Za-z0-9_]+_dll|[A-Za-z0-9_]+_dll_iname']
+      _LT_TAGVAR(exclude_expsyms, $1)=['[_]+LJPEG9_GLOBAL_OFFSET_TABLE_|[_]+LJPEG9_GLOBAL__[FID]_.*|[_]+head_[A-Za-z0-9_]+_dll|[A-Za-z0-9_]+_dll_iname']
       ;;
     esac
     ;;
@@ -4628,8 +4628,8 @@ m4_if([$1], [CXX], [
   # it will be wrapped by ` (' and `)$', so one must not match beginning or
   # end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
   # as well as any symbol that contains `d'.
-  _LT_TAGVAR(exclude_expsyms, $1)=['_GLOBAL_OFFSET_TABLE_|_GLOBAL__F[ID]_.*']
-  # Although _GLOBAL_OFFSET_TABLE_ is a valid symbol C name, most a.out
+  _LT_TAGVAR(exclude_expsyms, $1)=['_LJPEG9_GLOBAL_OFFSET_TABLE_|_LJPEG9_GLOBAL__F[ID]_.*']
+  # Although _LJPEG9_GLOBAL_OFFSET_TABLE_ is a valid symbol C name, most a.out
   # platforms (ab)use it in PIC code, but their linkers get confused if
   # the symbol is explicitly referenced.  Since portable code cannot
   # rely on this symbol name, it's probably fine to never include it in
@@ -4763,7 +4763,7 @@ _LT_EOF
       _LT_TAGVAR(always_export_symbols, $1)=no
       _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
       _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[[BCDGRS]][[ ]]/s/.*[[ ]]\([[^ ]]*\)/\1 DATA/;s/^.*[[ ]]__nm__\([[^ ]]*\)[[ ]][[^ ]]*/\1 DATA/;/^I[[ ]]/d;/^[[AITW]][[ ]]/s/.* //'\'' | sort | uniq > $export_symbols'
-      _LT_TAGVAR(exclude_expsyms, $1)=['[_]+GLOBAL_OFFSET_TABLE_|[_]+GLOBAL__[FID]_.*|[_]+head_[A-Za-z0-9_]+_dll|[A-Za-z0-9_]+_dll_iname']
+      _LT_TAGVAR(exclude_expsyms, $1)=['[_]+LJPEG9_GLOBAL_OFFSET_TABLE_|[_]+LJPEG9_GLOBAL__[FID]_.*|[_]+head_[A-Za-z0-9_]+_dll|[A-Za-z0-9_]+_dll_iname']
 
       if $LD --help 2>&1 | $GREP 'auto-import' > /dev/null; then
         _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
@@ -8569,7 +8569,7 @@ m4_ifndef([AC_PROG_LD_GNU],		[AC_DEFUN([AC_PROG_LD_GNU])])
 m4_ifndef([AC_PROG_LD_RELOAD_FLAG],	[AC_DEFUN([AC_PROG_LD_RELOAD_FLAG])])
 m4_ifndef([AC_DEPLIBS_CHECK_METHOD],	[AC_DEFUN([AC_DEPLIBS_CHECK_METHOD])])
 m4_ifndef([AC_LIBTOOL_PROG_COMPILER_NO_RTTI], [AC_DEFUN([AC_LIBTOOL_PROG_COMPILER_NO_RTTI])])
-m4_ifndef([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE], [AC_DEFUN([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])])
+m4_ifndef([AC_LIBTOOL_SYS_LJPEG9_GLOBAL_SYMBOL_PIPE], [AC_DEFUN([AC_LIBTOOL_SYS_LJPEG9_GLOBAL_SYMBOL_PIPE])])
 m4_ifndef([AC_LIBTOOL_PROG_COMPILER_PIC], [AC_DEFUN([AC_LIBTOOL_PROG_COMPILER_PIC])])
 m4_ifndef([AC_LIBTOOL_PROG_LD_SHLIBS],	[AC_DEFUN([AC_LIBTOOL_PROG_LD_SHLIBS])])
 m4_ifndef([AC_LIBTOOL_POSTDEP_PREDEP],	[AC_DEFUN([AC_LIBTOOL_POSTDEP_PREDEP])])

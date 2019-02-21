@@ -14,7 +14,7 @@
 #ifdef __MSDOS__
 #define NEED_FAR_POINTERS	/* for small or medium memory model */
 #endif
-#undef NEED_SHORT_EXTERNAL_NAMES
+#undef LJPEG9_NEED_SHORT_EXTERNAL_NAMES
 #undef INCOMPLETE_TYPES_BROKEN	/* this assumes you have -w-stu in CFLAGS */
 
 #ifdef JPEG_INTERNALS
@@ -31,18 +31,18 @@
 
 #ifdef JPEG_CJPEG_DJPEG
 
-#define BMP_SUPPORTED		/* BMP image file format */
-#define GIF_SUPPORTED		/* GIF image file format */
-#define PPM_SUPPORTED		/* PBMPLUS PPM/PGM image file format */
-#undef RLE_SUPPORTED		/* Utah RLE image file format */
-#define TARGA_SUPPORTED		/* Targa image file format */
+#define LJPEG9_BMP_SUPPORTED		/* BMP image file format */
+#define LJPEG9_GIF_SUPPORTED		/* GIF image file format */
+#define LJPEG9_PPM_SUPPORTED		/* PBMPLUS PPM/PGM image file format */
+#undef LJPEG9_RLE_SUPPORTED		/* Utah RLE image file format */
+#define LJPEG9_TARGA_SUPPORTED		/* Targa image file format */
 
 #define TWO_FILE_COMMANDLINE
-#define USE_SETMODE		/* Borland has setmode() */
+#define LJPEG9_USE_SETMODE		/* Borland has setmode() */
 #ifdef __MSDOS__
-#define NEED_SIGNAL_CATCHER	/* Define this if you use jmemdos.c */
+#define LJPEG9_NEED_SIGNAL_CATCHER	/* Define this if you use jmemdos.c */
 #endif
 #undef DONT_USE_B_MODE
-#undef PROGRESS_REPORT		/* optional */
+#undef LJPEG9_PROGRESS_REPORT		/* optional */
 
 #endif /* JPEG_CJPEG_DJPEG */

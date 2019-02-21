@@ -42,7 +42,7 @@ typedef my_decomp_master * my_master_ptr;
  */
 
 LOCAL(boolean)
-use_merged_upsample (j_decompress_ptr cinfo)
+use_merged_upsample (LJPEG9_j_decompress_ptr cinfo)
 {
 #ifdef UPSAMPLE_MERGING_SUPPORTED
   /* Merging is the equivalent of plain box-filter upsampling */
@@ -85,8 +85,8 @@ use_merged_upsample (j_decompress_ptr cinfo)
  * Also note that it may be called before the master module is initialized!
  */
 
-GLOBAL(void)
-jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jpeg_calc_output_dimensions (LJPEG9_j_decompress_ptr cinfo)
 /* Do computations that are needed before master selection phase.
  * This function is used for full decompression.
  */
@@ -140,11 +140,11 @@ jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
        ci++, compptr++) {
     /* Size in samples, after IDCT scaling */
-    compptr->downsampled_width = (JDIMENSION)
+    compptr->downsampled_width = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_width *
 		    (long) (compptr->h_samp_factor * compptr->DCT_h_scaled_size),
 		    (long) (cinfo->max_h_samp_factor * cinfo->block_size));
-    compptr->downsampled_height = (JDIMENSION)
+    compptr->downsampled_height = (LJPEG9_JDIMENSION)
       jdiv_round_up((long) cinfo->image_height *
 		    (long) (compptr->v_samp_factor * compptr->DCT_v_scaled_size),
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
@@ -229,7 +229,7 @@ jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
  */
 
 LOCAL(void)
-prepare_range_limit_table (j_decompress_ptr cinfo)
+prepare_range_limit_table (LJPEG9_j_decompress_ptr cinfo)
 /* Allocate and fill in the sample_range_limit table */
 {
   JSAMPLE * table;
@@ -269,12 +269,12 @@ prepare_range_limit_table (j_decompress_ptr cinfo)
  */
 
 LOCAL(void)
-master_selection (j_decompress_ptr cinfo)
+master_selection (LJPEG9_j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
   boolean use_c_buffer;
   long samplesperrow;
-  JDIMENSION jd_samplesperrow;
+  LJPEG9_JDIMENSION jd_samplesperrow;
 
   /* For now, precision must match compiled-in value... */
   if (cinfo->data_precision != BITS_IN_JSAMPLE)
@@ -289,9 +289,9 @@ master_selection (j_decompress_ptr cinfo)
       cinfo->out_color_components <= 0)
     ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
-  /* Width of an output scanline must be representable as JDIMENSION. */
+  /* Width of an output scanline must be representable as LJPEG9_JDIMENSION. */
   samplesperrow = (long) cinfo->output_width * (long) cinfo->out_color_components;
-  jd_samplesperrow = (JDIMENSION) samplesperrow;
+  jd_samplesperrow = (LJPEG9_JDIMENSION) samplesperrow;
   if ((long) jd_samplesperrow != samplesperrow)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
@@ -420,8 +420,8 @@ master_selection (j_decompress_ptr cinfo)
  * (In the latter case, jdapistd.c will crank the pass to completion.)
  */
 
-METHODDEF(void)
-prepare_for_output_pass (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(void)
+prepare_for_output_pass (LJPEG9_j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
 
@@ -480,8 +480,8 @@ prepare_for_output_pass (j_decompress_ptr cinfo)
  * Finish up at end of an output pass.
  */
 
-METHODDEF(void)
-finish_output_pass (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(void)
+finish_output_pass (LJPEG9_j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
 
@@ -497,8 +497,8 @@ finish_output_pass (j_decompress_ptr cinfo)
  * Switch to a new external colormap between output passes.
  */
 
-GLOBAL(void)
-jpeg_new_colormap (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jpeg_new_colormap (LJPEG9_j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
 
@@ -525,8 +525,8 @@ jpeg_new_colormap (j_decompress_ptr cinfo)
  * This is performed at the start of jpeg_start_decompress.
  */
 
-GLOBAL(void)
-jinit_master_decompress (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jinit_master_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
   my_master_ptr master;
 

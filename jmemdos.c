@@ -162,14 +162,14 @@ select_file_name (char * fname)
  * routines malloc() and free().
  */
 
-GLOBAL(void *)
-jpeg_get_small (j_common_ptr cinfo, size_t sizeofobject)
+LJPEG9_GLOBAL(void *)
+LJPEG9_jpeg_get_small (j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void *) malloc(sizeofobject);
 }
 
-GLOBAL(void)
-jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
 {
   free(object);
 }
@@ -179,14 +179,14 @@ jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
  * "Large" objects are allocated in far memory, if possible
  */
 
-GLOBAL(void FAR *)
-jpeg_get_large (j_common_ptr cinfo, size_t sizeofobject)
+LJPEG9_GLOBAL(void FAR *)
+LJPEG9_jpeg_get_large (j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void FAR *) far_malloc(sizeofobject);
 }
 
-GLOBAL(void)
-jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 {
   far_free(object);
 }
@@ -204,8 +204,8 @@ jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 #define DEFAULT_MAX_MEM		300000L /* for total usage about 450K */
 #endif
 
-GLOBAL(long)
-jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
+LJPEG9_GLOBAL(long)
+LJPEG9_jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
 		    long max_bytes_needed, long already_allocated)
 {
   return cinfo->mem->max_memory_to_use - already_allocated;
@@ -215,7 +215,7 @@ jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
 /*
  * Backing store (temporary file) management.
  * Backing store objects are only used when the value returned by
- * jpeg_mem_available is less than the total space needed.  You can dispense
+ * LJPEG9_jpeg_mem_available is less than the total space needed.  You can dispense
  * with these routines if you have plenty of virtual memory; see jmemnobs.c.
  */
 
@@ -239,7 +239,7 @@ jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
  */
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 read_file_store (j_common_ptr cinfo, backing_store_ptr info,
 		 void FAR * buffer_address,
 		 long file_offset, long byte_count)
@@ -255,7 +255,7 @@ read_file_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_file_store (j_common_ptr cinfo, backing_store_ptr info,
 		  void FAR * buffer_address,
 		  long file_offset, long byte_count)
@@ -271,7 +271,7 @@ write_file_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 close_file_store (j_common_ptr cinfo, backing_store_ptr info)
 {
   jdos_close(info->handle.file_handle);	/* close the file */
@@ -292,7 +292,7 @@ open_file_store (j_common_ptr cinfo, backing_store_ptr info,
 
   select_file_name(info->temp_name);
   if (jdos_open((short far *) & handle, (char far *) info->temp_name)) {
-    /* might as well exit since jpeg_open_backing_store will fail anyway */
+    /* might as well exit since LJPEG9_jpeg_open_backing_store will fail anyway */
     ERREXITS(cinfo, JERR_TFILE_CREATE, info->temp_name);
     return FALSE;
   }
@@ -329,7 +329,7 @@ typedef struct {		/* XMS move specification structure */
 #define ODD(X)	(((X) & 1L) != 0)
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 read_xms_store (j_common_ptr cinfo, backing_store_ptr info,
 		void FAR * buffer_address,
 		long file_offset, long byte_count)
@@ -362,7 +362,7 @@ read_xms_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_xms_store (j_common_ptr cinfo, backing_store_ptr info,
 		 void FAR * buffer_address,
 		 long file_offset, long byte_count)
@@ -397,7 +397,7 @@ write_xms_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 close_xms_store (j_common_ptr cinfo, backing_store_ptr info)
 {
   XMScontext ctx;
@@ -487,7 +487,7 @@ typedef union {			/* EMS move specification structure */
 #define LOBYTE(W)  ((W) & 0xFF)
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 read_ems_store (j_common_ptr cinfo, backing_store_ptr info,
 		void FAR * buffer_address,
 		long file_offset, long byte_count)
@@ -512,7 +512,7 @@ read_ems_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 write_ems_store (j_common_ptr cinfo, backing_store_ptr info,
 		 void FAR * buffer_address,
 		 long file_offset, long byte_count)
@@ -537,7 +537,7 @@ write_ems_store (j_common_ptr cinfo, backing_store_ptr info,
 }
 
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 close_ems_store (j_common_ptr cinfo, backing_store_ptr info)
 {
   EMScontext ctx;
@@ -595,8 +595,8 @@ open_ems_store (j_common_ptr cinfo, backing_store_ptr info,
  * Initial opening of a backing-store object.
  */
 
-GLOBAL(void)
-jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 			 long total_bytes_needed)
 {
   /* Try extended memory, then expanded memory, then regular file. */
@@ -619,15 +619,15 @@ jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
  * cleanup required.
  */
 
-GLOBAL(long)
-jpeg_mem_init (j_common_ptr cinfo)
+LJPEG9_GLOBAL(long)
+LJPEG9_jpeg_mem_init (j_common_ptr cinfo)
 {
   next_file_num = 0;		/* initialize temp file name generator */
   return DEFAULT_MAX_MEM;	/* default for max_memory_to_use */
 }
 
-GLOBAL(void)
-jpeg_mem_term (j_common_ptr cinfo)
+LJPEG9_GLOBAL(void)
+LJPEG9_jpeg_mem_term (j_common_ptr cinfo)
 {
   /* Microsoft C, at least in v6.00A, will not successfully reclaim freed
    * blocks of size > 32Kbytes unless we give it a kick in the rear, like so:

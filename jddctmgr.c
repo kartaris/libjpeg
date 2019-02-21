@@ -86,8 +86,8 @@ typedef union {
  * a matching multiplier table.
  */
 
-METHODDEF(void)
-start_pass (j_decompress_ptr cinfo)
+LJPEG9_METHODDEF(void)
+start_pass (LJPEG9_j_decompress_ptr cinfo)
 {
   my_idct_ptr idct = (my_idct_ptr) cinfo->idct;
   int ci, i;
@@ -358,8 +358,8 @@ start_pass (j_decompress_ptr cinfo)
  * Initialize IDCT manager.
  */
 
-GLOBAL(void)
-jinit_inverse_dct (j_decompress_ptr cinfo)
+LJPEG9_GLOBAL(void)
+jinit_inverse_dct (LJPEG9_j_decompress_ptr cinfo)
 {
   my_idct_ptr idct;
   int ci;

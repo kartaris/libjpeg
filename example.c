@@ -68,7 +68,7 @@ extern int image_width;		/* Number of columns in image */
  * and a compression quality factor are passed in.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 write_JPEG_file (char * filename, int quality)
 {
   /* This struct contains the JPEG compression parameters and pointers to
@@ -259,7 +259,7 @@ typedef struct my_error_mgr * my_error_ptr;
  * Here's the routine that will replace the standard error_exit method:
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 my_error_exit (j_common_ptr cinfo)
 {
   /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
@@ -280,7 +280,7 @@ my_error_exit (j_common_ptr cinfo)
  */
 
 
-GLOBAL(int)
+LJPEG9_GLOBAL(int)
 read_JPEG_file (char * filename)
 {
   /* This struct contains the JPEG decompression parameters and pointers to
@@ -294,7 +294,7 @@ read_JPEG_file (char * filename)
   struct my_error_mgr jerr;
   /* More stuff */
   FILE * infile;		/* source file */
-  JSAMPARRAY buffer;		/* Output row buffer */
+  LJPEG9_JSAMPARRAY buffer;		/* Output row buffer */
   int row_stride;		/* physical row width in output buffer */
 
   /* In this example we want to open the input file before doing anything else,

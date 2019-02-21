@@ -70,11 +70,11 @@ typedef union {
  * blocks. The quantized coefficients are returned in coef_blocks[].
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 forward_DCT (j_compress_ptr cinfo, jpeg_component_info * compptr,
-	     JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
-	     JDIMENSION start_row, JDIMENSION start_col,
-	     JDIMENSION num_blocks)
+	     LJPEG9_JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
+	     LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION start_col,
+	     LJPEG9_JDIMENSION num_blocks)
 /* This version is used for integer DCT implementations. */
 {
   /* This routine is heavily used, so it's worth coding it tightly. */
@@ -82,7 +82,7 @@ forward_DCT (j_compress_ptr cinfo, jpeg_component_info * compptr,
   forward_DCT_method_ptr do_dct = fdct->do_dct[compptr->component_index];
   DCTELEM * divisors = (DCTELEM *) compptr->dct_table;
   DCTELEM workspace[DCTSIZE2];	/* work area for FDCT subroutine */
-  JDIMENSION bi;
+  LJPEG9_JDIMENSION bi;
 
   sample_data += start_row;	/* fold in the vertical offset once */
 
@@ -133,11 +133,11 @@ forward_DCT (j_compress_ptr cinfo, jpeg_component_info * compptr,
 
 #ifdef DCT_FLOAT_SUPPORTED
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
-		   JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
-		   JDIMENSION start_row, JDIMENSION start_col,
-		   JDIMENSION num_blocks)
+		   LJPEG9_JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
+		   LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION start_col,
+		   LJPEG9_JDIMENSION num_blocks)
 /* This version is used for floating-point DCT implementations. */
 {
   /* This routine is heavily used, so it's worth coding it tightly. */
@@ -145,7 +145,7 @@ forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
   float_DCT_method_ptr do_dct = fdct->do_float_dct[compptr->component_index];
   FAST_FLOAT * divisors = (FAST_FLOAT *) compptr->dct_table;
   FAST_FLOAT workspace[DCTSIZE2]; /* work area for FDCT subroutine */
-  JDIMENSION bi;
+  LJPEG9_JDIMENSION bi;
 
   sample_data += start_row;	/* fold in the vertical offset once */
 
@@ -185,7 +185,7 @@ forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
  * first scan.  Hence all components should be examined here.
  */
 
-METHODDEF(void)
+LJPEG9_METHODDEF(void)
 start_pass_fdctmgr (j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct = (my_fdct_ptr) cinfo->fdct;
@@ -454,7 +454,7 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
  * Initialize FDCT manager.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_forward_dct (j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct;

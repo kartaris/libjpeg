@@ -27,11 +27,11 @@
  * which modules will be used and give them appropriate initialization calls.
  */
 
-GLOBAL(void)
+LJPEG9_GLOBAL(void)
 jinit_compress_master (j_compress_ptr cinfo)
 {
   long samplesperrow;
-  JDIMENSION jd_samplesperrow;
+  LJPEG9_JDIMENSION jd_samplesperrow;
 
   /* For now, precision must match compiled-in value... */
   if (cinfo->data_precision != BITS_IN_JSAMPLE)
@@ -42,9 +42,9 @@ jinit_compress_master (j_compress_ptr cinfo)
       cinfo->input_components <= 0)
     ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
-  /* Width of an input scanline must be representable as JDIMENSION. */
+  /* Width of an input scanline must be representable as LJPEG9_JDIMENSION. */
   samplesperrow = (long) cinfo->image_width * (long) cinfo->input_components;
-  jd_samplesperrow = (JDIMENSION) samplesperrow;
+  jd_samplesperrow = (LJPEG9_JDIMENSION) samplesperrow;
   if ((long) jd_samplesperrow != samplesperrow)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
