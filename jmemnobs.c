@@ -87,7 +87,7 @@ LJPEG9_GLOBAL(void)
 LJPEG9_jpeg_open_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 			 long total_bytes_needed)
 {
-  ERREXIT(cinfo, JERR_NO_BACKING_STORE);
+  LJPEG9_ERREXIT(cinfo, JERR_NO_BACKING_STORE);
 }
 
 

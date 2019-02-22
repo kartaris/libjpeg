@@ -50,7 +50,7 @@ typedef struct {
 typedef tga_dest_struct * tga_dest_ptr;
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 write_header (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo, int num_colors)
 /* Create and write a Targa header */
 {
@@ -86,7 +86,7 @@ write_header (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo, int nu
   }
 
   if (JFWRITE(dinfo->output_file, targaheader, 18) != (size_t) 18)
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 }
 
 
@@ -183,7 +183,7 @@ start_output_tga (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
       /* We only support 8-bit colormap indexes, so only 256 colors */
       num_colors = cinfo->actual_number_of_colors;
       if (num_colors > 256)
-	ERREXIT1(cinfo, LJPEG9_JERR_TOO_MANY_COLORS, num_colors);
+	LJPEG9_ERREXIT1(cinfo, LJPEG9_JERR_TOO_MANY_COLORS, num_colors);
       write_header(cinfo, dinfo, num_colors);
       /* Write the colormap.  Note Targa uses BGR byte order */
       outfile = dest->pub.output_file;
@@ -198,7 +198,7 @@ start_output_tga (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
       dest->pub.put_pixel_rows = put_pixel_rows;
     }
   } else {
-    ERREXIT(cinfo, LJPEG9_JERR_TGA_COLORSPACE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_COLORSPACE);
   }
 }
 
@@ -213,7 +213,7 @@ finish_output_tga (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
   /* Make sure we wrote the output file OK */
   fflush(dinfo->output_file);
   if (ferror(dinfo->output_file))
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 }
 
 

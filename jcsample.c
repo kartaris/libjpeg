@@ -92,7 +92,7 @@ start_pass_downsample (LJPEG9_j_compress_ptr cinfo)
  * by duplicating the rightmost samples.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 expand_right_edge (LJPEG9_JSAMPARRAY image_data, int num_rows,
 		   LJPEG9_JDIMENSION input_cols, LJPEG9_JDIMENSION output_cols)
 {
@@ -492,7 +492,7 @@ LJPEG9_jinit_downsampler (LJPEG9_j_compress_ptr cinfo)
   downsample->pub.need_context_rows = FALSE;
 
   if (cinfo->CCIR601_sampling)
-    ERREXIT(cinfo, JERR_CCIR601_NOTIMPL);
+    LJPEG9_ERREXIT(cinfo, JERR_CCIR601_NOTIMPL);
 
   /* Verify we can handle the sampling factors, and set up method pointers */
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
@@ -535,7 +535,7 @@ LJPEG9_jinit_downsampler (LJPEG9_j_compress_ptr cinfo)
       downsample->h_expand[ci] = (UINT8) (h_in_group / h_out_group);
       downsample->v_expand[ci] = (UINT8) (v_in_group / v_out_group);
     } else
-      ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
   }
 
 #ifdef INPUT_SMOOTHING_SUPPORTED

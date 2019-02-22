@@ -84,7 +84,7 @@ static FILE * outfile;		/* output JPEG file */
 
 
 /* Error exit handler */
-#define ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(LJPEG9_EXIT_FAILURE))
+#define LJPEG9_ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(LJPEG9_EXIT_FAILURE))
 
 
 /* Read one byte, testing for EOF */
@@ -95,7 +95,7 @@ read_1_byte (void)
 
   c = NEXTBYTE();
   if (c == EOF)
-    ERREXIT("Premature EOF in JPEG file");
+    LJPEG9_ERREXIT("Premature EOF in JPEG file");
   return c;
 }
 
@@ -108,10 +108,10 @@ read_2_bytes (void)
 
   c1 = NEXTBYTE();
   if (c1 == EOF)
-    ERREXIT("Premature EOF in JPEG file");
+    LJPEG9_ERREXIT("Premature EOF in JPEG file");
   c2 = NEXTBYTE();
   if (c2 == EOF)
-    ERREXIT("Premature EOF in JPEG file");
+    LJPEG9_ERREXIT("Premature EOF in JPEG file");
   return (((unsigned int) c1) << 8) + ((unsigned int) c2);
 }
 
@@ -226,7 +226,7 @@ first_marker (void)
   c1 = NEXTBYTE();
   c2 = NEXTBYTE();
   if (c1 != 0xFF || c2 != M_SOI)
-    ERREXIT("Not a JPEG file");
+    LJPEG9_ERREXIT("Not a JPEG file");
   return c2;
 }
 
@@ -251,7 +251,7 @@ copy_variable (void)
   write_2_bytes(length);
   /* Length includes itself, so must be at least 2 */
   if (length < 2)
-    ERREXIT("Erroneous JPEG marker length");
+    LJPEG9_ERREXIT("Erroneous JPEG marker length");
   length -= 2;
   /* Skip over the remaining bytes */
   while (length > 0) {
@@ -270,7 +270,7 @@ skip_variable (void)
   length = read_2_bytes();
   /* Length includes itself, so must be at least 2 */
   if (length < 2)
-    ERREXIT("Erroneous JPEG marker length");
+    LJPEG9_ERREXIT("Erroneous JPEG marker length");
   length -= 2;
   /* Skip over the remaining bytes */
   while (length > 0) {
@@ -292,7 +292,7 @@ scan_JPEG_header (int keep_COM)
 
   /* Expect SOI at start of file */
   if (first_marker() != M_SOI)
-    ERREXIT("Expected SOI marker first");
+    LJPEG9_ERREXIT("Expected SOI marker first");
   write_marker(M_SOI);
 
   /* Scan miscellaneous markers until we reach SOFn. */
@@ -318,7 +318,7 @@ scan_JPEG_header (int keep_COM)
       return marker;
 
     case M_SOS:			/* should not see compressed data before SOF */
-      ERREXIT("SOS without prior SOFn");
+      LJPEG9_ERREXIT("SOS without prior SOFn");
       break;
 
     case M_EOI:			/* in case it's a tables-only JPEG stream */
@@ -348,7 +348,7 @@ static const char * progname;	/* program name for error messages */
 
 
 static void
-usage (void)
+LJPEG9_usage (void)
 /* complain about bad command line */
 {
   fprintf(stderr, "wrjpgcom inserts a textual comment in a JPEG file.\n");
@@ -438,13 +438,13 @@ main (int argc, char **argv)
     if (LJPEG9_keymatch(arg, "replace", 1)) {
       keep_COM = 0;
     } else if (LJPEG9_keymatch(arg, "cfile", 2)) {
-      if (++argn >= argc) usage();
+      if (++argn >= argc) LJPEG9_usage();
       if ((comment_file = fopen(argv[argn], "r")) == NULL) {
 	fprintf(stderr, "%s: can't open %s\n", progname, argv[argn]);
 	exit(LJPEG9_EXIT_FAILURE);
       }
     } else if (LJPEG9_keymatch(arg, "comment", 1)) {
-      if (++argn >= argc) usage();
+      if (++argn >= argc) LJPEG9_usage();
       comment_arg = argv[argn];
       /* If the comment text starts with '"', then we are probably running
        * under MS-DOG and must parse out the quoted string ourselves.  Sigh.
@@ -452,7 +452,7 @@ main (int argc, char **argv)
       if (comment_arg[0] == '"') {
 	comment_arg = (char *) malloc((size_t) MAX_COM_LENGTH);
 	if (comment_arg == NULL)
-	  ERREXIT("Insufficient memory");
+	  LJPEG9_ERREXIT("Insufficient memory");
 	strcpy(comment_arg, argv[argn]+1);
 	for (;;) {
 	  comment_length = (unsigned int) strlen(comment_arg);
@@ -461,24 +461,24 @@ main (int argc, char **argv)
 	    break;
 	  }
 	  if (++argn >= argc)
-	    ERREXIT("Missing ending quote mark");
+	    LJPEG9_ERREXIT("Missing ending quote mark");
 	  strcat(comment_arg, " ");
 	  strcat(comment_arg, argv[argn]);
 	}
       }
       comment_length = (unsigned int) strlen(comment_arg);
     } else
-      usage();
+      LJPEG9_usage();
   }
 
   /* Cannot use both -comment and -cfile. */
   if (comment_arg != NULL && comment_file != NULL)
-    usage();
+    LJPEG9_usage();
   /* If there is neither -comment nor -cfile, we will read the comment text
    * from stdin; in this case there MUST be an input JPEG file name.
    */
   if (comment_arg == NULL && comment_file == NULL && argn >= argc)
-    usage();
+    LJPEG9_usage();
 
   /* Open the input file. */
   if (argn < argc) {
@@ -507,7 +507,7 @@ main (int argc, char **argv)
   if (argn != argc-2) {
     fprintf(stderr, "%s: must name one input and one output file\n",
 	    progname);
-    usage();
+    LJPEG9_usage();
   }
   if ((outfile = fopen(argv[argn+1], LJPEG9_WRITE_BINARY)) == NULL) {
     fprintf(stderr, "%s: can't open %s\n", progname, argv[argn+1]);
@@ -517,7 +517,7 @@ main (int argc, char **argv)
   /* Unix style: expect zero or one file name */
   if (argn < argc-1) {
     fprintf(stderr, "%s: only one input file\n", progname);
-    usage();
+    LJPEG9_usage();
   }
   /* default output file is stdout */
 #ifdef LJPEG9_USE_SETMODE		/* need to hack file mode? */
@@ -540,7 +540,7 @@ main (int argc, char **argv)
 
     comment_arg = (char *) malloc((size_t) MAX_COM_LENGTH);
     if (comment_arg == NULL)
-      ERREXIT("Insufficient memory");
+      LJPEG9_ERREXIT("Insufficient memory");
     comment_length = 0;
     src_file = (comment_file != NULL ? comment_file : stdin);
     while ((c = getc(src_file)) != EOF) {

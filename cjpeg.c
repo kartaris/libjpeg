@@ -77,7 +77,7 @@ static const char * const cdjpeg_message_table[] = {
 static boolean is_targa;	/* records user -targa switch */
 
 
-LOCAL(LJPEG9_cjpeg_source_ptr)
+LJPEG9_LOCAL(LJPEG9_cjpeg_source_ptr)
 select_file_type (LJPEG9_j_compress_ptr cinfo, FILE * infile)
 {
   int c;
@@ -86,14 +86,14 @@ select_file_type (LJPEG9_j_compress_ptr cinfo, FILE * infile)
 #ifdef LJPEG9_TARGA_SUPPORTED
     return LJPEG9_jinit_read_targa(cinfo);
 #else
-    ERREXIT(cinfo, LJPEG9_JERR_TGA_NOTCOMP);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_NOTCOMP);
 #endif
   }
 
   if ((c = getc(infile)) == EOF)
-    ERREXIT(cinfo, JERR_INPUT_EMPTY);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EMPTY);
   if (ungetc(c, infile) == EOF)
-    ERREXIT(cinfo, LJPEG9_JERR_UNGETC_FAILED);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_UNGETC_FAILED);
 
   switch (c) {
 #ifdef LJPEG9_BMP_SUPPORTED
@@ -117,7 +117,7 @@ select_file_type (LJPEG9_j_compress_ptr cinfo, FILE * infile)
     return LJPEG9_jinit_read_targa(cinfo);
 #endif
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_UNKNOWN_FORMAT);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_UNKNOWN_FORMAT);
     break;
   }
 
@@ -138,11 +138,11 @@ static const char * progname;	/* program name for error messages */
 static char * outfilename;	/* for -outfile switch */
 
 
-LOCAL(void)
-usage (void)
+LJPEG9_LOCAL(void)
+LJPEG9_usage (void)
 /* complain about bad command line */
 {
-  fprintf(stderr, "usage: %s [switches] ", progname);
+  fprintf(stderr, "LJPEG9_usage: %s [switches] ", progname);
 #ifdef TWO_FILE_COMMANDLINE
   fprintf(stderr, "inputfile outputfile\n");
 #else
@@ -208,7 +208,7 @@ usage (void)
 }
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
 		int last_file_arg_seen, boolean for_real)
 /* Parse optional switches.
@@ -273,11 +273,11 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
       int val;
 
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%d", &val) != 1)
-	usage();
+	LJPEG9_usage();
       if (val < 1 || val > 16)
-	usage();
+	LJPEG9_usage();
       cinfo->block_size = val;
 #else
       fprintf(stderr, "%s: sorry, block size setting not supported\n",
@@ -288,7 +288,7 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "dct", 2)) {
       /* Select DCT algorithm. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (LJPEG9_keymatch(argv[argn], "int", 1)) {
 	cinfo->dct_method = JDCT_ISLOW;
       } else if (LJPEG9_keymatch(argv[argn], "fast", 2)) {
@@ -296,7 +296,7 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
       } else if (LJPEG9_keymatch(argv[argn], "float", 2)) {
 	cinfo->dct_method = JDCT_FLOAT;
       } else
-	usage();
+	LJPEG9_usage();
 
     } else if (LJPEG9_keymatch(arg, "debug", 1) || LJPEG9_keymatch(arg, "verbose", 1)) {
       /* Enable debug printouts. */
@@ -341,9 +341,9 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
       char ch = 'x';
 
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%ld%c", &lval, &ch) < 1)
-	usage();
+	LJPEG9_usage();
       if (ch == 'm' || ch == 'M')
 	lval *= 1000L;
       cinfo->mem->max_memory_to_use = lval * 1000L;
@@ -365,7 +365,7 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "outfile", 4)) {
       /* Set output file name. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       outfilename = argv[argn];	/* save it away for later use */
 
     } else if (LJPEG9_keymatch(arg, "progressive", 1)) {
@@ -382,13 +382,13 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "quality", 1)) {
       /* Quality ratings (quantization table scaling factors). */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       qualityarg = argv[argn];
 
     } else if (LJPEG9_keymatch(arg, "qslots", 2)) {
       /* Quantization table slot numbers. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       qslotsarg = argv[argn];
       /* Must delay setting qslots until after we have processed any
        * colorspace-determining switches, since jpeg_set_colorspace sets
@@ -398,7 +398,7 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "qtables", 2)) {
       /* Quantization tables fetched from file. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       qtablefile = argv[argn];
       /* We postpone actually reading the file in case -quality comes later. */
 
@@ -408,11 +408,11 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
       char ch = 'x';
 
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%ld%c", &lval, &ch) < 1)
-	usage();
+	LJPEG9_usage();
       if (lval < 0 || lval > 65535L)
-	usage();
+	LJPEG9_usage();
       if (ch == 'b' || ch == 'B') {
 	cinfo->restart_interval = (unsigned int) lval;
 	cinfo->restart_in_rows = 0; /* else prior '-restart n' overrides me */
@@ -424,7 +424,7 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "sample", 2)) {
       /* Set sampling factors. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       samplearg = argv[argn];
       /* Must delay setting sample factors until after we have processed any
        * colorspace-determining switches, since jpeg_set_colorspace sets
@@ -434,16 +434,16 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "scale", 4)) {
       /* Scale the image by a fraction M/N. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%u/%u",
 		 &cinfo->scale_num, &cinfo->scale_denom) != 2)
-	usage();
+	LJPEG9_usage();
 
     } else if (LJPEG9_keymatch(arg, "scans", 4)) {
       /* Set scan script. */
 #ifdef C_MULTISCAN_FILES_SUPPORTED
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       scansarg = argv[argn];
       /* We must postpone reading the file in case -progressive appears. */
 #else
@@ -457,11 +457,11 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
       int val;
 
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%d", &val) != 1)
-	usage();
+	LJPEG9_usage();
       if (val < 0 || val > 100)
-	usage();
+	LJPEG9_usage();
       cinfo->smoothing_factor = val;
 
     } else if (LJPEG9_keymatch(arg, "targa", 1)) {
@@ -469,7 +469,7 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
       is_targa = TRUE;
 
     } else {
-      usage();			/* bogus switch */
+      LJPEG9_usage();			/* bogus switch */
     }
   }
 
@@ -481,19 +481,19 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
     /* Some or all may be overridden if -qtables is present. */
     if (qualityarg != NULL)	/* process -quality if it was present */
       if (! LJPEG9_set_quality_ratings(cinfo, qualityarg, force_baseline))
-	usage();
+	LJPEG9_usage();
 
     if (qtablefile != NULL)	/* process -qtables if it was present */
       if (! LJPEG9_read_quant_tables(cinfo, qtablefile, force_baseline))
-	usage();
+	LJPEG9_usage();
 
     if (qslotsarg != NULL)	/* process -qslots if it was present */
       if (! LJPEG9_set_quant_slots(cinfo, qslotsarg))
-	usage();
+	LJPEG9_usage();
 
     if (samplearg != NULL)	/* process -sample if it was present */
       if (! LJPEG9_set_sample_factors(cinfo, samplearg))
-	usage();
+	LJPEG9_usage();
 
 #ifdef C_PROGRESSIVE_SUPPORTED
     if (simple_progressive)	/* process -progressive; -scans can override */
@@ -503,7 +503,7 @@ parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
 #ifdef C_MULTISCAN_FILES_SUPPORTED
     if (scansarg != NULL)	/* process -scans if it was present */
       if (! LJPEG9_read_scan_script(cinfo, scansarg))
-	usage();
+	LJPEG9_usage();
 #endif
   }
 
@@ -574,21 +574,21 @@ main (int argc, char **argv)
     if (file_index != argc-2) {
       fprintf(stderr, "%s: must name one input and one output file\n",
 	      progname);
-      usage();
+      LJPEG9_usage();
     }
     outfilename = argv[file_index+1];
   } else {
     if (file_index != argc-1) {
       fprintf(stderr, "%s: must name one input and one output file\n",
 	      progname);
-      usage();
+      LJPEG9_usage();
     }
   }
 #else
   /* Unix style: expect zero or one file name */
   if (file_index < argc-1) {
     fprintf(stderr, "%s: only one input file\n", progname);
-    usage();
+    LJPEG9_usage();
   }
 #endif /* TWO_FILE_COMMANDLINE */
 

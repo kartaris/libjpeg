@@ -80,7 +80,7 @@ typedef my_upsampler * my_upsample_ptr;
  * This is taken directly from jdcolor.c; see that file for more info.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 build_ycc_rgb_table (LJPEG9_j_decompress_ptr cinfo)
 {
   my_upsample_ptr upsample = (my_upsample_ptr) cinfo->upsample;

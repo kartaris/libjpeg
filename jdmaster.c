@@ -41,7 +41,7 @@ typedef my_decomp_master * my_master_ptr;
  * CRUCIAL: this must match the actual capabilities of jdmerge.c!
  */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 use_merged_upsample (LJPEG9_j_decompress_ptr cinfo)
 {
 #ifdef UPSAMPLE_MERGING_SUPPORTED
@@ -98,7 +98,7 @@ jpeg_calc_output_dimensions (LJPEG9_j_decompress_ptr cinfo)
 
   /* Prevent application from calling me at wrong times */
   if (cinfo->global_state != LJPEG9_DSTATE_READY)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* Compute core output image dimensions and DCT scaling choices. */
   jpeg_core_output_dimensions(cinfo);
@@ -228,7 +228,7 @@ jpeg_calc_output_dimensions (LJPEG9_j_decompress_ptr cinfo)
  * enough and used often enough to justify this.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 prepare_range_limit_table (LJPEG9_j_decompress_ptr cinfo)
 /* Allocate and fill in the sample_range_limit table */
 {
@@ -268,7 +268,7 @@ prepare_range_limit_table (LJPEG9_j_decompress_ptr cinfo)
  * settings.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 master_selection (LJPEG9_j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
@@ -278,7 +278,7 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
 
   /* For now, precision must match compiled-in value... */
   if (cinfo->data_precision != BITS_IN_JSAMPLE)
-    ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
 
   /* Initialize dimensions and other stuff */
   jpeg_calc_output_dimensions(cinfo);
@@ -287,13 +287,13 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
   /* Sanity check on image dimensions */
   if (cinfo->output_height <= 0 || cinfo->output_width <= 0 ||
       cinfo->out_color_components <= 0)
-    ERREXIT(cinfo, JERR_EMPTY_IMAGE);
+    LJPEG9_ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
   /* Width of an output scanline must be representable as LJPEG9_JDIMENSION. */
   samplesperrow = (long) cinfo->output_width * (long) cinfo->out_color_components;
   jd_samplesperrow = (LJPEG9_JDIMENSION) samplesperrow;
   if ((long) jd_samplesperrow != samplesperrow)
-    ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
+    LJPEG9_ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
   /* Initialize my private state */
   master->pass_number = 0;
@@ -310,7 +310,7 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
   }
   if (cinfo->quantize_colors) {
     if (cinfo->raw_data_out)
-      ERREXIT(cinfo, JERR_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_NOTIMPL);
     /* 2-pass quantizer only works in 3-component color space. */
     if (cinfo->out_color_components != 3) {
       cinfo->enable_1pass_quant = TRUE;
@@ -330,7 +330,7 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
       LJPEG9_jinit_1pass_quantizer(cinfo);
       master->quantizer_1pass = cinfo->cquantize;
 #else
-      ERREXIT(cinfo, JERR_NOT_COMPILED);
+      LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     }
 
@@ -340,7 +340,7 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
       LJPEG9_jinit_2pass_quantizer(cinfo);
       master->quantizer_2pass = cinfo->cquantize;
 #else
-      ERREXIT(cinfo, JERR_NOT_COMPILED);
+      LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     }
     /* If both quantizers are initialized, the 2-pass one is left active;
@@ -354,7 +354,7 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
 #ifdef UPSAMPLE_MERGING_SUPPORTED
       LJPEG9_jinit_merged_upsampler(cinfo); /* does color conversion too */
 #else
-      ERREXIT(cinfo, JERR_NOT_COMPILED);
+      LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else {
       LJPEG9_jinit_color_deconverter(cinfo);
@@ -433,7 +433,7 @@ prepare_for_output_pass (LJPEG9_j_decompress_ptr cinfo)
     (*cinfo->post->start_pass) (cinfo, LJPEG9_JBUF_CRANK_DEST);
     (*cinfo->main->start_pass) (cinfo, LJPEG9_JBUF_CRANK_DEST);
 #else
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif /* QUANT_2PASS_SUPPORTED */
   } else {
     if (cinfo->quantize_colors && cinfo->colormap == NULL) {
@@ -444,7 +444,7 @@ prepare_for_output_pass (LJPEG9_j_decompress_ptr cinfo)
       } else if (cinfo->enable_1pass_quant) {
 	cinfo->cquantize = master->quantizer_1pass;
       } else {
-	ERREXIT(cinfo, JERR_MODE_CHANGE);
+	LJPEG9_ERREXIT(cinfo, JERR_MODE_CHANGE);
       }
     }
     (*cinfo->idct->start_pass) (cinfo);
@@ -504,7 +504,7 @@ jpeg_new_colormap (LJPEG9_j_decompress_ptr cinfo)
 
   /* Prevent application from calling me at wrong times */
   if (cinfo->global_state != LJPEG9_DSTATE_BUFIMAGE)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (cinfo->quantize_colors && cinfo->enable_external_quant &&
       cinfo->colormap != NULL) {
@@ -514,7 +514,7 @@ jpeg_new_colormap (LJPEG9_j_decompress_ptr cinfo)
     (*cinfo->cquantize->new_color_map) (cinfo);
     master->pub.is_dummy_pass = FALSE; /* just in case */
   } else
-    ERREXIT(cinfo, JERR_MODE_CHANGE);
+    LJPEG9_ERREXIT(cinfo, JERR_MODE_CHANGE);
 }
 
 #endif /* D_MULTISCAN_FILES_SUPPORTED */

@@ -183,7 +183,7 @@ struct LJPEG9_jvirt_barray_control {
 
 #ifdef MEM_STATS		/* optional extra stuff for statistics */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 print_mem_stats (LJPEG9_j_common_ptr cinfo, int pool_id)
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
@@ -214,7 +214,7 @@ print_mem_stats (LJPEG9_j_common_ptr cinfo, int pool_id)
 #endif /* MEM_STATS */
 
 
-LOCAL(noreturn_t)
+LJPEG9_LOCAL(noreturn_t)
 out_of_memory (LJPEG9_j_common_ptr cinfo, int which)
 /* Report an out-of-memory error and stop execution */
 /* If we compiled MEM_STATS support, report alloc requests before dying */
@@ -222,7 +222,7 @@ out_of_memory (LJPEG9_j_common_ptr cinfo, int which)
 #ifdef MEM_STATS
   cinfo->err->trace_level = 2;	/* force self_destruct to report stats */
 #endif
-  ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, which);
+  LJPEG9_ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, which);
 }
 
 
@@ -274,7 +274,7 @@ alloc_small (LJPEG9_j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 
   /* See if space is available in any existing pool */
   if (pool_id < 0 || pool_id >= JPOOL_NUMPOOLS)
-    ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
   prev_hdr_ptr = NULL;
   hdr_ptr = mem->small_list[pool_id];
   while (hdr_ptr != NULL) {
@@ -358,7 +358,7 @@ alloc_large (LJPEG9_j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 
   /* Always make a new pool */
   if (pool_id < 0 || pool_id >= JPOOL_NUMPOOLS)
-    ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
 
   hdr_ptr = (large_pool_ptr) LJPEG9_jpeg_get_large(cinfo, sizeofobject +
 					    SIZEOF(large_pool_hdr));
@@ -407,7 +407,7 @@ alloc_sarray (LJPEG9_j_common_ptr cinfo, int pool_id,
   ltemp = (MAX_ALLOC_CHUNK-SIZEOF(large_pool_hdr)) /
 	  ((long) samplesperrow * SIZEOF(JSAMPLE));
   if (ltemp <= 0)
-    ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
+    LJPEG9_ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
   if (ltemp < (long) numrows)
     rowsperchunk = (LJPEG9_JDIMENSION) ltemp;
   else
@@ -455,7 +455,7 @@ alloc_barray (LJPEG9_j_common_ptr cinfo, int pool_id,
   ltemp = (MAX_ALLOC_CHUNK-SIZEOF(large_pool_hdr)) /
 	  ((long) blocksperrow * SIZEOF(JBLOCK));
   if (ltemp <= 0)
-    ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
+    LJPEG9_ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
   if (ltemp < (long) numrows)
     rowsperchunk = (LJPEG9_JDIMENSION) ltemp;
   else
@@ -531,7 +531,7 @@ request_virt_sarray (LJPEG9_j_common_ptr cinfo, int pool_id, boolean pre_zero,
 
   /* Only IMAGE-lifetime virtual arrays are currently supported */
   if (pool_id != JPOOL_IMAGE)
-    ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
 
   /* get control block */
   result = (jvirt_sarray_ptr) alloc_small(cinfo, pool_id,
@@ -561,7 +561,7 @@ request_virt_barray (LJPEG9_j_common_ptr cinfo, int pool_id, boolean pre_zero,
 
   /* Only IMAGE-lifetime virtual arrays are currently supported */
   if (pool_id != JPOOL_IMAGE)
-    ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
 
   /* get control block */
   result = (jvirt_barray_ptr) alloc_small(cinfo, pool_id,
@@ -687,7 +687,7 @@ realize_virt_arrays (LJPEG9_j_common_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_sarray_io (LJPEG9_j_common_ptr cinfo, jvirt_sarray_ptr ptr, boolean writing)
 /* Do backing store read or write of a virtual sample array */
 {
@@ -720,7 +720,7 @@ do_sarray_io (LJPEG9_j_common_ptr cinfo, jvirt_sarray_ptr ptr, boolean writing)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_barray_io (LJPEG9_j_common_ptr cinfo, jvirt_barray_ptr ptr, boolean writing)
 /* Do backing store read or write of a virtual coefficient-block array */
 {
@@ -767,13 +767,13 @@ access_virt_sarray (LJPEG9_j_common_ptr cinfo, jvirt_sarray_ptr ptr,
   /* debugging check */
   if (end_row > ptr->rows_in_array || num_rows > ptr->maxaccess ||
       ptr->mem_buffer == NULL)
-    ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
 
   /* Make the desired part of the virtual array accessible */
   if (start_row < ptr->cur_start_row ||
       end_row > ptr->cur_start_row+ptr->rows_in_mem) {
     if (! ptr->b_s_open)
-      ERREXIT(cinfo, JERR_VIRTUAL_BUG);
+      LJPEG9_ERREXIT(cinfo, JERR_VIRTUAL_BUG);
     /* Flush old buffer contents if necessary */
     if (ptr->dirty) {
       do_sarray_io(cinfo, ptr, TRUE);
@@ -810,7 +810,7 @@ access_virt_sarray (LJPEG9_j_common_ptr cinfo, jvirt_sarray_ptr ptr,
   if (ptr->first_undef_row < end_row) {
     if (ptr->first_undef_row < start_row) {
       if (writable)		/* writer skipped over a section of array */
-	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
       undef_row = start_row;	/* but reader is allowed to read ahead */
     } else {
       undef_row = ptr->first_undef_row;
@@ -827,7 +827,7 @@ access_virt_sarray (LJPEG9_j_common_ptr cinfo, jvirt_sarray_ptr ptr,
       }
     } else {
       if (! writable)		/* reader looking at undefined data */
-	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
     }
   }
   /* Flag the buffer dirty if caller will write in it */
@@ -852,13 +852,13 @@ access_virt_barray (LJPEG9_j_common_ptr cinfo, jvirt_barray_ptr ptr,
   /* debugging check */
   if (end_row > ptr->rows_in_array || num_rows > ptr->maxaccess ||
       ptr->mem_buffer == NULL)
-    ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
 
   /* Make the desired part of the virtual array accessible */
   if (start_row < ptr->cur_start_row ||
       end_row > ptr->cur_start_row+ptr->rows_in_mem) {
     if (! ptr->b_s_open)
-      ERREXIT(cinfo, JERR_VIRTUAL_BUG);
+      LJPEG9_ERREXIT(cinfo, JERR_VIRTUAL_BUG);
     /* Flush old buffer contents if necessary */
     if (ptr->dirty) {
       do_barray_io(cinfo, ptr, TRUE);
@@ -895,7 +895,7 @@ access_virt_barray (LJPEG9_j_common_ptr cinfo, jvirt_barray_ptr ptr,
   if (ptr->first_undef_row < end_row) {
     if (ptr->first_undef_row < start_row) {
       if (writable)		/* writer skipped over a section of array */
-	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
       undef_row = start_row;	/* but reader is allowed to read ahead */
     } else {
       undef_row = ptr->first_undef_row;
@@ -912,7 +912,7 @@ access_virt_barray (LJPEG9_j_common_ptr cinfo, jvirt_barray_ptr ptr,
       }
     } else {
       if (! writable)		/* reader looking at undefined data */
-	ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_VIRTUAL_ACCESS);
     }
   }
   /* Flag the buffer dirty if caller will write in it */
@@ -936,7 +936,7 @@ free_pool (LJPEG9_j_common_ptr cinfo, int pool_id)
   size_t space_freed;
 
   if (pool_id < 0 || pool_id >= JPOOL_NUMPOOLS)
-    ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
 
 #ifdef MEM_STATS
   if (cinfo->err->trace_level > 1)
@@ -1043,7 +1043,7 @@ LJPEG9_jinit_memory_mgr (LJPEG9_j_common_ptr cinfo)
    * Some compilers may give an "unreachable code" warning here; ignore it.
    */
   if ((SIZEOF(ALIGN_TYPE) & (SIZEOF(ALIGN_TYPE)-1)) != 0)
-    ERREXIT(cinfo, JERR_BAD_ALIGN_TYPE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_ALIGN_TYPE);
   /* MAX_ALLOC_CHUNK must be representable as type size_t, and must be
    * a multiple of SIZEOF(ALIGN_TYPE).
    * Again, an "unreachable code" warning may be ignored here.
@@ -1052,7 +1052,7 @@ LJPEG9_jinit_memory_mgr (LJPEG9_j_common_ptr cinfo)
   test_mac = (size_t) MAX_ALLOC_CHUNK;
   if ((long) test_mac != MAX_ALLOC_CHUNK ||
       (MAX_ALLOC_CHUNK % SIZEOF(ALIGN_TYPE)) != 0)
-    ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
 
   max_to_use = LJPEG9_jpeg_mem_init(cinfo); /* system-dependent initialization */
 
@@ -1061,7 +1061,7 @@ LJPEG9_jinit_memory_mgr (LJPEG9_j_common_ptr cinfo)
 
   if (mem == NULL) {
     LJPEG9_jpeg_mem_term(cinfo);	/* system-dependent cleanup */
-    ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 0);
+    LJPEG9_ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 0);
   }
 
   /* OK, fill in the method pointers */

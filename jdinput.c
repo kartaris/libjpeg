@@ -204,7 +204,7 @@ jpeg_core_output_dimensions (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 initial_setup (LJPEG9_j_decompress_ptr cinfo)
 /* Called once, when first SOS marker is reached */
 {
@@ -214,15 +214,15 @@ initial_setup (LJPEG9_j_decompress_ptr cinfo)
   /* Make sure image isn't bigger than I can handle */
   if ((long) cinfo->image_height > (long) JPEG_MAX_DIMENSION ||
       (long) cinfo->image_width > (long) JPEG_MAX_DIMENSION)
-    ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) JPEG_MAX_DIMENSION);
+    LJPEG9_ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) JPEG_MAX_DIMENSION);
 
   /* Only 8 to 12 bits data precision are supported for DCT based JPEG */
   if (cinfo->data_precision < 8 || cinfo->data_precision > 12)
-    ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
 
   /* Check that number of components won't exceed internal array sizes */
   if (cinfo->num_components > MAX_COMPONENTS)
-    ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
+    LJPEG9_ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
 	     MAX_COMPONENTS);
 
   /* Compute maximum sampling factors; check factor validity */
@@ -232,7 +232,7 @@ initial_setup (LJPEG9_j_decompress_ptr cinfo)
        ci++, compptr++) {
     if (compptr->h_samp_factor<=0 || compptr->h_samp_factor>MAX_SAMP_FACTOR ||
 	compptr->v_samp_factor<=0 || compptr->v_samp_factor>MAX_SAMP_FACTOR)
-      ERREXIT(cinfo, JERR_BAD_SAMPLING);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_SAMPLING);
     cinfo->max_h_samp_factor = MAX(cinfo->max_h_samp_factor,
 				   compptr->h_samp_factor);
     cinfo->max_v_samp_factor = MAX(cinfo->max_v_samp_factor,
@@ -328,7 +328,7 @@ initial_setup (LJPEG9_j_decompress_ptr cinfo)
       cinfo->lim_Se = DCTSIZE2-1;
       break;
     default:
-      ERREXIT4(cinfo, JERR_BAD_PROGRESSION,
+      LJPEG9_ERREXIT4(cinfo, JERR_BAD_PROGRESSION,
 	       cinfo->Ss, cinfo->Se, cinfo->Ah, cinfo->Al);
       break;
     }
@@ -384,7 +384,7 @@ initial_setup (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 per_scan_setup (LJPEG9_j_decompress_ptr cinfo)
 /* Do computations that are needed before processing a JPEG scan */
 /* cinfo->comps_in_scan and cinfo->cur_comp_info[] were set from SOS marker */
@@ -422,7 +422,7 @@ per_scan_setup (LJPEG9_j_decompress_ptr cinfo)
     
     /* Interleaved (multi-component) scan */
     if (cinfo->comps_in_scan <= 0 || cinfo->comps_in_scan > MAX_COMPS_IN_SCAN)
-      ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->comps_in_scan,
+      LJPEG9_ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->comps_in_scan,
 	       MAX_COMPS_IN_SCAN);
     
     /* Overall image size in MCUs */
@@ -452,7 +452,7 @@ per_scan_setup (LJPEG9_j_decompress_ptr cinfo)
       /* Prepare array describing MCU composition */
       mcublks = compptr->MCU_blocks;
       if (cinfo->blocks_in_MCU + mcublks > D_MAX_BLOCKS_IN_MCU)
-	ERREXIT(cinfo, JERR_BAD_MCU_SIZE);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_MCU_SIZE);
       while (mcublks-- > 0) {
 	cinfo->MCU_membership[cinfo->blocks_in_MCU++] = ci;
       }
@@ -483,7 +483,7 @@ per_scan_setup (LJPEG9_j_decompress_ptr cinfo)
  * not at the current Q-table slots.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 latch_quant_tables (LJPEG9_j_decompress_ptr cinfo)
 {
   int ci, qtblno;
@@ -499,7 +499,7 @@ latch_quant_tables (LJPEG9_j_decompress_ptr cinfo)
     qtblno = compptr->quant_tbl_no;
     if (qtblno < 0 || qtblno >= NUM_QUANT_TBLS ||
 	cinfo->quant_tbl_ptrs[qtblno] == NULL)
-      ERREXIT1(cinfo, JERR_NO_QUANT_TABLE, qtblno);
+      LJPEG9_ERREXIT1(cinfo, JERR_NO_QUANT_TABLE, qtblno);
     /* OK, save away the quantization table */
     qtbl = (JQUANT_TBL *)
       (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
@@ -584,7 +584,7 @@ consume_markers (LJPEG9_j_decompress_ptr cinfo)
 	 */
       } else {			/* 2nd or later SOS marker */
 	if (! inputctl->pub.has_multiple_scans)
-	  ERREXIT(cinfo, JERR_EOI_EXPECTED); /* Oops, I wasn't expecting this! */
+	  LJPEG9_ERREXIT(cinfo, JERR_EOI_EXPECTED); /* Oops, I wasn't expecting this! */
 	if (cinfo->comps_in_scan == 0) /* unexpected pseudo SOS marker */
 	  break;
 	start_input_pass(cinfo);
@@ -594,7 +594,7 @@ consume_markers (LJPEG9_j_decompress_ptr cinfo)
       inputctl->pub.eoi_reached = TRUE;
       if (inputctl->inheaders) { /* Tables-only datastream, apparently */
 	if (cinfo->marker->saw_SOF)
-	  ERREXIT(cinfo, JERR_SOF_NO_SOS);
+	  LJPEG9_ERREXIT(cinfo, JERR_SOF_NO_SOS);
       } else {
 	/* Prevent infinite loop in coef ctlr's decompress_data routine
 	 * if user set output_scan_number larger than number of scans.

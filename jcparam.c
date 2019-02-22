@@ -36,10 +36,10 @@ jpeg_add_quant_table (LJPEG9_j_compress_ptr cinfo, int which_tbl,
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (which_tbl < 0 || which_tbl >= NUM_QUANT_TBLS)
-    ERREXIT1(cinfo, JERR_DQT_INDEX, which_tbl);
+    LJPEG9_ERREXIT1(cinfo, JERR_DQT_INDEX, which_tbl);
 
   qtblptr = & cinfo->quant_tbl_ptrs[which_tbl];
 
@@ -165,7 +165,7 @@ jpeg_set_quality (LJPEG9_j_compress_ptr cinfo, int quality, boolean force_baseli
  * Huffman table setup routines
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 add_huff_table (LJPEG9_j_compress_ptr cinfo,
 		JHUFF_TBL **htblptr, const UINT8 *bits, const UINT8 *val)
 /* Define a Huffman table */
@@ -186,7 +186,7 @@ add_huff_table (LJPEG9_j_compress_ptr cinfo,
   for (len = 1; len <= 16; len++)
     nsymbols += bits[len];
   if (nsymbols < 1 || nsymbols > 256)
-    ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
 
   MEMCOPY((*htblptr)->huffval, val, nsymbols * SIZEOF(UINT8));
 
@@ -195,7 +195,7 @@ add_huff_table (LJPEG9_j_compress_ptr cinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 std_huff_tables (LJPEG9_j_compress_ptr cinfo)
 /* Set up the standard Huffman tables (cf. JPEG standard section K.3) */
 /* IMPORTANT: these are only valid for 8-bit data precision! */
@@ -288,7 +288,7 @@ jpeg_set_defaults (LJPEG9_j_compress_ptr cinfo)
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* Allocate comp_info array large enough for maximum component count.
    * Array is made permanent in case application wants to compress
@@ -412,7 +412,7 @@ jpeg_default_colorspace (LJPEG9_j_compress_ptr cinfo)
     jpeg_set_colorspace(cinfo, JCS_BG_YCC);
     break;
   default:
-    ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
   }
 }
 
@@ -438,7 +438,7 @@ jpeg_set_colorspace (LJPEG9_j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* For all colorspaces, we use Q and Huff tables 0 for luminance components,
    * tables 1 for chrominance components.
@@ -453,7 +453,7 @@ jpeg_set_colorspace (LJPEG9_j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
   case JCS_UNKNOWN:
     cinfo->num_components = cinfo->input_components;
     if (cinfo->num_components < 1 || cinfo->num_components > MAX_COMPONENTS)
-      ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
+      LJPEG9_ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
 	       MAX_COMPONENTS);
     for (ci = 0; ci < cinfo->num_components; ci++) {
       SET_COMP(ci, ci, 1,1, 0, 0,0);
@@ -525,14 +525,14 @@ jpeg_set_colorspace (LJPEG9_j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
     SET_COMP(2, 0x23, 1,1, 1, 1,1);
     break;
   default:
-    ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
   }
 }
 
 
 #ifdef C_PROGRESSIVE_SUPPORTED
 
-LOCAL(jpeg_scan_info *)
+LJPEG9_LOCAL(jpeg_scan_info *)
 fill_a_scan (jpeg_scan_info * scanptr, int ci,
 	     int Ss, int Se, int Ah, int Al)
 /* Support routine: generate one scan for specified component */
@@ -547,7 +547,7 @@ fill_a_scan (jpeg_scan_info * scanptr, int ci,
   return scanptr;
 }
 
-LOCAL(jpeg_scan_info *)
+LJPEG9_LOCAL(jpeg_scan_info *)
 fill_scans (jpeg_scan_info * scanptr, int ncomps,
 	    int Ss, int Se, int Ah, int Al)
 /* Support routine: generate one scan for each component */
@@ -566,7 +566,7 @@ fill_scans (jpeg_scan_info * scanptr, int ncomps,
   return scanptr;
 }
 
-LOCAL(jpeg_scan_info *)
+LJPEG9_LOCAL(jpeg_scan_info *)
 fill_dc_scans (jpeg_scan_info * scanptr, int ncomps, int Ah, int Al)
 /* Support routine: generate interleaved DC scan if possible, else N scans */
 {
@@ -603,7 +603,7 @@ jpeg_simple_progression (LJPEG9_j_compress_ptr cinfo)
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* Figure space needed for script.  Calculation must match code below! */
   if (ncomps == 3 &&

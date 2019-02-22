@@ -157,7 +157,7 @@ typedef struct {
  * This routine also performs some validation checks on the table.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 jpeg_make_c_derived_tbl (LJPEG9_j_compress_ptr cinfo, boolean isDC, int tblno,
 			 c_derived_tbl ** pdtbl)
 {
@@ -174,11 +174,11 @@ jpeg_make_c_derived_tbl (LJPEG9_j_compress_ptr cinfo, boolean isDC, int tblno,
 
   /* Find the input Huffman table */
   if (tblno < 0 || tblno >= NUM_HUFF_TBLS)
-    ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
+    LJPEG9_ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
   htbl =
     isDC ? cinfo->dc_huff_tbl_ptrs[tblno] : cinfo->ac_huff_tbl_ptrs[tblno];
   if (htbl == NULL)
-    ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
+    LJPEG9_ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
 
   /* Allocate a workspace if we haven't already done so. */
   if (*pdtbl == NULL)
@@ -193,7 +193,7 @@ jpeg_make_c_derived_tbl (LJPEG9_j_compress_ptr cinfo, boolean isDC, int tblno,
   for (l = 1; l <= 16; l++) {
     i = (int) htbl->bits[l];
     if (i < 0 || p + i > 256)	/* protect against table overrun */
-      ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     while (i--)
       huffsize[p++] = (char) l;
   }
@@ -215,7 +215,7 @@ jpeg_make_c_derived_tbl (LJPEG9_j_compress_ptr cinfo, boolean isDC, int tblno,
      * it must still fit in si bits, since no code is allowed to be all ones.
      */
     if (((INT32) code) >= (((INT32) 1) << si))
-      ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     code <<= 1;
     si++;
   }
@@ -239,7 +239,7 @@ jpeg_make_c_derived_tbl (LJPEG9_j_compress_ptr cinfo, boolean isDC, int tblno,
   for (p = 0; p < lastp; p++) {
     i = htbl->huffval[p];
     if (i < 0 || i > maxsymbol || dtbl->ehufsi[i])
-      ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     dtbl->ehufco[i] = huffcode[p];
     dtbl->ehufsi[i] = huffsize[p];
   }
@@ -265,7 +265,7 @@ jpeg_make_c_derived_tbl (LJPEG9_j_compress_ptr cinfo, boolean isDC, int tblno,
 	    dump_buffer_e(entropy); }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 dump_buffer_s (working_state * state)
 /* Empty the output buffer; return TRUE if successful, FALSE if must suspend */
 {
@@ -280,14 +280,14 @@ dump_buffer_s (working_state * state)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 dump_buffer_e (huff_entropy_ptr entropy)
 /* Empty the output buffer; we do not support suspension in this case. */
 {
   struct jpeg_destination_mgr * dest = entropy->cinfo->dest;
 
   if (! (*dest->empty_output_buffer) (entropy->cinfo))
-    ERREXIT(entropy->cinfo, JERR_CANT_SUSPEND);
+    LJPEG9_ERREXIT(entropy->cinfo, JERR_CANT_SUSPEND);
   /* After a successful buffer dump, must reset buffer pointers */
   entropy->next_output_byte = dest->next_output_byte;
   entropy->free_in_buffer = dest->free_in_buffer;
@@ -303,7 +303,7 @@ dump_buffer_e (huff_entropy_ptr entropy)
  */
 
 INLINE
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 emit_bits_s (working_state * state, unsigned int code, int size)
 /* Emit some bits; return TRUE if successful, FALSE if must suspend */
 {
@@ -313,7 +313,7 @@ emit_bits_s (working_state * state, unsigned int code, int size)
 
   /* if size is 0, caller used an invalid Huffman table entry */
   if (size == 0)
-    ERREXIT(state->cinfo, JERR_HUFF_MISSING_CODE);
+    LJPEG9_ERREXIT(state->cinfo, JERR_HUFF_MISSING_CODE);
 
   /* mask off any extra bits in code */
   put_buffer = ((INT32) code) & ((((INT32) 1) << size) - 1);
@@ -345,7 +345,7 @@ emit_bits_s (working_state * state, unsigned int code, int size)
 
 
 INLINE
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_bits_e (huff_entropy_ptr entropy, unsigned int code, int size)
 /* Emit some bits, unless we are in gather mode */
 {
@@ -355,7 +355,7 @@ emit_bits_e (huff_entropy_ptr entropy, unsigned int code, int size)
 
   /* if size is 0, caller used an invalid Huffman table entry */
   if (size == 0)
-    ERREXIT(entropy->cinfo, JERR_HUFF_MISSING_CODE);
+    LJPEG9_ERREXIT(entropy->cinfo, JERR_HUFF_MISSING_CODE);
 
   if (entropy->gather_statistics)
     return;			/* do nothing if we're only getting stats */
@@ -387,7 +387,7 @@ emit_bits_e (huff_entropy_ptr entropy, unsigned int code, int size)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 flush_bits_s (working_state * state)
 {
   if (! emit_bits_s(state, 0x7F, 7)) /* fill any partial byte with ones */
@@ -398,7 +398,7 @@ flush_bits_s (working_state * state)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 flush_bits_e (huff_entropy_ptr entropy)
 {
   emit_bits_e(entropy, 0x7F, 7); /* fill any partial byte with ones */
@@ -412,7 +412,7 @@ flush_bits_e (huff_entropy_ptr entropy)
  */
 
 INLINE
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_dc_symbol (huff_entropy_ptr entropy, int tbl_no, int symbol)
 {
   if (entropy->gather_statistics)
@@ -425,7 +425,7 @@ emit_dc_symbol (huff_entropy_ptr entropy, int tbl_no, int symbol)
 
 
 INLINE
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_ac_symbol (huff_entropy_ptr entropy, int tbl_no, int symbol)
 {
   if (entropy->gather_statistics)
@@ -441,7 +441,7 @@ emit_ac_symbol (huff_entropy_ptr entropy, int tbl_no, int symbol)
  * Emit bits from a correction bit buffer.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_buffered_bits (huff_entropy_ptr entropy, char * bufstart,
 		    unsigned int nbits)
 {
@@ -460,7 +460,7 @@ emit_buffered_bits (huff_entropy_ptr entropy, char * bufstart,
  * Emit any pending EOBRUN symbol.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_eobrun (huff_entropy_ptr entropy)
 {
   register int temp, nbits;
@@ -472,7 +472,7 @@ emit_eobrun (huff_entropy_ptr entropy)
       nbits++;
     /* safety check: shouldn't happen given limited correction-bit buffer */
     if (nbits > 14)
-      ERREXIT(entropy->cinfo, JERR_HUFF_MISSING_CODE);
+      LJPEG9_ERREXIT(entropy->cinfo, JERR_HUFF_MISSING_CODE);
 
     emit_ac_symbol(entropy, entropy->ac_tbl_no, nbits << 4);
     if (nbits)
@@ -491,7 +491,7 @@ emit_eobrun (huff_entropy_ptr entropy)
  * Emit a restart marker & resynchronize predictions.
  */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 emit_restart_s (working_state * state, int restart_num)
 {
   int ci;
@@ -512,7 +512,7 @@ emit_restart_s (working_state * state, int restart_num)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_restart_e (huff_entropy_ptr entropy, int restart_num)
 {
   int ci;
@@ -592,7 +592,7 @@ encode_mcu_DC_first (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
      * Since we're encoding a difference, the range limit is twice as much.
      */
     if (nbits > MAX_COEF_BITS+1)
-      ERREXIT(cinfo, JERR_BAD_DCT_COEF);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_DCT_COEF);
 
     /* Count/emit the Huffman-coded symbol for the number of bits */
     emit_dc_symbol(entropy, tbl, nbits);
@@ -695,7 +695,7 @@ encode_mcu_AC_first (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
       nbits++;
     /* Check for out-of-range coefficient values */
     if (nbits > MAX_COEF_BITS)
-      ERREXIT(cinfo, JERR_BAD_DCT_COEF);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_DCT_COEF);
 
     /* Count/emit Huffman symbol for run length / number of bits */
     emit_ac_symbol(entropy, entropy->ac_tbl_no, (r << 4) + nbits);
@@ -909,7 +909,7 @@ encode_mcu_AC_refine (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 
 /* Encode a single block's worth of coefficients */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
 		  c_derived_tbl *dctbl, c_derived_tbl *actbl)
 {
@@ -940,7 +940,7 @@ encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
    * Since we're encoding a difference, the range limit is twice as much.
    */
   if (nbits > MAX_COEF_BITS+1)
-    ERREXIT(state->cinfo, JERR_BAD_DCT_COEF);
+    LJPEG9_ERREXIT(state->cinfo, JERR_BAD_DCT_COEF);
 
   /* Emit the Huffman-coded symbol for the number of bits */
   if (! emit_bits_s(state, dctbl->ehufco[nbits], dctbl->ehufsi[nbits]))
@@ -980,7 +980,7 @@ encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
 	nbits++;
       /* Check for out-of-range coefficient values */
       if (nbits > MAX_COEF_BITS)
-	ERREXIT(state->cinfo, JERR_BAD_DCT_COEF);
+	LJPEG9_ERREXIT(state->cinfo, JERR_BAD_DCT_COEF);
 
       /* Emit Huffman symbol for run length / number of bits */
       temp = (r << 4) + nbits;
@@ -1091,7 +1091,7 @@ finish_pass_huff (LJPEG9_j_compress_ptr cinfo)
 
     /* Flush out the last data */
     if (! flush_bits_s(&state))
-      ERREXIT(cinfo, JERR_CANT_SUSPEND);
+      LJPEG9_ERREXIT(cinfo, JERR_CANT_SUSPEND);
 
     /* Update state */
     cinfo->dest->next_output_byte = state.next_output_byte;
@@ -1115,7 +1115,7 @@ finish_pass_huff (LJPEG9_j_compress_ptr cinfo)
 
 /* Process a single block's worth of coefficients */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 htest_one_block (LJPEG9_j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val,
 		 long dc_counts[], long ac_counts[])
 {
@@ -1141,7 +1141,7 @@ htest_one_block (LJPEG9_j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val,
    * Since we're encoding a difference, the range limit is twice as much.
    */
   if (nbits > MAX_COEF_BITS+1)
-    ERREXIT(cinfo, JERR_BAD_DCT_COEF);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_DCT_COEF);
 
   /* Count the Huffman symbol for the number of bits */
   dc_counts[nbits]++;
@@ -1170,7 +1170,7 @@ htest_one_block (LJPEG9_j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val,
 	nbits++;
       /* Check for out-of-range coefficient values */
       if (nbits > MAX_COEF_BITS)
-	ERREXIT(cinfo, JERR_BAD_DCT_COEF);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_DCT_COEF);
 
       /* Count Huffman symbol for run length / number of bits */
       ac_counts[(r << 4) + nbits]++;
@@ -1249,7 +1249,7 @@ encode_mcu_gather (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  * So the extra complexity of an optimal algorithm doesn't seem worthwhile.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 jpeg_gen_optimal_table (LJPEG9_j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[])
 {
 #define MAX_CLEN 32		/* assumed maximum initial code length */
@@ -1329,7 +1329,7 @@ jpeg_gen_optimal_table (LJPEG9_j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq
       /* The JPEG standard seems to think that this can't happen, */
       /* but I'm paranoid... */
       if (codesize[i] > MAX_CLEN)
-	ERREXIT(cinfo, JERR_HUFF_CLEN_OVERFLOW);
+	LJPEG9_ERREXIT(cinfo, JERR_HUFF_CLEN_OVERFLOW);
 
       bits[codesize[i]]++;
     }
@@ -1501,7 +1501,7 @@ start_pass_huff (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics)
 	/* Check for invalid table index */
 	/* (make_c_derived_tbl does this in the other path) */
 	if (tbl < 0 || tbl >= NUM_HUFF_TBLS)
-	  ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tbl);
+	  LJPEG9_ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tbl);
 	/* Allocate and zero the statistics tables */
 	/* Note that jpeg_gen_optimal_table expects 257 entries in each table! */
 	if (entropy->dc_count_ptrs[tbl] == NULL)
@@ -1523,7 +1523,7 @@ start_pass_huff (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics)
       tbl = compptr->ac_tbl_no;
       if (gather_statistics) {
 	if (tbl < 0 || tbl >= NUM_HUFF_TBLS)
-	  ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tbl);
+	  LJPEG9_ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tbl);
 	if (entropy->ac_count_ptrs[tbl] == NULL)
 	  entropy->ac_count_ptrs[tbl] = (long *)
 	    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,

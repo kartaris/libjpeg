@@ -270,7 +270,7 @@ typedef struct {
 typedef box * boxptr;
 
 
-LOCAL(boxptr)
+LJPEG9_LOCAL(boxptr)
 find_biggest_color_pop (boxptr boxlist, int numboxes)
 /* Find the splittable box with the largest color population */
 /* Returns NULL if no splittable boxes remain */
@@ -290,7 +290,7 @@ find_biggest_color_pop (boxptr boxlist, int numboxes)
 }
 
 
-LOCAL(boxptr)
+LJPEG9_LOCAL(boxptr)
 find_biggest_volume (boxptr boxlist, int numboxes)
 /* Find the splittable box with the largest (scaled) volume */
 /* Returns NULL if no splittable boxes remain */
@@ -310,7 +310,7 @@ find_biggest_volume (boxptr boxlist, int numboxes)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 update_box (LJPEG9_j_decompress_ptr cinfo, boxptr boxp)
 /* Shrink the min/max bounds of a box to enclose only nonzero elements, */
 /* and recompute its volume and population */
@@ -421,7 +421,7 @@ update_box (LJPEG9_j_decompress_ptr cinfo, boxptr boxp)
 }
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 median_cut (LJPEG9_j_decompress_ptr cinfo, boxptr boxlist, int numboxes,
 	    int desired_colors)
 /* Repeatedly select and split the largest box until we have enough boxes */
@@ -496,7 +496,7 @@ median_cut (LJPEG9_j_decompress_ptr cinfo, boxptr boxlist, int numboxes,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 compute_color (LJPEG9_j_decompress_ptr cinfo, boxptr boxp, int icolor)
 /* Compute representative color for a box, put it in colormap[icolor] */
 {
@@ -536,7 +536,7 @@ compute_color (LJPEG9_j_decompress_ptr cinfo, boxptr boxp, int icolor)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 select_colors (LJPEG9_j_decompress_ptr cinfo, int desired_colors)
 /* Master routine for color selection */
 {
@@ -643,7 +643,7 @@ select_colors (LJPEG9_j_decompress_ptr cinfo, int desired_colors)
  * inner-loop variables.
  */
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 find_nearby_colors (LJPEG9_j_decompress_ptr cinfo, int minc0, int minc1, int minc2,
 		    JSAMPLE colorlist[])
 /* Locate the colormap entries close enough to an update box to be candidates
@@ -772,7 +772,7 @@ find_nearby_colors (LJPEG9_j_decompress_ptr cinfo, int minc0, int minc1, int min
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 find_best_colors (LJPEG9_j_decompress_ptr cinfo, int minc0, int minc1, int minc2,
 		  int numcolors, JSAMPLE colorlist[], JSAMPLE bestcolor[])
 /* Find the closest colormap entry for each cell in the update box,
@@ -852,7 +852,7 @@ find_best_colors (LJPEG9_j_decompress_ptr cinfo, int minc0, int minc1, int minc2
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 fill_inverse_cmap (LJPEG9_j_decompress_ptr cinfo, int c0, int c1, int c2)
 /* Fill the inverse-colormap entries in the update box that contains */
 /* histogram cell c0/c1/c2.  (Only that one cell MUST be filled, but */
@@ -1105,7 +1105,7 @@ pass2_fs_dither (LJPEG9_j_decompress_ptr cinfo,
  * to Aaron Giles for this idea.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 init_error_limit (LJPEG9_j_decompress_ptr cinfo)
 /* Allocate and fill in the error_limiter table */
 {
@@ -1192,9 +1192,9 @@ start_pass_2_quant (LJPEG9_j_decompress_ptr cinfo, boolean is_pre_scan)
     /* Make sure color count is acceptable */
     i = cinfo->actual_number_of_colors;
     if (i < 1)
-      ERREXIT1(cinfo, JERR_QUANT_FEW_COLORS, 1);
+      LJPEG9_ERREXIT1(cinfo, JERR_QUANT_FEW_COLORS, 1);
     if (i > MAXNUMCOLORS)
-      ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, MAXNUMCOLORS);
+      LJPEG9_ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, MAXNUMCOLORS);
 
     if (cinfo->dither_mode == JDITHER_FS) {
       size_t arraysize = (size_t) ((cinfo->output_width + 2) *
@@ -1258,7 +1258,7 @@ LJPEG9_jinit_2pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
 
   /* Make sure jdmaster didn't give me a case I can't handle */
   if (cinfo->out_color_components != 3)
-    ERREXIT(cinfo, JERR_NOTIMPL);
+    LJPEG9_ERREXIT(cinfo, JERR_NOTIMPL);
 
   /* Allocate the histogram/inverse colormap storage */
   cquantize->histogram = (hist3d) (*cinfo->mem->alloc_small)
@@ -1279,10 +1279,10 @@ LJPEG9_jinit_2pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
     int desired = cinfo->desired_number_of_colors;
     /* Lower bound on # of colors ... somewhat arbitrary as long as > 0 */
     if (desired < 8)
-      ERREXIT1(cinfo, JERR_QUANT_FEW_COLORS, 8);
+      LJPEG9_ERREXIT1(cinfo, JERR_QUANT_FEW_COLORS, 8);
     /* Make sure colormap indexes can be represented by JSAMPLEs */
     if (desired > MAXNUMCOLORS)
-      ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, MAXNUMCOLORS);
+      LJPEG9_ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, MAXNUMCOLORS);
     cquantize->sv_colormap = (*cinfo->mem->alloc_sarray)
       ((LJPEG9_j_common_ptr) cinfo,JPOOL_IMAGE, (LJPEG9_JDIMENSION) desired, (LJPEG9_JDIMENSION) 3);
     cquantize->desired = desired;

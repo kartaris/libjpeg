@@ -70,7 +70,7 @@ init_mem_source (LJPEG9_j_decompress_ptr cinfo)
  * fill the buffer entirely, only to obtain at least one more byte.
  *
  * There is no such thing as an EOF return.  If the end of the file has been
- * reached, the routine has a choice of ERREXIT() or inserting fake data into
+ * reached, the routine has a choice of LJPEG9_ERREXIT() or inserting fake data into
  * the buffer.  In most cases, generating a warning message and inserting a
  * fake EOI marker is the best course of action --- this will allow the
  * decompressor to output however much of the image is there.  However,
@@ -103,7 +103,7 @@ fill_input_buffer (LJPEG9_j_decompress_ptr cinfo)
 
   if (nbytes <= 0) {
     if (src->start_of_file)	/* Treat empty input file as fatal error */
-      ERREXIT(cinfo, JERR_INPUT_EMPTY);
+      LJPEG9_ERREXIT(cinfo, JERR_INPUT_EMPTY);
     WARNMS(cinfo, JWRN_JPEG_EOF);
     /* Insert a fake EOI marker */
     src->buffer[0] = (JOCTET) 0xFF;
@@ -252,7 +252,7 @@ jpeg_mem_src (LJPEG9_j_decompress_ptr cinfo,
   struct jpeg_source_mgr * src;
 
   if (inbuffer == NULL || insize == 0)	/* Treat empty input as fatal error */
-    ERREXIT(cinfo, JERR_INPUT_EMPTY);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EMPTY);
 
   /* The source object is made permanent so that a series of JPEG images
    * can be read from the same buffer by calling jpeg_mem_src only before

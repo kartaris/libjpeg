@@ -75,7 +75,7 @@
  */
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_crop (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	 LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	 jvirt_barray_ptr *src_coef_arrays,
@@ -113,7 +113,7 @@ do_crop (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_crop_ext (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	     LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	     jvirt_barray_ptr *src_coef_arrays,
@@ -191,7 +191,7 @@ do_crop_ext (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_wipe (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	 LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	 jvirt_barray_ptr *src_coef_arrays,
@@ -223,7 +223,7 @@ do_wipe (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_flip_h_no_crop (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 		   LJPEG9_JDIMENSION x_crop_offset,
 		   jvirt_barray_ptr *src_coef_arrays)
@@ -290,7 +290,7 @@ do_flip_h_no_crop (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinf
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_flip_h (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	   LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	   jvirt_barray_ptr *src_coef_arrays,
@@ -352,7 +352,7 @@ do_flip_h (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_flip_v (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	   LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	   jvirt_barray_ptr *src_coef_arrays,
@@ -432,7 +432,7 @@ do_flip_v (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_transpose (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	      LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	      jvirt_barray_ptr *src_coef_arrays,
@@ -480,7 +480,7 @@ do_transpose (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_rot_90 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	   LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	   jvirt_barray_ptr *src_coef_arrays,
@@ -561,7 +561,7 @@ do_rot_90 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_rot_270 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	    LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	    jvirt_barray_ptr *src_coef_arrays,
@@ -632,7 +632,7 @@ do_rot_270 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_rot_180 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	    LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	    jvirt_barray_ptr *src_coef_arrays,
@@ -740,7 +740,7 @@ do_rot_180 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 do_transverse (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	       LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	       jvirt_barray_ptr *src_coef_arrays,
@@ -860,7 +860,7 @@ do_transverse (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
  * *strptr is advanced over the digit string, and *result is set to its value.
  */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 jt_read_integer (const char ** strptr, LJPEG9_JDIMENSION * result)
 {
   const char * ptr = *strptr;
@@ -944,7 +944,7 @@ jtransform_parse_crop_spec (jpeg_transform_info *info, const char *spec)
 
 /* Trim off any partial iMCUs on the indicated destination edge */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 trim_right_edge (jpeg_transform_info *info, LJPEG9_JDIMENSION full_width)
 {
   LJPEG9_JDIMENSION MCU_cols;
@@ -955,7 +955,7 @@ trim_right_edge (jpeg_transform_info *info, LJPEG9_JDIMENSION full_width)
     info->output_width = MCU_cols * info->iMCU_sample_width;
 }
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 trim_bottom_edge (jpeg_transform_info *info, LJPEG9_JDIMENSION full_height)
 {
   LJPEG9_JDIMENSION MCU_rows;
@@ -1078,7 +1078,7 @@ jtransform_request_workspace (LJPEG9_j_decompress_ptr srcinfo,
       info->crop_yoffset = 0;	/* default to +0 */
     if (info->crop_width_set == JCROP_UNSET) {
       if (info->crop_xoffset >= info->output_width)
-	ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
+	LJPEG9_ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
       info->crop_width = info->output_width - info->crop_xoffset;
     } else {
       /* Check for crop extension */
@@ -1087,17 +1087,17 @@ jtransform_request_workspace (LJPEG9_j_decompress_ptr srcinfo,
 	if (info->transform != JXFORM_NONE ||
 	    info->crop_xoffset >= info->crop_width ||
 	    info->crop_xoffset > info->crop_width - info->output_width)
-	  ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
+	  LJPEG9_ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
       } else {
 	if (info->crop_xoffset >= info->output_width ||
 	    info->crop_width <= 0 ||
 	    info->crop_xoffset > info->output_width - info->crop_width)
-	  ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
+	  LJPEG9_ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
       }
     }
     if (info->crop_height_set == JCROP_UNSET) {
       if (info->crop_yoffset >= info->output_height)
-	ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
+	LJPEG9_ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
       info->crop_height = info->output_height - info->crop_yoffset;
     } else {
       /* Check for crop extension */
@@ -1106,12 +1106,12 @@ jtransform_request_workspace (LJPEG9_j_decompress_ptr srcinfo,
 	if (info->transform != JXFORM_NONE ||
 	    info->crop_yoffset >= info->crop_height ||
 	    info->crop_yoffset > info->crop_height - info->output_height)
-	  ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
+	  LJPEG9_ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
       } else {
 	if (info->crop_yoffset >= info->output_height ||
 	    info->crop_height <= 0 ||
 	    info->crop_yoffset > info->output_height - info->crop_height)
-	  ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
+	  LJPEG9_ERREXIT(srcinfo, JERR_BAD_CROP_SPEC);
       }
     }
     /* Convert negative crop offsets into regular offsets */
@@ -1268,7 +1268,7 @@ jtransform_request_workspace (LJPEG9_j_decompress_ptr srcinfo,
 
 /* Transpose destination image parameters */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 transpose_critical_parameters (LJPEG9_j_compress_ptr dstinfo)
 {
   int tblno, i, j, ci, itemp;
@@ -1314,7 +1314,7 @@ transpose_critical_parameters (LJPEG9_j_compress_ptr dstinfo)
  * We try to adjust the Tags ExifImageWidth and ExifImageHeight if possible.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 adjust_exif_parameters (JOCTET FAR * data, unsigned int length,
 			LJPEG9_JDIMENSION new_width, LJPEG9_JDIMENSION new_height)
 {
@@ -1506,7 +1506,7 @@ jtransform_adjust_parameters (LJPEG9_j_decompress_ptr srcinfo,
       dstinfo->comp_info[0].quant_tbl_no = sv_quant_tbl_no;
     } else {
       /* Sorry, can't do it */
-      ERREXIT(dstinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(dstinfo, JERR_CONVERSION_NOTIMPL);
     }
   } else if (info->num_components == 1) {
     /* For a single-component source, we force the destination sampling factors

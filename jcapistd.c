@@ -39,7 +39,7 @@ LJPEG9_GLOBAL(void)
 jpeg_start_compress (LJPEG9_j_compress_ptr cinfo, boolean write_all_tables)
 {
   if (cinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (write_all_tables)
     jpeg_suppress_tables(cinfo, FALSE);	/* mark all tables to be written */
@@ -81,7 +81,7 @@ jpeg_write_scanlines (LJPEG9_j_compress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
   LJPEG9_JDIMENSION row_ctr, rows_left;
 
   if (cinfo->global_state != LJPEG9_CSTATE_SCANNING)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   if (cinfo->next_scanline >= cinfo->image_height)
     WARNMS(cinfo, JWRN_TOO_MUCH_DATA);
 
@@ -124,7 +124,7 @@ jpeg_write_raw_data (LJPEG9_j_compress_ptr cinfo, JSAMPIMAGE data,
   LJPEG9_JDIMENSION lines_per_iMCU_row;
 
   if (cinfo->global_state != LJPEG9_CSTATE_RAW_OK)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   if (cinfo->next_scanline >= cinfo->image_height) {
     WARNMS(cinfo, JWRN_TOO_MUCH_DATA);
     return 0;
@@ -148,7 +148,7 @@ jpeg_write_raw_data (LJPEG9_j_compress_ptr cinfo, JSAMPIMAGE data,
   /* Verify that at least one iMCU row has been passed. */
   lines_per_iMCU_row = cinfo->max_v_samp_factor * cinfo->min_DCT_v_scaled_size;
   if (num_lines < lines_per_iMCU_row)
-    ERREXIT(cinfo, JERR_BUFFER_SIZE);
+    LJPEG9_ERREXIT(cinfo, JERR_BUFFER_SIZE);
 
   /* Directly compress the row. */
   if (! (*cinfo->coef->compress_data) (cinfo, data)) {

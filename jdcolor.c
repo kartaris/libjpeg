@@ -112,7 +112,7 @@ typedef my_color_deconverter * my_cconvert_ptr;
  * Initialize tables for YCbCr->RGB and BG_YCC->RGB colorspace conversion.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 build_ycc_rgb_table (LJPEG9_j_decompress_ptr cinfo)
 /* Normal case, sYCC */
 {
@@ -154,7 +154,7 @@ build_ycc_rgb_table (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 build_bg_ycc_rgb_table (LJPEG9_j_decompress_ptr cinfo)
 /* Wide gamut case, bg-sYCC */
 {
@@ -273,7 +273,7 @@ ycc_rgb_convert (LJPEG9_j_decompress_ptr cinfo,
  * Initialize for RGB->grayscale colorspace conversion.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 build_rgb_y_table (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
@@ -604,7 +604,7 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
   switch (cinfo->jpeg_color_space) {
   case JCS_GRAYSCALE:
     if (cinfo->num_components != 1)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     break;
 
   case JCS_RGB:
@@ -612,18 +612,18 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
   case JCS_BG_RGB:
   case JCS_BG_YCC:
     if (cinfo->num_components != 3)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     break;
 
   case JCS_CMYK:
   case JCS_YCCK:
     if (cinfo->num_components != 4)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     break;
 
   default:			/* JCS_UNKNOWN can be anything */
     if (cinfo->num_components < 1)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     break;
   }
 
@@ -631,7 +631,7 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
   if (cinfo->color_transform &&
       cinfo->jpeg_color_space != JCS_RGB &&
       cinfo->jpeg_color_space != JCS_BG_RGB)
-    ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+    LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
 
   /* Set out_color_components and conversion method based on requested space.
    * Also clear the component_needed flags for any unused components,
@@ -659,12 +659,12 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
 	cconvert->pub.color_convert = rgb1_gray_convert;
 	break;
       default:
-	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+	LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
       }
       build_rgb_y_table(cinfo);
       break;
     default:
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     }
     break;
 
@@ -691,11 +691,11 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
 	cconvert->pub.color_convert = rgb1_rgb_convert;
 	break;
       default:
-	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+	LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
       }
       break;
     default:
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     }
     break;
 
@@ -710,10 +710,10 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
 	cconvert->pub.color_convert = rgb1_rgb_convert;
 	break;
       default:
-	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+	LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
       }
     } else
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     break;
 
   case JCS_CMYK:
@@ -727,7 +727,7 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
       cconvert->pub.color_convert = null_convert;
       break;
     default:
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     }
     break;
 
@@ -737,7 +737,7 @@ LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
       cinfo->out_color_components = cinfo->num_components;
       cconvert->pub.color_convert = null_convert;
     } else			/* unsupported non-null conversion */
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     break;
   }
 

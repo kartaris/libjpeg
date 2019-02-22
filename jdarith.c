@@ -61,7 +61,7 @@ typedef arith_entropy_decoder * arith_entropy_ptr;
 #define AC_STAT_BINS 256
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 get_byte (LJPEG9_j_decompress_ptr cinfo)
 /* Read next input byte; we do not support suspension in this module. */
 {
@@ -69,7 +69,7 @@ get_byte (LJPEG9_j_decompress_ptr cinfo)
 
   if (src->bytes_in_buffer == 0)
     if (! (*src->fill_input_buffer) (cinfo))
-      ERREXIT(cinfo, JERR_CANT_SUSPEND);
+      LJPEG9_ERREXIT(cinfo, JERR_CANT_SUSPEND);
   src->bytes_in_buffer--;
   return GETJOCTET(*src->next_input_byte++);
 }
@@ -102,7 +102,7 @@ get_byte (LJPEG9_j_decompress_ptr cinfo)
  * derived from Markus Kuhn's JBIG implementation.
  */
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 arith_decode (LJPEG9_j_decompress_ptr cinfo, unsigned char *st)
 {
   register arith_entropy_ptr e = (arith_entropy_ptr) cinfo->entropy;
@@ -186,7 +186,7 @@ arith_decode (LJPEG9_j_decompress_ptr cinfo, unsigned char *st)
  * Check for a restart marker & resynchronize decoder.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 process_restart (LJPEG9_j_decompress_ptr cinfo)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -195,7 +195,7 @@ process_restart (LJPEG9_j_decompress_ptr cinfo)
 
   /* Advance past the RSTn marker */
   if (! (*cinfo->marker->read_restart_marker) (cinfo))
-    ERREXIT(cinfo, JERR_CANT_SUSPEND);
+    LJPEG9_ERREXIT(cinfo, JERR_CANT_SUSPEND);
 
   /* Re-initialize statistics areas */
   for (ci = 0; ci < cinfo->comps_in_scan; ci++) {
@@ -666,7 +666,7 @@ start_pass (LJPEG9_j_decompress_ptr cinfo)
     }
     if (cinfo->Al > 13) {	/* need not check for < 0 */
       bad:
-      ERREXIT4(cinfo, JERR_BAD_PROGRESSION,
+      LJPEG9_ERREXIT4(cinfo, JERR_BAD_PROGRESSION,
 	       cinfo->Ss, cinfo->Se, cinfo->Ah, cinfo->Al);
     }
     /* Update progression status, and verify that scan order is legal.
@@ -714,7 +714,7 @@ start_pass (LJPEG9_j_decompress_ptr cinfo)
     if (! cinfo->progressive_mode || (cinfo->Ss == 0 && cinfo->Ah == 0)) {
       tbl = compptr->dc_tbl_no;
       if (tbl < 0 || tbl >= NUM_ARITH_TBLS)
-	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
+	LJPEG9_ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->dc_stats[tbl] == NULL)
 	entropy->dc_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
 	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, DC_STAT_BINS);
@@ -727,7 +727,7 @@ start_pass (LJPEG9_j_decompress_ptr cinfo)
 	(cinfo->progressive_mode && cinfo->Ss)) {
       tbl = compptr->ac_tbl_no;
       if (tbl < 0 || tbl >= NUM_ARITH_TBLS)
-	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
+	LJPEG9_ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->ac_stats[tbl] == NULL)
 	entropy->ac_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
 	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, AC_STAT_BINS);

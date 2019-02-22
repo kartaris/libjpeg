@@ -70,13 +70,13 @@ LJPEG9_METHODDEF(int) decompress_data
 	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
 #endif
 #ifdef BLOCK_SMOOTHING_SUPPORTED
-LOCAL(boolean) smoothing_ok LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_LOCAL(boolean) smoothing_ok LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 LJPEG9_METHODDEF(int) decompress_smooth_data
 	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
 #endif
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 start_iMCU_row (LJPEG9_j_decompress_ptr cinfo)
 /* Reset within-iMCU-row counters for a new row (input side) */
 {
@@ -403,7 +403,7 @@ decompress_data (LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
  * more accurately than they really are.
  */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 smoothing_ok (LJPEG9_j_decompress_ptr cinfo)
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
@@ -718,7 +718,7 @@ LJPEG9_jinit_d_coef_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full
     coef->pub.decompress_data = decompress_data;
     coef->pub.coef_arrays = coef->whole_image; /* link to virtual arrays */
 #else
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
   } else {
     /* We only need a single-MCU buffer. */

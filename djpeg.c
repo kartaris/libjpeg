@@ -87,11 +87,11 @@ static const char * progname;	/* program name for error messages */
 static char * outfilename;	/* for -outfile switch */
 
 
-LOCAL(void)
-usage (void)
+LJPEG9_LOCAL(void)
+LJPEG9_usage (void)
 /* complain about bad command line */
 {
-  fprintf(stderr, "usage: %s [switches] ", progname);
+  fprintf(stderr, "LJPEG9_usage: %s [switches] ", progname);
 #ifdef TWO_FILE_COMMANDLINE
   fprintf(stderr, "inputfile outputfile\n");
 #else
@@ -159,7 +159,7 @@ usage (void)
 }
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
 		int last_file_arg_seen, boolean for_real)
 /* Parse optional switches.
@@ -203,16 +203,16 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
       int val;
 
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%d", &val) != 1)
-	usage();
+	LJPEG9_usage();
       cinfo->desired_number_of_colors = val;
       cinfo->quantize_colors = TRUE;
 
     } else if (LJPEG9_keymatch(arg, "dct", 2)) {
       /* Select IDCT algorithm. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (LJPEG9_keymatch(argv[argn], "int", 1)) {
 	cinfo->dct_method = JDCT_ISLOW;
       } else if (LJPEG9_keymatch(argv[argn], "fast", 2)) {
@@ -220,12 +220,12 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
       } else if (LJPEG9_keymatch(argv[argn], "float", 2)) {
 	cinfo->dct_method = JDCT_FLOAT;
       } else
-	usage();
+	LJPEG9_usage();
 
     } else if (LJPEG9_keymatch(arg, "dither", 2)) {
       /* Select dithering algorithm. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (LJPEG9_keymatch(argv[argn], "fs", 2)) {
 	cinfo->dither_mode = JDITHER_FS;
       } else if (LJPEG9_keymatch(argv[argn], "none", 2)) {
@@ -233,7 +233,7 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
       } else if (LJPEG9_keymatch(argv[argn], "ordered", 2)) {
 	cinfo->dither_mode = JDITHER_ORDERED;
       } else
-	usage();
+	LJPEG9_usage();
 
     } else if (LJPEG9_keymatch(arg, "debug", 1) || LJPEG9_keymatch(arg, "verbose", 1)) {
       /* Enable debug printouts. */
@@ -267,7 +267,7 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "map", 3)) {
       /* Quantize to a color map taken from an input file. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (for_real) {		/* too expensive to do twice! */
 #ifdef QUANT_2PASS_SUPPORTED	/* otherwise can't quantize to supplied map */
 	FILE * mapfile;
@@ -280,7 +280,7 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
 	fclose(mapfile);
 	cinfo->quantize_colors = TRUE;
 #else
-	ERREXIT(cinfo, JERR_NOT_COMPILED);
+	LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
       }
 
@@ -290,9 +290,9 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
       char ch = 'x';
 
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%ld%c", &lval, &ch) < 1)
-	usage();
+	LJPEG9_usage();
       if (ch == 'm' || ch == 'M')
 	lval *= 1000L;
       cinfo->mem->max_memory_to_use = lval * 1000L;
@@ -312,7 +312,7 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "outfile", 4)) {
       /* Set output file name. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       outfilename = argv[argn];	/* save it away for later use */
 
     } else if (LJPEG9_keymatch(arg, "pnm", 1) || LJPEG9_keymatch(arg, "ppm", 1)) {
@@ -326,17 +326,17 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
     } else if (LJPEG9_keymatch(arg, "scale", 1)) {
       /* Scale the output image by a fraction M/N. */
       if (++argn >= argc)	/* advance to next argument */
-	usage();
+	LJPEG9_usage();
       if (sscanf(argv[argn], "%u/%u",
 		 &cinfo->scale_num, &cinfo->scale_denom) < 1)
-	usage();
+	LJPEG9_usage();
 
     } else if (LJPEG9_keymatch(arg, "targa", 1)) {
       /* Targa output format. */
       requested_fmt = FMT_TARGA;
 
     } else {
-      usage();			/* bogus switch */
+      LJPEG9_usage();			/* bogus switch */
     }
   }
 
@@ -351,7 +351,7 @@ parse_switches (LJPEG9_j_decompress_ptr cinfo, int argc, char **argv,
  * Note this code relies on a non-suspending data source.
  */
 
-LOCAL(unsigned int)
+LJPEG9_LOCAL(unsigned int)
 jpeg_getc (LJPEG9_j_decompress_ptr cinfo)
 /* Read next byte */
 {
@@ -359,7 +359,7 @@ jpeg_getc (LJPEG9_j_decompress_ptr cinfo)
 
   if (datasrc->bytes_in_buffer == 0) {
     if (! (*datasrc->fill_input_buffer) (cinfo))
-      ERREXIT(cinfo, JERR_CANT_SUSPEND);
+      LJPEG9_ERREXIT(cinfo, JERR_CANT_SUSPEND);
   }
   datasrc->bytes_in_buffer--;
   return GETJOCTET(*datasrc->next_input_byte++);
@@ -482,21 +482,21 @@ main (int argc, char **argv)
     if (file_index != argc-2) {
       fprintf(stderr, "%s: must name one input and one output file\n",
 	      progname);
-      usage();
+      LJPEG9_usage();
     }
     outfilename = argv[file_index+1];
   } else {
     if (file_index != argc-1) {
       fprintf(stderr, "%s: must name one input and one output file\n",
 	      progname);
-      usage();
+      LJPEG9_usage();
     }
   }
 #else
   /* Unix style: expect zero or one file name */
   if (file_index < argc-1) {
     fprintf(stderr, "%s: only one input file\n", progname);
-    usage();
+    LJPEG9_usage();
   }
 #endif /* TWO_FILE_COMMANDLINE */
 
@@ -568,7 +568,7 @@ main (int argc, char **argv)
     break;
 #endif
   default:
-    ERREXIT(&cinfo, JERR_UNSUPPORTED_FORMAT);
+    LJPEG9_ERREXIT(&cinfo, JERR_UNSUPPORTED_FORMAT);
     break;
   }
   dest_mgr->output_file = output_file;

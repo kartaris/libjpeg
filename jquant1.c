@@ -183,7 +183,7 @@ typedef my_cquantizer * my_cquantize_ptr;
  */
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 select_ncolors (LJPEG9_j_decompress_ptr cinfo, int Ncolors[])
 /* Determine allocation of desired colors to components, */
 /* and fill in Ncolors[] array to indicate choice. */
@@ -209,7 +209,7 @@ select_ncolors (LJPEG9_j_decompress_ptr cinfo, int Ncolors[])
 
   /* Must have at least 2 color values per component */
   if (iroot < 2)
-    ERREXIT1(cinfo, JERR_QUANT_FEW_COLORS, (int) temp);
+    LJPEG9_ERREXIT1(cinfo, JERR_QUANT_FEW_COLORS, (int) temp);
 
   /* Initialize to iroot color values for each component */
   total_colors = 1;
@@ -242,7 +242,7 @@ select_ncolors (LJPEG9_j_decompress_ptr cinfo, int Ncolors[])
 }
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 output_value (LJPEG9_j_decompress_ptr cinfo, int ci, int j, int maxj)
 /* Return j'th output value, where j will range from 0 to maxj */
 /* The output values must fall in 0..MAXJSAMPLE in increasing order */
@@ -256,7 +256,7 @@ output_value (LJPEG9_j_decompress_ptr cinfo, int ci, int j, int maxj)
 }
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 largest_input_value (LJPEG9_j_decompress_ptr cinfo, int ci, int j, int maxj)
 /* Return largest input value that should map to j'th output value */
 /* Must have largest(j=0) >= 0, and largest(j=maxj) >= MAXJSAMPLE */
@@ -270,7 +270,7 @@ largest_input_value (LJPEG9_j_decompress_ptr cinfo, int ci, int j, int maxj)
  * Create the colormap.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 create_colormap (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
@@ -330,7 +330,7 @@ create_colormap (LJPEG9_j_decompress_ptr cinfo)
  * Create the color index table.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 create_colorindex (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
@@ -393,7 +393,7 @@ create_colorindex (LJPEG9_j_decompress_ptr cinfo)
  * distinct output values.
  */
 
-LOCAL(ODITHER_MATRIX_PTR)
+LJPEG9_LOCAL(ODITHER_MATRIX_PTR)
 make_odither_array (LJPEG9_j_decompress_ptr cinfo, int ncolors)
 {
   ODITHER_MATRIX_PTR odither;
@@ -429,7 +429,7 @@ make_odither_array (LJPEG9_j_decompress_ptr cinfo, int ncolors)
  * share a dither table.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 create_odither_tables (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
@@ -719,7 +719,7 @@ quantize_fs_dither (LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY input_buf,
  * Allocate workspace for Floyd-Steinberg errors.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 alloc_fs_workspace (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
@@ -785,7 +785,7 @@ start_pass_1_quant (LJPEG9_j_decompress_ptr cinfo, boolean is_pre_scan)
       FMEMZERO((void FAR *) cquantize->fserrors[i], arraysize);
     break;
   default:
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
     break;
   }
 }
@@ -810,7 +810,7 @@ finish_pass_1_quant (LJPEG9_j_decompress_ptr cinfo)
 LJPEG9_METHODDEF(void)
 new_color_map_1_quant (LJPEG9_j_decompress_ptr cinfo)
 {
-  ERREXIT(cinfo, JERR_MODE_CHANGE);
+  LJPEG9_ERREXIT(cinfo, JERR_MODE_CHANGE);
 }
 
 
@@ -835,10 +835,10 @@ LJPEG9_jinit_1pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
 
   /* Make sure my internal arrays won't overflow */
   if (cinfo->out_color_components > MAX_Q_COMPS)
-    ERREXIT1(cinfo, JERR_QUANT_COMPONENTS, MAX_Q_COMPS);
+    LJPEG9_ERREXIT1(cinfo, JERR_QUANT_COMPONENTS, MAX_Q_COMPS);
   /* Make sure colormap indexes can be represented by JSAMPLEs */
   if (cinfo->desired_number_of_colors > (MAXJSAMPLE+1))
-    ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, MAXJSAMPLE+1);
+    LJPEG9_ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, MAXJSAMPLE+1);
 
   /* Create the colormap and color index table. */
   create_colormap(cinfo);

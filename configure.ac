@@ -73,15 +73,15 @@ AM_CONDITIONAL(HAVE_LD_VERSION_SCRIPT, test "$have_ld_version_script" = "yes")
 AC_MSG_CHECKING([for function prototypes])
 AC_CACHE_VAL([ijg_cv_have_prototypes],
 [AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
-int testfunction (int arg1, int * arg2); /* check prototypes */
-struct methods_struct {		/* check method-pointer declarations */
+int LJPEG9_testfunction (int arg1, int * arg2); /* check prototypes */
+struct LJPEG9_methods_struct {		/* check method-pointer declarations */
   int (*error_exit) (char *msgtext);
   int (*trace_message) (char *msgtext);
   int (*another_method) (void);
 };
-int testfunction (int arg1, int * arg2) /* check definitions */
+int LJPEG9_testfunction (int arg1, int * arg2) /* check definitions */
 { return arg2[arg1]; }
-int test2function (void)	/* check void arg list */
+int LJPEG9_test2function (void)	/* check void arg list */
 { return 0; }
 ]])],
           [ijg_cv_have_prototypes=yes],
@@ -119,9 +119,9 @@ AC_TRY_COMPILE([
 #else
 #include <string.h>
 #endif
-typedef size_t my_size_t;
+typedef size_t LJPEG9_my_size_t;
 ],
-      [ my_size_t foovar; ],
+      [ LJPEG9_my_size_t foovar; ],
       [ijg_size_t_ok=yes],
       [ijg_size_t_ok="not ANSI, perhaps it is in sys/types.h"])
 AC_MSG_RESULT([$ijg_size_t_ok])
@@ -142,14 +142,14 @@ fi
 
 # Check compiler characteristics
 AC_MSG_CHECKING([for type unsigned char])
-AC_TRY_COMPILE([], [ unsigned char un_char; ],
+AC_TRY_COMPILE([], [ unsigned char LJPEG9_un_char; ],
  [AC_MSG_RESULT(yes)
   AC_DEFINE([HAVE_UNSIGNED_CHAR], [1],
             [Compiler supports 'unsigned char'.])],
  [AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING([for type unsigned short])
-AC_TRY_COMPILE([], [ unsigned short un_short; ],
+AC_TRY_COMPILE([], [ unsigned short LJPEG9_un_short; ],
   [AC_MSG_RESULT(yes)
    AC_DEFINE([HAVE_UNSIGNED_SHORT], [1],
              [Compiler supports 'unsigned short'.])],
@@ -158,19 +158,19 @@ AC_TRY_COMPILE([], [ unsigned short un_short; ],
 AC_MSG_CHECKING([for type void])
 AC_TRY_COMPILE([
 /* Caution: a C++ compiler will insist on valid prototypes */
-typedef void * void_ptr;	/* check void * */
+typedef void * LJPEG9_void_ptr;	/* check void * */
 #ifdef HAVE_PROTOTYPES		/* check ptr to function returning void */
-typedef void (*void_func) (int a, int b);
+typedef void (*LJPEG9_void_func) (int a, int b);
 #else
-typedef void (*void_func) ();
+typedef void (*LJPEG9_void_func) ();
 #endif
 
 #ifdef HAVE_PROTOTYPES		/* check void function result */
-void test3function (void_ptr arg1, void_func arg2)
+void LJPEG9_test3function (LJPEG9_void_ptr arg1, LJPEG9_void_func arg2)
 #else
-void test3function (arg1, arg2)
-     void_ptr arg1;
-     void_func arg2;
+void LJPEG9_test3function (arg1, arg2)
+     LJPEG9_void_ptr arg1;
+     LJPEG9_void_func arg2;
 #endif
 {
   char * locptr = (char *) arg1; /* check casting to and from void * */
@@ -211,8 +211,8 @@ AC_TRY_COMPILE([ typedef struct undefined_structure * undef_struct_ptr; ],
 # Test whether global names are unique to at least 15 chars
 AC_MSG_CHECKING([for short external names])
 AC_TRY_LINK([
-int possibly_duplicate_function () { return 0; }
-int possibly_dupli_function () { return 1; }
+int LJPEG9_possibly_duplicate_function () { return 0; }
+int LJPEG9_possibly_dupli_function () { return 1; }
 ], [],
             [AC_MSG_RESULT(ok)],
             [AC_MSG_RESULT(short)
@@ -228,9 +228,9 @@ AC_TRY_RUN([
 #endif
 #include <stdio.h>
 #ifdef HAVE_PROTOTYPES
-int is_char_signed (int arg)
+int LJPEG9_is_char_signed (int arg)
 #else
-int is_char_signed (arg)
+int LJPEG9_is_char_signed (arg)
      int arg;
 #endif
 {
@@ -245,7 +245,7 @@ int is_char_signed (arg)
 }
 char signed_char_check = (char) (-67);
 int main() {
-  exit(is_char_signed((int) signed_char_check));
+  exit(LJPEG9_is_char_signed((int) signed_char_check));
 }], [AC_MSG_RESULT(no)
      AC_DEFINE([CHAR_IS_UNSIGNED], [1],
                [Characters are unsigned])],
@@ -261,9 +261,9 @@ AC_TRY_RUN([
 #endif
 #include <stdio.h>
 #ifdef HAVE_PROTOTYPES
-int is_shifting_signed (long arg)
+int LJPEG9_is_shifting_signed (long arg)
 #else
-int is_shifting_signed (arg)
+int LJPEG9_is_shifting_signed (arg)
      long arg;
 #endif
 /* See whether right-shift on a long is signed or not. */
@@ -284,7 +284,7 @@ int is_shifting_signed (arg)
   return 0;			/* try it with unsigned anyway */
 }
 int main() {
-  exit(is_shifting_signed(-0x7F7E80B1L));
+  exit(LJPEG9_is_shifting_signed(-0x7F7E80B1L));
 }],
       [AC_MSG_RESULT(no)
        AC_DEFINE([RIGHT_SHIFT_IS_UNSIGNED], [1],

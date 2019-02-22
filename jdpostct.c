@@ -99,18 +99,18 @@ start_pass_dpost (LJPEG9_j_decompress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
   case LJPEG9_JBUF_SAVE_AND_PASS:
     /* First pass of 2-pass quantization */
     if (post->whole_image == NULL)
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     post->pub.post_process_data = post_process_prepass;
     break;
   case LJPEG9_JBUF_CRANK_DEST:
     /* Second pass of 2-pass quantization */
     if (post->whole_image == NULL)
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     post->pub.post_process_data = post_process_2pass;
     break;
 #endif /* QUANT_2PASS_SUPPORTED */
   default:
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     break;
   }
   post->starting_row = post->next_row = 0;
@@ -277,7 +277,7 @@ LJPEG9_jinit_d_post_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full
 				(long) post->strip_height),
 	 post->strip_height);
 #else
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 #endif /* QUANT_2PASS_SUPPORTED */
     } else {
       /* One-pass color quantization: just make a strip buffer. */

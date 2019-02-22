@@ -69,7 +69,7 @@ static FILE * infile;		/* input JPEG file */
 
 
 /* Error exit handler */
-#define ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(LJPEG9_EXIT_FAILURE))
+#define LJPEG9_ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(LJPEG9_EXIT_FAILURE))
 
 
 /* Read one byte, testing for EOF */
@@ -80,7 +80,7 @@ read_1_byte (void)
 
   c = NEXTBYTE();
   if (c == EOF)
-    ERREXIT("Premature EOF in JPEG file");
+    LJPEG9_ERREXIT("Premature EOF in JPEG file");
   return c;
 }
 
@@ -93,10 +93,10 @@ read_2_bytes (void)
 
   c1 = NEXTBYTE();
   if (c1 == EOF)
-    ERREXIT("Premature EOF in JPEG file");
+    LJPEG9_ERREXIT("Premature EOF in JPEG file");
   c2 = NEXTBYTE();
   if (c2 == EOF)
-    ERREXIT("Premature EOF in JPEG file");
+    LJPEG9_ERREXIT("Premature EOF in JPEG file");
   return (((unsigned int) c1) << 8) + ((unsigned int) c2);
 }
 
@@ -181,7 +181,7 @@ first_marker (void)
   c1 = NEXTBYTE();
   c2 = NEXTBYTE();
   if (c1 != 0xFF || c2 != M_SOI)
-    ERREXIT("Not a JPEG file");
+    LJPEG9_ERREXIT("Not a JPEG file");
   return c2;
 }
 
@@ -205,7 +205,7 @@ skip_variable (void)
   length = read_2_bytes();
   /* Length includes itself, so must be at least 2 */
   if (length < 2)
-    ERREXIT("Erroneous JPEG marker length");
+    LJPEG9_ERREXIT("Erroneous JPEG marker length");
   length -= 2;
   /* Skip over the remaining bytes */
   while (length > 0) {
@@ -237,7 +237,7 @@ process_COM (int raw)
   length = read_2_bytes();
   /* Length includes itself, so must be at least 2 */
   if (length < 2)
-    ERREXIT("Erroneous JPEG marker length");
+    LJPEG9_ERREXIT("Erroneous JPEG marker length");
   length -= 2;
 
   while (length > 0) {
@@ -316,7 +316,7 @@ process_SOFn (int marker)
   printf("JPEG process: %s\n", process);
 
   if (length != (unsigned int) (8 + num_components * 3))
-    ERREXIT("Bogus SOF marker length");
+    LJPEG9_ERREXIT("Bogus SOF marker length");
 
   for (ci = 0; ci < num_components; ci++) {
     (void) read_1_byte();	/* Component ID code */
@@ -343,7 +343,7 @@ scan_JPEG_header (int verbose, int raw)
 
   /* Expect SOI at start of file */
   if (first_marker() != M_SOI)
-    ERREXIT("Expected SOI marker first");
+    LJPEG9_ERREXIT("Expected SOI marker first");
 
   /* Scan miscellaneous markers until we reach SOS. */
   for (;;) {

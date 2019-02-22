@@ -1450,7 +1450,7 @@ messages.  See the sample applications cjpeg/djpeg for an example of using
 addon messages (the addon messages are defined in cderror.h).
 
 Actual invocation of the error handler is done via macros defined in jerror.h:
-	ERREXITn(...)	for fatal errors
+	LJPEG9_ERREXITn(...)	for fatal errors
 	WARNMSn(...)	for corrupt-data warnings
 	TRACEMSn(...)	for trace and informational messages.
 These macros store the message code and any additional parameters into the
@@ -1597,7 +1597,7 @@ term_source (LJPEG9_j_decompress_ptr cinfo)
 
 For both fill_input_buffer() and skip_input_data(), there is no such thing
 as an EOF return.  If the end of the file has been reached, the routine has
-a choice of exiting via ERREXIT() or inserting fake data into the buffer.
+a choice of exiting via LJPEG9_ERREXIT() or inserting fake data into the buffer.
 In most cases, generating a warning message and inserting a fake EOI marker
 is the best course of action --- this will allow the decompressor to output
 however much of the image is there.  In pathological cases, the decompressor

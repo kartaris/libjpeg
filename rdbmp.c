@@ -65,7 +65,7 @@ typedef struct _bmp_source_struct {
 } bmp_source_struct;
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 read_byte (bmp_source_ptr sinfo)
 /* Read next byte from BMP file */
 {
@@ -73,12 +73,12 @@ read_byte (bmp_source_ptr sinfo)
   register int c;
 
   if ((c = getc(infile)) == EOF)
-    ERREXIT(sinfo->cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(sinfo->cinfo, JERR_INPUT_EOF);
   return c;
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 read_colormap (bmp_source_ptr sinfo, int cmaplen, int mapentrysize)
 /* Read the colormap from a BMP file */
 {
@@ -103,7 +103,7 @@ read_colormap (bmp_source_ptr sinfo, int cmaplen, int mapentrysize)
     }
     break;
   default:
-    ERREXIT(sinfo->cinfo, LJPEG9_JERR_BMP_BADCMAP);
+    LJPEG9_ERREXIT(sinfo->cinfo, LJPEG9_JERR_BMP_BADCMAP);
     break;
   }
 }
@@ -240,7 +240,7 @@ preload_image (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     for (col = source->row_width; col > 0; col--) {
       /* inline copy of read_byte() for speed */
       if ((c = getc(infile)) == EOF)
-	ERREXIT(cinfo, JERR_INPUT_EOF);
+	LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
       *out_ptr++ = (JSAMPLE) c;
     }
   }
@@ -259,7 +259,7 @@ preload_image (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     source->pub.get_pixel_rows = get_32bit_row;
     break;
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_BADDEPTH);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADDEPTH);
   }
   source->source_row = cinfo->image_height;
 
@@ -298,9 +298,9 @@ start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
   /* Read and verify the bitmap file header */
   if (! ReadOK(source->pub.input_file, bmpfileheader, 14))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   if (GET_2B(bmpfileheader,0) != 0x4D42) /* 'BM' */
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_NOT);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_NOT);
   bfOffBits = (INT32) GET_4B(bmpfileheader,10);
   /* We ignore the remaining fileheader fields */
 
@@ -308,12 +308,12 @@ start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
    * or 64 bytes (OS/2 2.x).  Check the first 4 bytes to find out which.
    */
   if (! ReadOK(source->pub.input_file, bmpinfoheader, 4))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   headerSize = (INT32) GET_4B(bmpinfoheader,0);
   if (headerSize < 12 || headerSize > 64)
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_BADHEADER);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADHEADER);
   if (! ReadOK(source->pub.input_file, bmpinfoheader+4, headerSize-4))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
 
   switch ((int) headerSize) {
   case 12:
@@ -332,7 +332,7 @@ start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
       TRACEMS2(cinfo, 1, LJPEG9_JTRC_BMP_OS2, (int) biWidth, (int) biHeight);
       break;
     default:
-      ERREXIT(cinfo, LJPEG9_JERR_BMP_BADDEPTH);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADDEPTH);
       break;
     }
     break;
@@ -362,11 +362,11 @@ start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
       TRACEMS2(cinfo, 1, LJPEG9_JTRC_BMP, (int) biWidth, (int) biHeight);
       break;
     default:
-      ERREXIT(cinfo, LJPEG9_JERR_BMP_BADDEPTH);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADDEPTH);
       break;
     }
     if (biCompression != 0)
-      ERREXIT(cinfo, LJPEG9_JERR_BMP_COMPRESSED);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_COMPRESSED);
 
     if (biXPelsPerMeter > 0 && biYPelsPerMeter > 0) {
       /* Set JFIF density parameters from the BMP data */
@@ -376,14 +376,14 @@ start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     }
     break;
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_BADHEADER);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADHEADER);
     return;
   }
 
   if (biWidth <= 0 || biHeight <= 0)
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_EMPTY);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_EMPTY);
   if (biPlanes != 1)
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_BADPLANES);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADPLANES);
 
   /* Compute distance to bitmap data --- will adjust for colormap below */
   bPad = bfOffBits - (headerSize + 14);
@@ -393,7 +393,7 @@ start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     if (biClrUsed <= 0)
       biClrUsed = 256;		/* assume it's 256 */
     else if (biClrUsed > 256)
-      ERREXIT(cinfo, LJPEG9_JERR_BMP_BADCMAP);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADCMAP);
     /* Allocate space to store the colormap */
     source->colormap = (*cinfo->mem->alloc_sarray)
       ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
@@ -406,7 +406,7 @@ start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
   /* Skip any remaining pad bytes */
   if (bPad < 0)			/* incorrect bfOffBits value? */
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_BADHEADER);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_BADHEADER);
   while (--bPad >= 0) {
     (void) read_byte(source);
   }

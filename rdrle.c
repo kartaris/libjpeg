@@ -94,19 +94,19 @@ start_input_rle (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     /* A-OK */
     break;
   case RLE_NOT_RLE:
-    ERREXIT(cinfo, LJPEG9_JERR_RLE_NOT);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_RLE_NOT);
     break;
   case RLE_NO_SPACE:
-    ERREXIT(cinfo, LJPEG9_JERR_RLE_MEM);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_RLE_MEM);
     break;
   case RLE_EMPTY:
-    ERREXIT(cinfo, LJPEG9_JERR_RLE_EMPTY);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_RLE_EMPTY);
     break;
   case RLE_EOF:
-    ERREXIT(cinfo, LJPEG9_JERR_RLE_EOF);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_RLE_EOF);
     break;
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_RLE_BADERROR);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_RLE_BADERROR);
     break;
   }
 
@@ -140,7 +140,7 @@ start_input_rle (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     source->visual     = DIRECTCOLOR;
     TRACEMS2(cinfo, 1, LJPEG9_JTRC_RLE, width, height);
   } else
-    ERREXIT(cinfo, LJPEG9_JERR_RLE_UNSUPPORTED);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_RLE_UNSUPPORTED);
   
   if (source->visual == GRAYSCALE || source->visual == MAPPEDGRAY) {
     cinfo->in_color_space   = JCS_GRAYSCALE;

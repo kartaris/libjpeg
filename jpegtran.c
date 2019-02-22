@@ -42,7 +42,7 @@ static JCOPY_OPTION copyoption;	/* -copy switch */
 static jpeg_transform_info transformoption; /* image transformation options */
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 usage (void)
 /* complain about bad command line */
 {
@@ -94,7 +94,7 @@ usage (void)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 select_transform (JXFORM_CODE transform)
 /* Silly little routine to detect multiple transform options,
  * which we can't handle.
@@ -117,7 +117,7 @@ select_transform (JXFORM_CODE transform)
 }
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
 		int last_file_arg_seen, boolean for_real)
 /* Parse optional switches.

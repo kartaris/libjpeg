@@ -308,7 +308,7 @@ LJPEG9_jinit_upsampler (LJPEG9_j_decompress_ptr cinfo)
   upsample->pub.need_context_rows = FALSE; /* until we find out differently */
 
   if (cinfo->CCIR601_sampling)	/* this isn't supported */
-    ERREXIT(cinfo, JERR_CCIR601_NOTIMPL);
+    LJPEG9_ERREXIT(cinfo, JERR_CCIR601_NOTIMPL);
 
   /* Verify we can handle the sampling factors, select per-component methods,
    * and create storage as needed.
@@ -349,7 +349,7 @@ LJPEG9_jinit_upsampler (LJPEG9_j_decompress_ptr cinfo)
       upsample->h_expand[ci] = (UINT8) (h_out_group / h_in_group);
       upsample->v_expand[ci] = (UINT8) (v_out_group / v_in_group);
     } else
-      ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
     if (need_buffer) {
       upsample->color_buf[ci] = (*cinfo->mem->alloc_sarray)
 	((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,

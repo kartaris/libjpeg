@@ -247,12 +247,12 @@ start_pass (LJPEG9_j_decompress_ptr cinfo)
 	break;
 #endif
       default:
-	ERREXIT(cinfo, JERR_NOT_COMPILED);
+	LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 	break;
       }
       break;
     default:
-      ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
+      LJPEG9_ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
 	       compptr->DCT_h_scaled_size, compptr->DCT_v_scaled_size);
       break;
     }
@@ -347,7 +347,7 @@ start_pass (LJPEG9_j_decompress_ptr cinfo)
       break;
 #endif
     default:
-      ERREXIT(cinfo, JERR_NOT_COMPILED);
+      LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
       break;
     }
   }

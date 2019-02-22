@@ -241,7 +241,7 @@ typedef unsigned int LJPEG9_JDIMENSION;
 /* a function called through method pointers: */
 #define LJPEG9_METHODDEF(type)		static type
 /* a function used only in its module: */
-#define LOCAL(type)		static type
+#define LJPEG9_LOCAL(type)		static type
 /* a function referenced thru EXTERNs: */
 #define LJPEG9_GLOBAL(type)		type
 /* a reference to a LJPEG9_GLOBAL function: */

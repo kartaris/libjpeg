@@ -111,7 +111,7 @@ empty_output_buffer (LJPEG9_j_compress_ptr cinfo)
 
   if (JFWRITE(dest->outfile, dest->buffer, OUTPUT_BUF_SIZE) !=
       (size_t) OUTPUT_BUF_SIZE)
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 
   dest->pub.next_output_byte = dest->buffer;
   dest->pub.free_in_buffer = OUTPUT_BUF_SIZE;
@@ -131,7 +131,7 @@ empty_mem_output_buffer (LJPEG9_j_compress_ptr cinfo)
   nextbuffer = (JOCTET *) malloc(nextsize);
 
   if (nextbuffer == NULL)
-    ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 10);
+    LJPEG9_ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 10);
 
   MEMCOPY(nextbuffer, dest->buffer, dest->bufsize);
 
@@ -168,12 +168,12 @@ term_destination (LJPEG9_j_compress_ptr cinfo)
   /* Write any data remaining in the buffer */
   if (datacount > 0) {
     if (JFWRITE(dest->outfile, dest->buffer, datacount) != datacount)
-      ERREXIT(cinfo, JERR_FILE_WRITE);
+      LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
   }
   fflush(dest->outfile);
   /* Make sure we wrote the output file OK */
   if (ferror(dest->outfile))
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 }
 
 LJPEG9_METHODDEF(void)
@@ -238,7 +238,7 @@ jpeg_mem_dest (LJPEG9_j_compress_ptr cinfo,
   my_mem_dest_ptr dest;
 
   if (outbuffer == NULL || outsize == NULL)	/* sanity check */
-    ERREXIT(cinfo, JERR_BUFFER_SIZE);
+    LJPEG9_ERREXIT(cinfo, JERR_BUFFER_SIZE);
 
   /* The destination object is made permanent so that multiple JPEG images
    * can be written to the same buffer without re-executing jpeg_mem_dest.
@@ -261,7 +261,7 @@ jpeg_mem_dest (LJPEG9_j_compress_ptr cinfo,
     /* Allocate initial buffer */
     dest->newbuffer = *outbuffer = (unsigned char *) malloc(OUTPUT_BUF_SIZE);
     if (dest->newbuffer == NULL)
-      ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 10);
+      LJPEG9_ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 10);
     *outsize = OUTPUT_BUF_SIZE;
   }
 

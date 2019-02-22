@@ -97,15 +97,15 @@ start_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
    */
 
   if (cinfo->output_width > 32767 || cinfo->output_height > 32767)
-    ERREXIT2(cinfo, LJPEG9_JERR_RLE_DIMENSIONS, cinfo->output_width,
+    LJPEG9_ERREXIT2(cinfo, LJPEG9_JERR_RLE_DIMENSIONS, cinfo->output_width,
 	     cinfo->output_height);
 
   if (cinfo->out_color_space != JCS_GRAYSCALE &&
       cinfo->out_color_space != JCS_RGB)
-    ERREXIT(cinfo, LJPEG9_JERR_RLE_COLORSPACE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_RLE_COLORSPACE);
 
   if (cinfo->output_components != 1 && cinfo->output_components != 3)
-    ERREXIT1(cinfo, LJPEG9_JERR_RLE_TOOMANYCHANNELS, cinfo->num_components);
+    LJPEG9_ERREXIT1(cinfo, LJPEG9_JERR_RLE_TOOMANYCHANNELS, cinfo->num_components);
 
   /* Convert colormap, if any, to RLE format. */
 
@@ -265,7 +265,7 @@ finish_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
   rle_puteof(&header);
   fflush(dest->pub.output_file);
   if (ferror(dest->pub.output_file))
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 }
 
 

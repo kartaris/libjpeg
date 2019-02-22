@@ -193,7 +193,7 @@ start_output_ppm (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 	    PPM_MAXVAL);
     break;
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_PPM_COLORSPACE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_PPM_COLORSPACE);
   }
 }
 
@@ -208,7 +208,7 @@ finish_output_ppm (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
   /* Make sure we wrote the output file OK */
   fflush(dinfo->output_file);
   if (ferror(dinfo->output_file))
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 }
 
 

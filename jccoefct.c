@@ -69,7 +69,7 @@ LJPEG9_METHODDEF(boolean) compress_output
 #endif
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 start_iMCU_row (LJPEG9_j_compress_ptr cinfo)
 /* Reset within-iMCU-row counters for a new row */
 {
@@ -108,23 +108,23 @@ start_pass_coef (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
   switch (pass_mode) {
   case LJPEG9_JBUF_PASS_THRU:
     if (coef->whole_image[0] != NULL)
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     coef->pub.compress_data = compress_data;
     break;
 #ifdef FULL_COEF_BUFFER_SUPPORTED
   case LJPEG9_JBUF_SAVE_AND_PASS:
     if (coef->whole_image[0] == NULL)
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     coef->pub.compress_data = compress_first_pass;
     break;
   case LJPEG9_JBUF_CRANK_DEST:
     if (coef->whole_image[0] == NULL)
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     coef->pub.compress_data = compress_output;
     break;
 #endif
   default:
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     break;
   }
 }
@@ -436,7 +436,7 @@ LJPEG9_jinit_c_coef_controller (LJPEG9_j_compress_ptr cinfo, boolean need_full_b
 	 (LJPEG9_JDIMENSION) compptr->v_samp_factor);
     }
 #else
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 #endif
   } else {
     /* We only need a single-MCU buffer. */

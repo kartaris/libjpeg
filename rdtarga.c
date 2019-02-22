@@ -84,7 +84,7 @@ static const UINT8 c5to8bits[32] = {
 
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 read_byte (tga_source_ptr sinfo)
 /* Read next byte from Targa file */
 {
@@ -92,12 +92,12 @@ read_byte (tga_source_ptr sinfo)
   register int c;
 
   if ((c = getc(infile)) == EOF)
-    ERREXIT(sinfo->cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(sinfo->cinfo, JERR_INPUT_EOF);
   return c;
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 read_colormap (tga_source_ptr sinfo, int cmaplen, int mapentrysize)
 /* Read the colormap from a Targa file */
 {
@@ -105,7 +105,7 @@ read_colormap (tga_source_ptr sinfo, int cmaplen, int mapentrysize)
 
   /* Presently only handles 24-bit BGR format */
   if (mapentrysize != 24)
-    ERREXIT(sinfo->cinfo, LJPEG9_JERR_TGA_BADCMAP);
+    LJPEG9_ERREXIT(sinfo->cinfo, LJPEG9_JERR_TGA_BADCMAP);
 
   for (i = 0; i < cmaplen; i++) {
     sinfo->colormap[2][i] = (JSAMPLE) read_byte(sinfo);
@@ -342,7 +342,7 @@ start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 			 (((unsigned int) UCH(targaheader[offset+1])) << 8))
 
   if (! ReadOK(source->pub.input_file, targaheader, 18))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
 
   /* Pretend "15-bit" pixels are 16-bit --- we ignore attribute bit anyway */
   if (targaheader[16] == 15)
@@ -364,7 +364,7 @@ start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
       source->pixel_size < 1 || source->pixel_size > 4 ||
       (UCH(targaheader[16]) & 7) != 0 || /* bits/pixel must be multiple of 8 */
       interlace_type != 0)	/* currently don't allow interlaced image */
-    ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
   
   if (subtype > 8) {
     /* It's an RLE-coded file */
@@ -385,7 +385,7 @@ start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     if (source->pixel_size == 1 && cmaptype == 1)
       source->get_pixel_rows = get_8bit_row;
     else
-      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
     TRACEMS2(cinfo, 1, LJPEG9_JTRC_TGA_MAPPED, width, height);
     break;
   case 2:			/* RGB image */
@@ -400,7 +400,7 @@ start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
       source->get_pixel_rows = get_32bit_row;
       break;
     default:
-      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
       break;
     }
     TRACEMS2(cinfo, 1, LJPEG9_JTRC_TGA, width, height);
@@ -411,11 +411,11 @@ start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     if (source->pixel_size == 1)
       source->get_pixel_rows = get_8bit_gray_row;
     else
-      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
     TRACEMS2(cinfo, 1, LJPEG9_JTRC_TGA_GRAY, width, height);
     break;
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
     break;
   }
 
@@ -446,7 +446,7 @@ start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
   if (maplen > 0) {
     if (maplen > 256 || GET_2B(3) != 0)
-      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADCMAP);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_BADCMAP);
     /* Allocate space to store the colormap */
     source->colormap = (*cinfo->mem->alloc_sarray)
       ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, (LJPEG9_JDIMENSION) maplen, (LJPEG9_JDIMENSION) 3);
@@ -454,7 +454,7 @@ start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     read_colormap(source, (int) maplen, UCH(targaheader[7]));
   } else {
     if (cmaptype)		/* but you promised a cmap! */
-      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
     source->colormap = NULL;
   }
 

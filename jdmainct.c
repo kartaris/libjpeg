@@ -154,7 +154,7 @@ LJPEG9_METHODDEF(void) process_data_crank_post
 #endif
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 alloc_funny_pointers (LJPEG9_j_decompress_ptr cinfo)
 /* Allocate space for the funny pointer lists.
  * This is done only once, not once per pass.
@@ -192,7 +192,7 @@ alloc_funny_pointers (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 make_funny_pointers (LJPEG9_j_decompress_ptr cinfo)
 /* Create the funny pointer lists discussed in the comments above.
  * The actual workspace is already allocated (in main->buffer),
@@ -235,7 +235,7 @@ make_funny_pointers (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 set_wraparound_pointers (LJPEG9_j_decompress_ptr cinfo)
 /* Set up the "wraparound" pointers at top and bottom of the pointer lists.
  * This changes the pointer list state from top-of-image to the normal state.
@@ -263,7 +263,7 @@ set_wraparound_pointers (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 set_bottom_pointers (LJPEG9_j_decompress_ptr cinfo)
 /* Change the pointer lists to duplicate the last sample row at the bottom
  * of the image.  whichptr indicates which xbuffer holds the final iMCU row.
@@ -331,7 +331,7 @@ start_pass_main (LJPEG9_j_decompress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
     break;
 #endif
   default:
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     break;
   }
 }
@@ -487,14 +487,14 @@ LJPEG9_jinit_d_main_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full
   mainp->pub.start_pass = start_pass_main;
 
   if (need_full_buffer)		/* shouldn't happen */
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 
   /* Allocate the workspace.
    * ngroups is the number of row groups we need.
    */
   if (cinfo->upsample->need_context_rows) {
     if (cinfo->min_DCT_v_scaled_size < 2) /* unsupported, see comments above */
-      ERREXIT(cinfo, JERR_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_NOTIMPL);
     alloc_funny_pointers(cinfo); /* Alloc space for xbuffer[] lists */
     ngroups = cinfo->min_DCT_v_scaled_size + 2;
   } else {

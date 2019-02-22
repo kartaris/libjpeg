@@ -195,7 +195,7 @@ typedef my_marker_reader * my_marker_ptr;
  */
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_soi (LJPEG9_j_decompress_ptr cinfo)
 /* Process an SOI marker */
 {
@@ -204,7 +204,7 @@ get_soi (LJPEG9_j_decompress_ptr cinfo)
   TRACEMS(cinfo, 1, JTRC_SOI);
 
   if (cinfo->marker->saw_SOI)
-    ERREXIT(cinfo, JERR_SOI_DUPLICATE);
+    LJPEG9_ERREXIT(cinfo, JERR_SOI_DUPLICATE);
 
   /* Reset all parameters that are defined to be reset by SOI */
 
@@ -236,7 +236,7 @@ get_soi (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_sof (LJPEG9_j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
 	 boolean is_arith)
 /* Process a SOFn marker */
@@ -264,17 +264,17 @@ get_sof (LJPEG9_j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
 	   cinfo->num_components);
 
   if (cinfo->marker->saw_SOF)
-    ERREXIT(cinfo, JERR_SOF_DUPLICATE);
+    LJPEG9_ERREXIT(cinfo, JERR_SOF_DUPLICATE);
 
   /* We don't support files in which the image height is initially specified */
   /* as 0 and is later redefined by DNL.  As long as we have to check that,  */
   /* might as well have a general sanity check. */
   if (cinfo->image_height <= 0 || cinfo->image_width <= 0 ||
       cinfo->num_components <= 0)
-    ERREXIT(cinfo, JERR_EMPTY_IMAGE);
+    LJPEG9_ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
   if (length != (cinfo->num_components * 3))
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   if (cinfo->comp_info == NULL)	/* do only once, even if suspend */
     cinfo->comp_info = (jpeg_component_info *) (*cinfo->mem->alloc_small)
@@ -318,7 +318,7 @@ get_sof (LJPEG9_j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_sos (LJPEG9_j_decompress_ptr cinfo)
 /* Process a SOS marker */
 {
@@ -328,7 +328,7 @@ get_sos (LJPEG9_j_decompress_ptr cinfo)
   INPUT_VARS(cinfo);
 
   if (! cinfo->marker->saw_SOF)
-    ERREXITS(cinfo, JERR_SOF_BEFORE, "SOS");
+    LJPEG9_ERREXITS(cinfo, JERR_SOF_BEFORE, "SOS");
 
   INPUT_2BYTES(cinfo, length, return FALSE);
 
@@ -339,7 +339,7 @@ get_sos (LJPEG9_j_decompress_ptr cinfo)
   if (length != (n * 2 + 6) || n > MAX_COMPS_IN_SCAN ||
       (n == 0 && !cinfo->progressive_mode))
       /* pseudo SOS marker only allowed in progressive mode */
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   cinfo->comps_in_scan = n;
 
@@ -371,7 +371,7 @@ get_sos (LJPEG9_j_decompress_ptr cinfo)
 	goto id_found;
     }
 
-    ERREXIT1(cinfo, JERR_BAD_COMPONENT_ID, c);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_COMPONENT_ID, c);
 
   id_found:
 
@@ -409,7 +409,7 @@ get_sos (LJPEG9_j_decompress_ptr cinfo)
 
 #ifdef D_ARITH_CODING_SUPPORTED
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_dac (LJPEG9_j_decompress_ptr cinfo)
 /* Process a DAC marker */
 {
@@ -429,7 +429,7 @@ get_dac (LJPEG9_j_decompress_ptr cinfo)
     TRACEMS2(cinfo, 1, JTRC_DAC, index, val);
 
     if (index < 0 || index >= (2*NUM_ARITH_TBLS))
-      ERREXIT1(cinfo, JERR_DAC_INDEX, index);
+      LJPEG9_ERREXIT1(cinfo, JERR_DAC_INDEX, index);
 
     if (index >= NUM_ARITH_TBLS) { /* define AC table */
       cinfo->arith_ac_K[index-NUM_ARITH_TBLS] = (UINT8) val;
@@ -437,12 +437,12 @@ get_dac (LJPEG9_j_decompress_ptr cinfo)
       cinfo->arith_dc_L[index] = (UINT8) (val & 0x0F);
       cinfo->arith_dc_U[index] = (UINT8) (val >> 4);
       if (cinfo->arith_dc_L[index] > cinfo->arith_dc_U[index])
-	ERREXIT1(cinfo, JERR_DAC_VALUE, val);
+	LJPEG9_ERREXIT1(cinfo, JERR_DAC_VALUE, val);
     }
   }
 
   if (length != 0)
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   INPUT_SYNC(cinfo);
   return TRUE;
@@ -455,7 +455,7 @@ get_dac (LJPEG9_j_decompress_ptr cinfo)
 #endif /* D_ARITH_CODING_SUPPORTED */
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_dht (LJPEG9_j_decompress_ptr cinfo)
 /* Process a DHT marker */
 {
@@ -494,7 +494,7 @@ get_dht (LJPEG9_j_decompress_ptr cinfo)
      * off the end of our table space.  jdhuff.c will check more carefully.
      */
     if (count > 256 || ((INT32) count) > length)
-      ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
 
     MEMZERO(huffval, SIZEOF(huffval)); /* pre-zero array for later copy */
 
@@ -511,7 +511,7 @@ get_dht (LJPEG9_j_decompress_ptr cinfo)
     }
 
     if (index < 0 || index >= NUM_HUFF_TBLS)
-      ERREXIT1(cinfo, JERR_DHT_INDEX, index);
+      LJPEG9_ERREXIT1(cinfo, JERR_DHT_INDEX, index);
 
     if (*htblptr == NULL)
       *htblptr = jpeg_alloc_huff_table((LJPEG9_j_common_ptr) cinfo);
@@ -521,14 +521,14 @@ get_dht (LJPEG9_j_decompress_ptr cinfo)
   }
 
   if (length != 0)
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   INPUT_SYNC(cinfo);
   return TRUE;
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_dqt (LJPEG9_j_decompress_ptr cinfo)
 /* Process a DQT marker */
 {
@@ -551,7 +551,7 @@ get_dqt (LJPEG9_j_decompress_ptr cinfo)
     TRACEMS2(cinfo, 1, JTRC_DQT, n, prec);
 
     if (n >= NUM_QUANT_TBLS)
-      ERREXIT1(cinfo, JERR_DQT_INDEX, n);
+      LJPEG9_ERREXIT1(cinfo, JERR_DQT_INDEX, n);
       
     if (cinfo->quant_tbl_ptrs[n] == NULL)
       cinfo->quant_tbl_ptrs[n] = jpeg_alloc_quant_table((LJPEG9_j_common_ptr) cinfo);
@@ -611,14 +611,14 @@ get_dqt (LJPEG9_j_decompress_ptr cinfo)
   }
 
   if (length != 0)
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   INPUT_SYNC(cinfo);
   return TRUE;
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_dri (LJPEG9_j_decompress_ptr cinfo)
 /* Process a DRI marker */
 {
@@ -629,7 +629,7 @@ get_dri (LJPEG9_j_decompress_ptr cinfo)
   INPUT_2BYTES(cinfo, length, return FALSE);
   
   if (length != 4)
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   INPUT_2BYTES(cinfo, tmp, return FALSE);
 
@@ -642,7 +642,7 @@ get_dri (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 get_lse (LJPEG9_j_decompress_ptr cinfo)
 /* Process an LSE marker */
 {
@@ -652,18 +652,18 @@ get_lse (LJPEG9_j_decompress_ptr cinfo)
   INPUT_VARS(cinfo);
 
   if (! cinfo->marker->saw_SOF)
-    ERREXITS(cinfo, JERR_SOF_BEFORE, "LSE");
+    LJPEG9_ERREXITS(cinfo, JERR_SOF_BEFORE, "LSE");
 
   if (cinfo->num_components < 3) goto bad;
 
   INPUT_2BYTES(cinfo, length, return FALSE);
 
   if (length != 24)
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   INPUT_BYTE(cinfo, tmp, return FALSE);
   if (tmp != 0x0D)	/* ID inverse transform specification */
-    ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
+    LJPEG9_ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
   INPUT_2BYTES(cinfo, tmp, return FALSE);
   if (tmp != MAXJSAMPLE) goto bad;		/* MAXTRANS */
   INPUT_BYTE(cinfo, tmp, return FALSE);
@@ -693,7 +693,7 @@ get_lse (LJPEG9_j_decompress_ptr cinfo)
   INPUT_2BYTES(cinfo, tmp, return FALSE);
   if (tmp != 0) {				/* A(3,2)=0 */
     bad:
-    ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+    LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
   }
 
   /* OK, valid transform that we can handle. */
@@ -716,7 +716,7 @@ get_lse (LJPEG9_j_decompress_ptr cinfo)
 #define APPN_DATA_LEN	14	/* Must be the largest of the above!! */
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 examine_app0 (LJPEG9_j_decompress_ptr cinfo, JOCTET FAR * data,
 	      unsigned int datalen, INT32 remaining)
 /* Examine first few bytes from an APP0.
@@ -793,7 +793,7 @@ examine_app0 (LJPEG9_j_decompress_ptr cinfo, JOCTET FAR * data,
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 examine_app14 (LJPEG9_j_decompress_ptr cinfo, JOCTET FAR * data,
 	       unsigned int datalen, INT32 remaining)
 /* Examine first few bytes from an APP14.
@@ -857,7 +857,7 @@ get_interesting_appn (LJPEG9_j_decompress_ptr cinfo)
     break;
   default:
     /* can't get here unless jpeg_save_markers chooses wrong processor */
-    ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
+    LJPEG9_ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
     break;
   }
 
@@ -1007,7 +1007,7 @@ skip_variable (LJPEG9_j_decompress_ptr cinfo)
  * but it will never be 0 or FF.
  */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 next_marker (LJPEG9_j_decompress_ptr cinfo)
 {
   int c;
@@ -1054,7 +1054,7 @@ next_marker (LJPEG9_j_decompress_ptr cinfo)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 first_marker (LJPEG9_j_decompress_ptr cinfo)
 /* Like next_marker, but used to obtain the initial SOI marker. */
 /* For this marker, we do not allow preceding garbage or fill; otherwise,
@@ -1069,7 +1069,7 @@ first_marker (LJPEG9_j_decompress_ptr cinfo)
   INPUT_BYTE(cinfo, c, return FALSE);
   INPUT_BYTE(cinfo, c2, return FALSE);
   if (c != 0xFF || c2 != (int) M_SOI)
-    ERREXIT2(cinfo, JERR_NO_SOI, c, c2);
+    LJPEG9_ERREXIT2(cinfo, JERR_NO_SOI, c, c2);
 
   cinfo->unread_marker = c2;
 
@@ -1151,7 +1151,7 @@ read_markers (LJPEG9_j_decompress_ptr cinfo)
     case M_SOF13:		/* Differential sequential, arithmetic */
     case M_SOF14:		/* Differential progressive, arithmetic */
     case M_SOF15:		/* Differential lossless, arithmetic */
-      ERREXIT1(cinfo, JERR_SOF_UNSUPPORTED, cinfo->unread_marker);
+      LJPEG9_ERREXIT1(cinfo, JERR_SOF_UNSUPPORTED, cinfo->unread_marker);
       break;
 
     case M_SOS:
@@ -1239,7 +1239,7 @@ read_markers (LJPEG9_j_decompress_ptr cinfo)
        * Once the JPEG 3 version-number marker is well defined, this code
        * ought to change!
        */
-      ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
+      LJPEG9_ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, cinfo->unread_marker);
       break;
     }
     /* Successfully processed marker, so reset state variable */
@@ -1486,7 +1486,7 @@ jpeg_save_markers (LJPEG9_j_decompress_ptr cinfo, int marker_code,
     marker->process_APPn[marker_code - (int) M_APP0] = processor;
     marker->length_limit_APPn[marker_code - (int) M_APP0] = length_limit;
   } else
-    ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, marker_code);
+    LJPEG9_ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, marker_code);
 }
 
 #endif /* SAVE_MARKERS_SUPPORTED */
@@ -1507,5 +1507,5 @@ jpeg_set_marker_processor (LJPEG9_j_decompress_ptr cinfo, int marker_code,
   else if (marker_code >= (int) M_APP0 && marker_code <= (int) M_APP15)
     marker->process_APPn[marker_code - (int) M_APP0] = routine;
   else
-    ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, marker_code);
+    LJPEG9_ERREXIT1(cinfo, JERR_UNKNOWN_MARKER, marker_code);
 }

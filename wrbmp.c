@@ -57,7 +57,7 @@ typedef bmp_dest_struct * bmp_dest_ptr;
 
 
 /* Forward declarations */
-LOCAL(void) write_colormap
+LJPEG9_LOCAL(void) write_colormap
 	JPP((LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest,
 	     int map_colors, int map_entry_size));
 
@@ -153,7 +153,7 @@ start_output_bmp (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
  * First, routines to write the Windows and OS/2 variants of the file header.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 write_bmp_header (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest)
 /* Write a Windows-style BMP file header, including colormap if needed */
 {
@@ -217,16 +217,16 @@ write_bmp_header (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest)
   /* we leave biClrImportant = 0 */
 
   if (JFWRITE(dest->pub.output_file, bmpfileheader, 14) != (size_t) 14)
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
   if (JFWRITE(dest->pub.output_file, bmpinfoheader, 40) != (size_t) 40)
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 
   if (cmap_entries > 0)
     write_colormap(cinfo, dest, cmap_entries, 4);
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 write_os2_header (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest)
 /* Write an OS2-style BMP file header, including colormap if needed */
 {
@@ -274,9 +274,9 @@ write_os2_header (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest)
   PUT_2B(bmpcoreheader, 10, bits_per_pixel); /* bcBitCount */
 
   if (JFWRITE(dest->pub.output_file, bmpfileheader, 14) != (size_t) 14)
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
   if (JFWRITE(dest->pub.output_file, bmpcoreheader, 12) != (size_t) 12)
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 
   if (cmap_entries > 0)
     write_colormap(cinfo, dest, cmap_entries, 3);
@@ -288,7 +288,7 @@ write_os2_header (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest)
  * Windows uses BGR0 map entries; OS/2 uses BGR entries.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 write_colormap (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest,
 		int map_colors, int map_entry_size)
 {
@@ -329,7 +329,7 @@ write_colormap (LJPEG9_j_decompress_ptr cinfo, bmp_dest_ptr dest,
   }
   /* Pad colormap with zeros to ensure specified number of colormap entries */ 
   if (i > map_colors)
-    ERREXIT1(cinfo, LJPEG9_JERR_TOO_MANY_COLORS, i);
+    LJPEG9_ERREXIT1(cinfo, LJPEG9_JERR_TOO_MANY_COLORS, i);
   for (; i < map_colors; i++) {
     putc(0, outfile);
     putc(0, outfile);
@@ -378,7 +378,7 @@ finish_output_bmp (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
   /* Make sure we wrote the output file OK */
   fflush(outfile);
   if (ferror(outfile))
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 }
 
 
@@ -408,7 +408,7 @@ LJPEG9_jinit_write_bmp (LJPEG9_j_decompress_ptr cinfo, boolean is_os2)
     else
       dest->pub.put_pixel_rows = put_pixel_rows;
   } else {
-    ERREXIT(cinfo, LJPEG9_JERR_BMP_COLORSPACE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BMP_COLORSPACE);
   }
 
   /* Calculate output image dimensions so we can allocate space */

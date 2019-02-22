@@ -80,7 +80,7 @@ start_pass_prep (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
   my_prep_ptr prep = (my_prep_ptr) cinfo->prep;
 
   if (pass_mode != LJPEG9_JBUF_PASS_THRU)
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 
   /* Initialize total-height counter for detecting bottom of image */
   prep->rows_to_go = cinfo->image_height;
@@ -102,7 +102,7 @@ start_pass_prep (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
  * by duplicating the bottom row.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 expand_bottom_edge (LJPEG9_JSAMPARRAY image_data, LJPEG9_JDIMENSION num_cols,
 		    int input_rows, int output_rows)
 {
@@ -265,7 +265,7 @@ pre_process_context (LJPEG9_j_compress_ptr cinfo,
  * Create the wrapped-around downsampling input buffer needed for context mode.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 create_context_buffer (LJPEG9_j_compress_ptr cinfo)
 {
   my_prep_ptr prep = (my_prep_ptr) cinfo->prep;
@@ -322,7 +322,7 @@ LJPEG9_jinit_c_prep_controller (LJPEG9_j_compress_ptr cinfo, boolean need_full_b
   jpeg_component_info * compptr;
 
   if (need_full_buffer)		/* safety check */
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 
   prep = (my_prep_ptr)
     (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
@@ -340,7 +340,7 @@ LJPEG9_jinit_c_prep_controller (LJPEG9_j_compress_ptr cinfo, boolean need_full_b
     prep->pub.pre_process_data = pre_process_context;
     create_context_buffer(cinfo);
 #else
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
   } else {
     /* No context, just make it tall enough for one row group */

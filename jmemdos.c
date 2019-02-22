@@ -124,7 +124,7 @@ extern void far jems_calldriver JPP((EMScontext far *));
 
 static int next_file_num;	/* to distinguish among several temp files */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 select_file_name (char * fname)
 {
   const char * env;
@@ -245,13 +245,13 @@ read_file_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 		 long file_offset, long byte_count)
 {
   if (jdos_seek(info->handle.file_handle, file_offset))
-    ERREXIT(cinfo, JERR_TFILE_SEEK);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_SEEK);
   /* Since MAX_ALLOC_CHUNK is less than 64K, byte_count will be too. */
   if (byte_count > 65535L)	/* safety check */
-    ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
   if (jdos_read(info->handle.file_handle, buffer_address,
 		(unsigned short) byte_count))
-    ERREXIT(cinfo, JERR_TFILE_READ);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_READ);
 }
 
 
@@ -261,13 +261,13 @@ write_file_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 		  long file_offset, long byte_count)
 {
   if (jdos_seek(info->handle.file_handle, file_offset))
-    ERREXIT(cinfo, JERR_TFILE_SEEK);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_SEEK);
   /* Since MAX_ALLOC_CHUNK is less than 64K, byte_count will be too. */
   if (byte_count > 65535L)	/* safety check */
-    ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
   if (jdos_write(info->handle.file_handle, buffer_address,
 		 (unsigned short) byte_count))
-    ERREXIT(cinfo, JERR_TFILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_WRITE);
 }
 
 
@@ -284,7 +284,7 @@ close_file_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 open_file_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 		 long total_bytes_needed)
 {
@@ -293,7 +293,7 @@ open_file_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
   select_file_name(info->temp_name);
   if (jdos_open((short far *) & handle, (char far *) info->temp_name)) {
     /* might as well exit since LJPEG9_jpeg_open_backing_store will fail anyway */
-    ERREXITS(cinfo, JERR_TFILE_CREATE, info->temp_name);
+    LJPEG9_ERREXITS(cinfo, JERR_TFILE_CREATE, info->temp_name);
     return FALSE;
   }
   info->handle.file_handle = handle;
@@ -352,7 +352,7 @@ read_xms_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
   ctx.ax = 0x0b00;		/* EMB move */
   jxms_calldriver(xms_driver, (XMScontext far *) & ctx);
   if (ctx.ax != 1)
-    ERREXIT(cinfo, JERR_XMS_READ);
+    LJPEG9_ERREXIT(cinfo, JERR_XMS_READ);
 
   if (ODD(byte_count)) {
     read_xms_store(cinfo, info, (void FAR *) endbuffer,
@@ -385,7 +385,7 @@ write_xms_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
   ctx.ax = 0x0b00;		/* EMB move */
   jxms_calldriver(xms_driver, (XMScontext far *) & ctx);
   if (ctx.ax != 1)
-    ERREXIT(cinfo, JERR_XMS_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_XMS_WRITE);
 
   if (ODD(byte_count)) {
     read_xms_store(cinfo, info, (void FAR *) endbuffer,
@@ -410,7 +410,7 @@ close_xms_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 open_xms_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 		long total_bytes_needed)
 {
@@ -508,7 +508,7 @@ read_ems_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
   ctx.ax = 0x5700;		/* move memory region */
   jems_calldriver((EMScontext far *) & ctx);
   if (HIBYTE(ctx.ax) != 0)
-    ERREXIT(cinfo, JERR_EMS_READ);
+    LJPEG9_ERREXIT(cinfo, JERR_EMS_READ);
 }
 
 
@@ -533,7 +533,7 @@ write_ems_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
   ctx.ax = 0x5700;		/* move memory region */
   jems_calldriver((EMScontext far *) & ctx);
   if (HIBYTE(ctx.ax) != 0)
-    ERREXIT(cinfo, JERR_EMS_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_EMS_WRITE);
 }
 
 
@@ -550,7 +550,7 @@ close_ems_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 open_ems_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 		long total_bytes_needed)
 {
@@ -610,7 +610,7 @@ LJPEG9_jpeg_open_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr inf
 #endif
   if (open_file_store(cinfo, info, total_bytes_needed))
     return;
-  ERREXITS(cinfo, JERR_TFILE_CREATE, "");
+  LJPEG9_ERREXITS(cinfo, JERR_TFILE_CREATE, "");
 }
 
 

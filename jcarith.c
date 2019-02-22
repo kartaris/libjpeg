@@ -112,7 +112,7 @@ typedef arith_entropy_encoder * arith_entropy_ptr;
 #endif
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_byte (int val, LJPEG9_j_compress_ptr cinfo)
 /* Write next output byte; we do not support suspension in this module. */
 {
@@ -121,7 +121,7 @@ emit_byte (int val, LJPEG9_j_compress_ptr cinfo)
   *dest->next_output_byte++ = (JOCTET) val;
   if (--dest->free_in_buffer == 0)
     if (! (*dest->empty_output_buffer) (cinfo))
-      ERREXIT(cinfo, JERR_CANT_SUSPEND);
+      LJPEG9_ERREXIT(cinfo, JERR_CANT_SUSPEND);
 }
 
 
@@ -215,7 +215,7 @@ finish_pass (LJPEG9_j_compress_ptr cinfo)
  * derived from Markus Kuhn's JBIG implementation.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 arith_encode (LJPEG9_j_compress_ptr cinfo, unsigned char *st, int val)
 {
   register arith_entropy_ptr e = (arith_entropy_ptr) cinfo->entropy;
@@ -315,7 +315,7 @@ arith_encode (LJPEG9_j_compress_ptr cinfo, unsigned char *st, int val)
  * Emit a restart marker & resynchronize predictions.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_restart (LJPEG9_j_compress_ptr cinfo, int restart_num)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
@@ -849,7 +849,7 @@ start_pass (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics)
      * We are fully adaptive here and need no extra
      * statistics gathering pass!
      */
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 
   /* We assume jcmaster.c already validated the progressive scan parameters. */
 
@@ -876,7 +876,7 @@ start_pass (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics)
     if (cinfo->Ss == 0 && cinfo->Ah == 0) {
       tbl = compptr->dc_tbl_no;
       if (tbl < 0 || tbl >= NUM_ARITH_TBLS)
-	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
+	LJPEG9_ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->dc_stats[tbl] == NULL)
 	entropy->dc_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
 	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, DC_STAT_BINS);
@@ -889,7 +889,7 @@ start_pass (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics)
     if (cinfo->Se) {
       tbl = compptr->ac_tbl_no;
       if (tbl < 0 || tbl >= NUM_ARITH_TBLS)
-	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
+	LJPEG9_ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->ac_stats[tbl] == NULL)
 	entropy->ac_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
 	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, AC_STAT_BINS);

@@ -42,7 +42,7 @@
  * Add a (potentially) new color to the color map.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 add_map_entry (LJPEG9_j_decompress_ptr cinfo, int R, int G, int B)
 {
   JSAMPROW colormap0 = cinfo->colormap[0];
@@ -61,7 +61,7 @@ add_map_entry (LJPEG9_j_decompress_ptr cinfo, int R, int G, int B)
 
   /* Check for map overflow. */
   if (ncolors >= (MAXJSAMPLE+1))
-    ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, (MAXJSAMPLE+1));
+    LJPEG9_ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, (MAXJSAMPLE+1));
 
   /* OK, add color to map. */
   colormap0[ncolors] = (JSAMPLE) R;
@@ -75,7 +75,7 @@ add_map_entry (LJPEG9_j_decompress_ptr cinfo, int R, int G, int B)
  * Extract color map from a GIF file.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 read_gif_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
 {
   int header[13];
@@ -86,16 +86,16 @@ read_gif_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
   /* Read the rest of the GIF header and logical screen descriptor */
   for (i = 1; i < 13; i++) {
     if ((header[i] = getc(infile)) == EOF)
-      ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
   }
 
   /* Verify GIF Header */
   if (header[1] != 'I' || header[2] != 'F')
-    ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
 
   /* There must be a global color map. */
   if ((header[10] & 0x80) == 0)
-    ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
 
   /* OK, fetch it. */
   colormaplen = 2 << (header[10] & 0x07);
@@ -105,7 +105,7 @@ read_gif_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
     G = getc(infile);
     B = getc(infile);
     if (R == EOF || G == EOF || B == EOF)
-      ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
     add_map_entry(cinfo,
 		  R << (BITS_IN_JSAMPLE-8),
 		  G << (BITS_IN_JSAMPLE-8),
@@ -117,7 +117,7 @@ read_gif_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
 /* Support routines for reading PPM */
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 pbm_getc (FILE * infile)
 /* Read next char, skipping over any comments */
 /* A comment/newline sequence is returned as a newline */
@@ -134,7 +134,7 @@ pbm_getc (FILE * infile)
 }
 
 
-LOCAL(unsigned int)
+LJPEG9_LOCAL(unsigned int)
 read_pbm_integer (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
 /* Read an unsigned decimal integer from the PPM file */
 /* Swallows one trailing character after the integer */
@@ -148,11 +148,11 @@ read_pbm_integer (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
   do {
     ch = pbm_getc(infile);
     if (ch == EOF)
-      ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+      LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
   } while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
   
   if (ch < '0' || ch > '9')
-    ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
   
   val = ch - '0';
   while ((ch = pbm_getc(infile)) >= '0' && ch <= '9') {
@@ -167,7 +167,7 @@ read_pbm_integer (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
  * Extract color map from a PPM file.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 read_ppm_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
 {
   int c;
@@ -183,11 +183,11 @@ read_ppm_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
   maxval = read_pbm_integer(cinfo, infile);
 
   if (w <= 0 || h <= 0 || maxval <= 0) /* error check */
-    ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
 
   /* For now, we don't support rescaling from an unusual maxval. */
   if (maxval != (unsigned int) MAXJSAMPLE)
-    ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
 
   switch (c) {
   case '3':			/* it's a text-format PPM file */
@@ -208,14 +208,14 @@ read_ppm_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
 	G = getc(infile);
 	B = getc(infile);
 	if (R == EOF || G == EOF || B == EOF)
-	  ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+	  LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
 	add_map_entry(cinfo, R, G, B);
       }
     }
     break;
 
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
     break;
   }
 }
@@ -245,7 +245,7 @@ LJPEG9_read_color_map (LJPEG9_j_decompress_ptr cinfo, FILE * infile)
     read_ppm_map(cinfo, infile);
     break;
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_BAD_CMAP_FILE);
     break;
   }
 }

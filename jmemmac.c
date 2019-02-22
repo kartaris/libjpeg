@@ -159,12 +159,12 @@ read_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
   long retVal;
 
   if ( SetFPos ( info->temp_file, fsFromStart, file_offset ) != noErr )
-    ERREXIT(cinfo, JERR_TFILE_SEEK);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_SEEK);
 
   retVal = FSRead ( info->temp_file, &bytes,
 		    (unsigned char *) buffer_address );
   if ( retVal != noErr || bytes != byte_count )
-    ERREXIT(cinfo, JERR_TFILE_READ);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_READ);
 }
 
 
@@ -177,12 +177,12 @@ write_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
   long retVal;
 
   if ( SetFPos ( info->temp_file, fsFromStart, file_offset ) != noErr )
-    ERREXIT(cinfo, JERR_TFILE_SEEK);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_SEEK);
 
   retVal = FSWrite ( info->temp_file, &bytes,
 		     (unsigned char *) buffer_address );
   if ( retVal != noErr || bytes != byte_count )
-    ERREXIT(cinfo, JERR_TFILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_TFILE_WRITE);
 }
 
 
@@ -217,20 +217,20 @@ LJPEG9_jpeg_open_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr inf
   osErr = Gestalt( gestaltFSAttr, &gestaltResponse );
   if ( ( osErr != noErr )
        || !( gestaltResponse & (1<<gestaltHasFSSpecCalls) ) )
-    ERREXITS(cinfo, JERR_TFILE_CREATE, "- System 7.0 or later required");
+    LJPEG9_ERREXITS(cinfo, JERR_TFILE_CREATE, "- System 7.0 or later required");
   /* TO DO: add a proper error message to jerror.h. */
 
   /* Check that FindFolder is available. */
   osErr = Gestalt( gestaltFindFolderAttr, &gestaltResponse );
   if ( ( osErr != noErr )
        || !( gestaltResponse & (1<<gestaltFindFolderPresent) ) )
-    ERREXITS(cinfo, JERR_TFILE_CREATE, "- System 7.0 or later required.");
+    LJPEG9_ERREXITS(cinfo, JERR_TFILE_CREATE, "- System 7.0 or later required.");
   /* TO DO: add a proper error message to jerror.h. */
 
   osErr = FindFolder ( kOnSystemDisk, kTemporaryFolderType, kCreateFolder,
                        &vRefNum, &dirID );
   if ( osErr != noErr )
-    ERREXITS(cinfo, JERR_TFILE_CREATE, "- temporary items folder unavailable");
+    LJPEG9_ERREXITS(cinfo, JERR_TFILE_CREATE, "- temporary items folder unavailable");
   /* TO DO: Try putting the temp files somewhere else. */
 
   /* Keep generating file names till we find one that's not in use */
@@ -248,11 +248,11 @@ LJPEG9_jpeg_open_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr inf
 
   osErr = FSpCreate ( &theSpec, '????', '????', smSystemScript );
   if ( osErr != noErr )
-    ERREXITS(cinfo, JERR_TFILE_CREATE, info->temp_name);
+    LJPEG9_ERREXITS(cinfo, JERR_TFILE_CREATE, info->temp_name);
 
   osErr = FSpOpenDF ( &theSpec, fsRdWrPerm, &(info->temp_file) );
   if ( osErr != noErr )
-    ERREXITS(cinfo, JERR_TFILE_CREATE, info->temp_name);
+    LJPEG9_ERREXITS(cinfo, JERR_TFILE_CREATE, info->temp_name);
 
   info->tempSpec = theSpec;
 

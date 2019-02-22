@@ -319,7 +319,7 @@ static const int LJPEG9_jpeg_zigzag_order2[2][2] = {
  * This routine also performs some validation checks on the table.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
 			 d_derived_tbl ** pdtbl)
 {
@@ -337,11 +337,11 @@ jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
 
   /* Find the input Huffman table */
   if (tblno < 0 || tblno >= NUM_HUFF_TBLS)
-    ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
+    LJPEG9_ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
   htbl =
     isDC ? cinfo->dc_huff_tbl_ptrs[tblno] : cinfo->ac_huff_tbl_ptrs[tblno];
   if (htbl == NULL)
-    ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
+    LJPEG9_ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
 
   /* Allocate a workspace if we haven't already done so. */
   if (*pdtbl == NULL)
@@ -357,7 +357,7 @@ jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
   for (l = 1; l <= 16; l++) {
     i = (int) htbl->bits[l];
     if (i < 0 || p + i > 256)	/* protect against table overrun */
-      ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     while (i--)
       huffsize[p++] = (char) l;
   }
@@ -379,7 +379,7 @@ jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
      * it must still fit in si bits, since no code is allowed to be all ones.
      */
     if (((INT32) code) >= (((INT32) 1) << si))
-      ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     code <<= 1;
     si++;
   }
@@ -434,7 +434,7 @@ jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
     for (i = 0; i < numsymbols; i++) {
       int sym = htbl->huffval[i];
       if (sym < 0 || sym > 15)
-	ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     }
   }
 }
@@ -461,7 +461,7 @@ jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
 #endif
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 jpeg_fill_bit_buffer (bitread_working_state * state,
 		      register bit_buf_type get_buffer, register int bits_left,
 		      int nbits)
@@ -588,7 +588,7 @@ static const int bmask[16] =	/* bmask[n] is mask for n rightmost bits */
  * Out-of-line code for Huffman code decoding.
  */
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 jpeg_huff_decode (bitread_working_state * state,
 		  register bit_buf_type get_buffer, register int bits_left,
 		  d_derived_tbl * htbl, int min_bits)
@@ -648,7 +648,7 @@ finish_pass_huff (LJPEG9_j_decompress_ptr cinfo)
  * Returns FALSE if must suspend.
  */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 process_restart (LJPEG9_j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
@@ -1351,7 +1351,7 @@ start_pass_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
        * overflows in the IDCT math.  But we won't crash.
        */
       bad:
-      ERREXIT4(cinfo, JERR_BAD_PROGRESSION,
+      LJPEG9_ERREXIT4(cinfo, JERR_BAD_PROGRESSION,
 	       cinfo->Ss, cinfo->Se, cinfo->Ah, cinfo->Al);
     }
     /* Update progression status, and verify that scan order is legal.

@@ -17,7 +17,7 @@
 
 
 /* Forward declarations */
-LOCAL(void) transdecode_master_selection LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_LOCAL(void) transdecode_master_selection LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 
 /*
@@ -84,7 +84,7 @@ jpeg_read_coefficients (LJPEG9_j_decompress_ptr cinfo)
     return cinfo->coef->coef_arrays;
   }
   /* Oops, improper usage */
-  ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+  LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   return NULL;			/* keep compiler happy */
 }
 
@@ -94,7 +94,7 @@ jpeg_read_coefficients (LJPEG9_j_decompress_ptr cinfo)
  * This substitutes for jdmaster.c's initialization of the full decompressor.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 transdecode_master_selection (LJPEG9_j_decompress_ptr cinfo)
 {
   /* This is effectively a buffered-image operation. */

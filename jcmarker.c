@@ -106,7 +106,7 @@ typedef my_marker_writer * my_marker_ptr;
  * points where markers will be written.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_byte (LJPEG9_j_compress_ptr cinfo, int val)
 /* Emit a byte */
 {
@@ -115,12 +115,12 @@ emit_byte (LJPEG9_j_compress_ptr cinfo, int val)
   *(dest->next_output_byte)++ = (JOCTET) val;
   if (--dest->free_in_buffer == 0) {
     if (! (*dest->empty_output_buffer) (cinfo))
-      ERREXIT(cinfo, JERR_CANT_SUSPEND);
+      LJPEG9_ERREXIT(cinfo, JERR_CANT_SUSPEND);
   }
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_marker (LJPEG9_j_compress_ptr cinfo, JPEG_MARKER mark)
 /* Emit a marker code */
 {
@@ -129,7 +129,7 @@ emit_marker (LJPEG9_j_compress_ptr cinfo, JPEG_MARKER mark)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_2bytes (LJPEG9_j_compress_ptr cinfo, int value)
 /* Emit a 2-byte integer; these are always MSB first in JPEG files */
 {
@@ -142,7 +142,7 @@ emit_2bytes (LJPEG9_j_compress_ptr cinfo, int value)
  * Routines to write specific marker types.
  */
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 emit_dqt (LJPEG9_j_compress_ptr cinfo, int index)
 /* Emit a DQT marker */
 /* Returns the precision used (0 = 8bits, 1 = 16bits) for baseline checking */
@@ -152,7 +152,7 @@ emit_dqt (LJPEG9_j_compress_ptr cinfo, int index)
   int i;
 
   if (qtbl == NULL)
-    ERREXIT1(cinfo, JERR_NO_QUANT_TABLE, index);
+    LJPEG9_ERREXIT1(cinfo, JERR_NO_QUANT_TABLE, index);
 
   prec = 0;
   for (i = 0; i <= cinfo->lim_Se; i++) {
@@ -183,7 +183,7 @@ emit_dqt (LJPEG9_j_compress_ptr cinfo, int index)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_dht (LJPEG9_j_compress_ptr cinfo, int index, boolean is_ac)
 /* Emit a DHT marker */
 {
@@ -198,7 +198,7 @@ emit_dht (LJPEG9_j_compress_ptr cinfo, int index, boolean is_ac)
   }
 
   if (htbl == NULL)
-    ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, index);
+    LJPEG9_ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, index);
   
   if (! htbl->sent_table) {
     emit_marker(cinfo, M_DHT);
@@ -221,7 +221,7 @@ emit_dht (LJPEG9_j_compress_ptr cinfo, int index, boolean is_ac)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_dac (LJPEG9_j_compress_ptr cinfo)
 /* Emit a DAC marker */
 /* Since the useful info is so small, we want to emit all the tables in */
@@ -270,7 +270,7 @@ emit_dac (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_dri (LJPEG9_j_compress_ptr cinfo)
 /* Emit a DRI marker */
 {
@@ -282,14 +282,14 @@ emit_dri (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_lse_ict (LJPEG9_j_compress_ptr cinfo)
 /* Emit an LSE inverse color transform specification marker */
 {
   /* Support only 1 transform */
   if (cinfo->color_transform != JCT_SUBTRACT_GREEN ||
       cinfo->num_components < 3)
-    ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+    LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
 
   emit_marker(cinfo, M_JPG8);
   
@@ -313,7 +313,7 @@ emit_lse_ict (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_sof (LJPEG9_j_compress_ptr cinfo, JPEG_MARKER code)
 /* Emit a SOF marker */
 {
@@ -327,7 +327,7 @@ emit_sof (LJPEG9_j_compress_ptr cinfo, JPEG_MARKER code)
   /* Make sure image isn't bigger than SOF field can handle */
   if ((long) cinfo->jpeg_height > 65535L ||
       (long) cinfo->jpeg_width > 65535L)
-    ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) 65535);
+    LJPEG9_ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) 65535);
 
   emit_byte(cinfo, cinfo->data_precision);
   emit_2bytes(cinfo, (int) cinfo->jpeg_height);
@@ -344,7 +344,7 @@ emit_sof (LJPEG9_j_compress_ptr cinfo, JPEG_MARKER code)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_sos (LJPEG9_j_compress_ptr cinfo)
 /* Emit a SOS marker */
 {
@@ -379,7 +379,7 @@ emit_sos (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_pseudo_sos (LJPEG9_j_compress_ptr cinfo)
 /* Emit a pseudo SOS marker */
 {
@@ -395,7 +395,7 @@ emit_pseudo_sos (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_jfif_app0 (LJPEG9_j_compress_ptr cinfo)
 /* Emit a JFIF-compliant APP0 marker */
 {
@@ -430,7 +430,7 @@ emit_jfif_app0 (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_adobe_app14 (LJPEG9_j_compress_ptr cinfo)
 /* Emit an Adobe APP14 marker */
 {
@@ -489,7 +489,7 @@ write_marker_header (LJPEG9_j_compress_ptr cinfo, int marker, unsigned int datal
 /* Emit an arbitrary marker header */
 {
   if (datalen > (unsigned int) 65533)		/* safety check */
-    ERREXIT(cinfo, JERR_BAD_LENGTH);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   emit_marker(cinfo, (JPEG_MARKER) marker);
 

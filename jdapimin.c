@@ -35,9 +35,9 @@ jpeg_CreateDecompress (LJPEG9_j_decompress_ptr cinfo, int version, size_t struct
   /* Guard against version mismatches between library and caller. */
   cinfo->mem = NULL;		/* so jpeg_destroy knows mem mgr not called */
   if (version != JPEG_LIB_VERSION)
-    ERREXIT2(cinfo, JERR_BAD_LIB_VERSION, JPEG_LIB_VERSION, version);
+    LJPEG9_ERREXIT2(cinfo, JERR_BAD_LIB_VERSION, JPEG_LIB_VERSION, version);
   if (structsize != SIZEOF(struct jpeg_decompress_struct))
-    ERREXIT2(cinfo, JERR_BAD_STRUCT_SIZE, 
+    LJPEG9_ERREXIT2(cinfo, JERR_BAD_STRUCT_SIZE,
 	     (int) SIZEOF(struct jpeg_decompress_struct), (int) structsize);
 
   /* For debugging purposes, we zero the whole master structure.
@@ -111,7 +111,7 @@ jpeg_abort_decompress (LJPEG9_j_decompress_ptr cinfo)
  * Set default decompression parameters.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 default_decompress_parms (LJPEG9_j_decompress_ptr cinfo)
 {
   int cid0, cid1, cid2;
@@ -248,7 +248,7 @@ jpeg_read_header (LJPEG9_j_decompress_ptr cinfo, boolean require_image)
 
   if (cinfo->global_state != LJPEG9_DSTATE_START &&
       cinfo->global_state != LJPEG9_DSTATE_INHEADER)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   retcode = jpeg_consume_input(cinfo);
 
@@ -258,7 +258,7 @@ jpeg_read_header (LJPEG9_j_decompress_ptr cinfo, boolean require_image)
     break;
   case JPEG_REACHED_EOI:
     if (require_image)		/* Complain if application wanted an image */
-      ERREXIT(cinfo, JERR_NO_IMAGE);
+      LJPEG9_ERREXIT(cinfo, JERR_NO_IMAGE);
     /* Reset to start state; it would be safer to require the application to
      * call jpeg_abort, but we can't change it now for compatibility reasons.
      * A side effect is to free any temporary memory (there shouldn't be any).
@@ -324,7 +324,7 @@ jpeg_consume_input (LJPEG9_j_decompress_ptr cinfo)
     retcode = (*cinfo->inputctl->consume_input) (cinfo);
     break;
   default:
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   }
   return retcode;
 }
@@ -340,7 +340,7 @@ jpeg_input_complete (LJPEG9_j_decompress_ptr cinfo)
   /* Check for valid jpeg object */
   if (cinfo->global_state < LJPEG9_DSTATE_START ||
       cinfo->global_state > LJPEG9_DSTATE_STOPPING)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   return cinfo->inputctl->eoi_reached;
 }
 
@@ -355,7 +355,7 @@ jpeg_has_multiple_scans (LJPEG9_j_decompress_ptr cinfo)
   /* Only valid after jpeg_read_header completes */
   if (cinfo->global_state < LJPEG9_DSTATE_READY ||
       cinfo->global_state > LJPEG9_DSTATE_STOPPING)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   return cinfo->inputctl->has_multiple_scans;
 }
 
@@ -376,7 +376,7 @@ jpeg_finish_decompress (LJPEG9_j_decompress_ptr cinfo)
        cinfo->global_state == LJPEG9_DSTATE_RAW_OK) && ! cinfo->buffered_image) {
     /* Terminate final pass of non-buffered mode */
     if (cinfo->output_scanline < cinfo->output_height)
-      ERREXIT(cinfo, JERR_TOO_LITTLE_DATA);
+      LJPEG9_ERREXIT(cinfo, JERR_TOO_LITTLE_DATA);
     (*cinfo->master->finish_output_pass) (cinfo);
     cinfo->global_state = LJPEG9_DSTATE_STOPPING;
   } else if (cinfo->global_state == LJPEG9_DSTATE_BUFIMAGE) {
@@ -384,7 +384,7 @@ jpeg_finish_decompress (LJPEG9_j_decompress_ptr cinfo)
     cinfo->global_state = LJPEG9_DSTATE_STOPPING;
   } else if (cinfo->global_state != LJPEG9_DSTATE_STOPPING) {
     /* STOPPING = repeat call after a suspension, anything else is error */
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   }
   /* Read until EOI */
   while (! cinfo->inputctl->eoi_reached) {

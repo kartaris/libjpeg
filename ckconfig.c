@@ -70,7 +70,7 @@
 
 
 /* Usually type size_t is defined in one of the include files we've included
- * above.  If not, you'll get an error on the "typedef size_t my_size_t;" line.
+ * above.  If not, you'll get an error on the "typedef size_t LJPEG9_my_size_t;" line.
  * In that case, first try defining NEED_SYS_TYPES_H just above.
  * If that doesn't work, you'll have to search through your system library
  * to figure out which include file defines "size_t".  Look for a line that
@@ -87,7 +87,7 @@
 #include <someincludefile.h>
 #endif
 
-typedef size_t my_size_t;	/* The payoff: do we have size_t now? */
+typedef size_t LJPEG9_my_size_t;	/* The payoff: do we have size_t now? */
 
 
 /* The next question is whether your compiler supports ANSI-style function
@@ -100,20 +100,20 @@ typedef size_t my_size_t;	/* The payoff: do we have size_t now? */
 #define HAVE_PROTOTYPES
 
 #ifdef HAVE_PROTOTYPES
-int testfunction (int arg1, int * arg2); /* check prototypes */
+int LJPEG9_testfunction(int arg1, int *arg2); /* check prototypes */
 
-struct methods_struct {		/* check method-pointer declarations */
+struct LJPEG9_methods_struct {		/* check method-pointer declarations */
   int (*error_exit) (char *msgtext);
   int (*trace_message) (char *msgtext);
   int (*another_method) (void);
 };
 
-int testfunction (int arg1, int * arg2) /* check definitions */
+int LJPEG9_testfunction (int arg1, int * arg2) /* check definitions */
 {
   return arg2[arg1];
 }
 
-int test2function (void)	/* check void arg list */
+int LJPEG9_test2function (void)	/* check void arg list */
 {
   return 0;
 }
@@ -121,26 +121,26 @@ int test2function (void)	/* check void arg list */
 
 
 /* Now we want to find out if your compiler knows what "unsigned char" means.
- * If you get an error on the "unsigned char un_char;" line,
+ * If you get an error on the "unsigned char LJPEG9_un_char;" line,
  * then undefine HAVE_UNSIGNED_CHAR.
  */
 
 #define HAVE_UNSIGNED_CHAR
 
 #ifdef HAVE_UNSIGNED_CHAR
-unsigned char un_char;
+unsigned char LJPEG9_un_char;
 #endif
 
 
 /* Now we want to find out if your compiler knows what "unsigned short" means.
- * If you get an error on the "unsigned short un_short;" line,
+ * If you get an error on the "unsigned short LJPEG9_un_short;" line,
  * then undefine HAVE_UNSIGNED_SHORT.
  */
 
 #define HAVE_UNSIGNED_SHORT
 
 #ifdef HAVE_UNSIGNED_SHORT
-unsigned short un_short;
+unsigned short LJPEG9_un_short;
 #endif
 
 
@@ -152,19 +152,19 @@ unsigned short un_short;
 
 #ifdef HAVE_VOID
 /* Caution: a C++ compiler will insist on complete prototypes */
-typedef void * void_ptr;	/* check void * */
+typedef void * LJPEG9_void_ptr;	/* check void * */
 #ifdef HAVE_PROTOTYPES		/* check ptr to function returning void */
-typedef void (*void_func) (int a, int b);
+typedef void (*LJPEG9_void_func) (int a, int b);
 #else
-typedef void (*void_func) ();
+typedef void (*LJPEG9_void_func) ();
 #endif
 
 #ifdef HAVE_PROTOTYPES		/* check void function result */
-void test3function (void_ptr arg1, void_func arg2)
+void LJPEG9_test3function (LJPEG9_void_ptr arg1, LJPEG9_void_func arg2)
 #else
-void test3function (arg1, arg2)
-     void_ptr arg1;
-     void_func arg2;
+void LJPEG9_test3function (arg1, arg2)
+     LJPEG9_void_ptr arg1;
+     LJPEG9_void_func arg2;
 #endif
 {
   char * locptr = (char *) arg1; /* check casting to and from void * */
@@ -181,16 +181,16 @@ void test3function (arg1, arg2)
 #define HAVE_CONST
 
 #ifdef HAVE_CONST
-static const int carray[3] = {1, 2, 3};
+static const int LJPEG9_carray[3] = {1, 2, 3};
 
 #ifdef HAVE_PROTOTYPES
-int test4function (const int arg1)
+int LJPEG9_test4function (const int arg1)
 #else
-int test4function (arg1)
+int LJPEG9_test4function (arg1)
      const int arg1;
 #endif
 {
-  return carray[arg1];
+  return LJPEG9_carray[arg1];
 }
 #endif
 
@@ -214,12 +214,12 @@ typedef struct undefined_structure * undef_struct_ptr;
 
 #ifndef LJPEG9_NEED_SHORT_EXTERNAL_NAMES
 
-int possibly_duplicate_function ()
+int LJPEG9_possibly_duplicate_function ()
 {
   return 0;
 }
 
-int possibly_dupli_function ()
+int LJPEG9_possibly_dupli_function ()
 {
   return 1;
 }
@@ -240,9 +240,9 @@ int possibly_dupli_function ()
 
 
 #ifdef HAVE_PROTOTYPES
-int is_char_signed (int arg)
+int LJPEG9_is_char_signed (int arg)
 #else
-int is_char_signed (arg)
+int LJPEG9_is_char_signed (arg)
      int arg;
 #endif
 {
@@ -258,9 +258,9 @@ int is_char_signed (arg)
 
 
 #ifdef HAVE_PROTOTYPES
-int is_shifting_signed (long arg)
+int LJPEG9_is_shifting_signed (long arg)
 #else
-int is_shifting_signed (arg)
+int LJPEG9_is_shifting_signed (arg)
      long arg;
 #endif
 /* See whether right-shift on a long is signed or not. */
@@ -327,7 +327,7 @@ int main (argc, argv)
 #else
   fprintf(outfile, "#define const\n");
 #endif
-  if (is_char_signed((int) signed_char_check))
+  if (LJPEG9_is_char_signed((int) signed_char_check))
     fprintf(outfile, "#undef CHAR_IS_UNSIGNED\n");
   else
     fprintf(outfile, "#define CHAR_IS_UNSIGNED\n");
@@ -363,7 +363,7 @@ int main (argc, argv)
   fprintf(outfile, "#undef INCOMPLETE_TYPES_BROKEN\n");
 #endif
   fprintf(outfile, "\n#ifdef JPEG_INTERNALS\n\n");
-  if (is_shifting_signed(-0x7F7E80B1L))
+  if (LJPEG9_is_shifting_signed(-0x7F7E80B1L))
     fprintf(outfile, "#undef RIGHT_SHIFT_IS_UNSIGNED\n");
   else
     fprintf(outfile, "#define RIGHT_SHIFT_IS_UNSIGNED\n");

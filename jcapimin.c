@@ -35,9 +35,9 @@ jpeg_CreateCompress (LJPEG9_j_compress_ptr cinfo, int version, size_t structsize
   /* Guard against version mismatches between library and caller. */
   cinfo->mem = NULL;		/* so jpeg_destroy knows mem mgr not called */
   if (version != JPEG_LIB_VERSION)
-    ERREXIT2(cinfo, JERR_BAD_LIB_VERSION, JPEG_LIB_VERSION, version);
+    LJPEG9_ERREXIT2(cinfo, JERR_BAD_LIB_VERSION, JPEG_LIB_VERSION, version);
   if (structsize != SIZEOF(struct jpeg_compress_struct))
-    ERREXIT2(cinfo, JERR_BAD_STRUCT_SIZE, 
+    LJPEG9_ERREXIT2(cinfo, JERR_BAD_STRUCT_SIZE,
 	     (int) SIZEOF(struct jpeg_compress_struct), (int) structsize);
 
   /* For debugging purposes, we zero the whole master structure.
@@ -160,10 +160,10 @@ jpeg_finish_compress (LJPEG9_j_compress_ptr cinfo)
       cinfo->global_state == LJPEG9_CSTATE_RAW_OK) {
     /* Terminate first pass */
     if (cinfo->next_scanline < cinfo->image_height)
-      ERREXIT(cinfo, JERR_TOO_LITTLE_DATA);
+      LJPEG9_ERREXIT(cinfo, JERR_TOO_LITTLE_DATA);
     (*cinfo->master->finish_pass) (cinfo);
   } else if (cinfo->global_state != LJPEG9_CSTATE_WRCOEFS)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Perform any remaining passes */
   while (! cinfo->master->is_last_pass) {
     (*cinfo->master->prepare_for_pass) (cinfo);
@@ -177,7 +177,7 @@ jpeg_finish_compress (LJPEG9_j_compress_ptr cinfo)
        * all work is being done from the coefficient buffer.
        */
       if (! (*cinfo->coef->compress_data) (cinfo, (JSAMPIMAGE) NULL))
-	ERREXIT(cinfo, JERR_CANT_SUSPEND);
+	LJPEG9_ERREXIT(cinfo, JERR_CANT_SUSPEND);
     }
     (*cinfo->master->finish_pass) (cinfo);
   }
@@ -206,7 +206,7 @@ jpeg_write_marker (LJPEG9_j_compress_ptr cinfo, int marker,
       (cinfo->global_state != LJPEG9_CSTATE_SCANNING &&
        cinfo->global_state != LJPEG9_CSTATE_RAW_OK &&
        cinfo->global_state != LJPEG9_CSTATE_WRCOEFS))
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   (*cinfo->marker->write_marker_header) (cinfo, marker, datalen);
   write_marker_byte = cinfo->marker->write_marker_byte;	/* copy for speed */
@@ -225,7 +225,7 @@ jpeg_write_m_header (LJPEG9_j_compress_ptr cinfo, int marker, unsigned int datal
       (cinfo->global_state != LJPEG9_CSTATE_SCANNING &&
        cinfo->global_state != LJPEG9_CSTATE_RAW_OK &&
        cinfo->global_state != LJPEG9_CSTATE_WRCOEFS))
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   (*cinfo->marker->write_marker_header) (cinfo, marker, datalen);
 }
@@ -262,7 +262,7 @@ LJPEG9_GLOBAL(void)
 jpeg_write_tables (LJPEG9_j_compress_ptr cinfo)
 {
   if (cinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* (Re)initialize error mgr and destination modules */
   (*cinfo->err->reset_error_mgr) ((LJPEG9_j_common_ptr) cinfo);

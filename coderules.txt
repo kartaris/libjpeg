@@ -43,13 +43,13 @@ ansi2knr is not very bright, so it imposes a format requirement on function
 declarations: the function name MUST BEGIN IN COLUMN 1.  Thus all functions
 should be written in the following style:
 
-LOCAL(int *)
+LJPEG9_LOCAL(int *)
 function_name (int a, char *b)
 {
     code...
 }
 
-Note that each function definition must begin with LJPEG9_GLOBAL(type), LOCAL(type),
+Note that each function definition must begin with LJPEG9_GLOBAL(type), LJPEG9_LOCAL(type),
 or LJPEG9_METHODDEF(type).  These macros expand to "static type" or just "type" as
 appropriate.  They provide a readable indication of the routine's usage and
 can readily be changed for special needs.  (For instance, special linkage

@@ -17,9 +17,9 @@
 
 
 /* Forward declarations */
-LOCAL(void) transencode_master_selection
+LJPEG9_LOCAL(void) transencode_master_selection
 	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays));
-LOCAL(void) transencode_coef_controller
+LJPEG9_LOCAL(void) transencode_coef_controller
 	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays));
 
 
@@ -39,7 +39,7 @@ LJPEG9_GLOBAL(void)
 jpeg_write_coefficients (LJPEG9_j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
 {
   if (cinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Mark all tables to be written */
   jpeg_suppress_tables(cinfo, FALSE);
   /* (Re)initialize error mgr and destination modules */
@@ -71,7 +71,7 @@ jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
 
   /* Safety check to ensure start_compress not called yet. */
   if (dstinfo->global_state != LJPEG9_CSTATE_START)
-    ERREXIT1(dstinfo, JERR_BAD_STATE, dstinfo->global_state);
+    LJPEG9_ERREXIT1(dstinfo, JERR_BAD_STATE, dstinfo->global_state);
   /* Copy fundamental image dimensions */
   dstinfo->image_width = srcinfo->image_width;
   dstinfo->image_height = srcinfo->image_height;
@@ -109,7 +109,7 @@ jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
    */
   dstinfo->num_components = srcinfo->num_components;
   if (dstinfo->num_components < 1 || dstinfo->num_components > MAX_COMPONENTS)
-    ERREXIT2(dstinfo, JERR_COMPONENT_COUNT, dstinfo->num_components,
+    LJPEG9_ERREXIT2(dstinfo, JERR_COMPONENT_COUNT, dstinfo->num_components,
 	     MAX_COMPONENTS);
   for (ci = 0, incomp = srcinfo->comp_info, outcomp = dstinfo->comp_info;
        ci < dstinfo->num_components; ci++, incomp++, outcomp++) {
@@ -124,13 +124,13 @@ jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
     tblno = outcomp->quant_tbl_no;
     if (tblno < 0 || tblno >= NUM_QUANT_TBLS ||
 	srcinfo->quant_tbl_ptrs[tblno] == NULL)
-      ERREXIT1(dstinfo, JERR_NO_QUANT_TABLE, tblno);
+      LJPEG9_ERREXIT1(dstinfo, JERR_NO_QUANT_TABLE, tblno);
     slot_quant = srcinfo->quant_tbl_ptrs[tblno];
     c_quant = incomp->quant_table;
     if (c_quant != NULL) {
       for (coefi = 0; coefi < DCTSIZE2; coefi++) {
 	if (c_quant->quantval[coefi] != slot_quant->quantval[coefi])
-	  ERREXIT1(dstinfo, JERR_MISMATCHED_QUANT_TABLE, tblno);
+	  LJPEG9_ERREXIT1(dstinfo, JERR_MISMATCHED_QUANT_TABLE, tblno);
       }
     }
     /* Note: we do not copy the source's entropy table assignments;
@@ -162,7 +162,7 @@ jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
  * This substitutes for jcinit.c's initialization of the full compressor.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 transencode_master_selection (LJPEG9_j_compress_ptr cinfo,
 			      jvirt_barray_ptr * coef_arrays)
 {
@@ -220,7 +220,7 @@ typedef struct {
 typedef my_coef_controller * my_coef_ptr;
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 start_iMCU_row (LJPEG9_j_compress_ptr cinfo)
 /* Reset within-iMCU-row counters for a new row */
 {
@@ -254,7 +254,7 @@ start_pass_coef (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
 
   if (pass_mode != LJPEG9_JBUF_CRANK_DEST)
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 
   coef->iMCU_row_num = 0;
   start_iMCU_row(cinfo);
@@ -356,7 +356,7 @@ compress_output (LJPEG9_j_compress_ptr cinfo, JSAMPIMAGE input_buf)
  * with unitheight at least v_samp_factor.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 transencode_coef_controller (LJPEG9_j_compress_ptr cinfo,
 			     jvirt_barray_ptr * coef_arrays)
 {

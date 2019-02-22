@@ -35,18 +35,18 @@ LJPEG9_jinit_compress_master (LJPEG9_j_compress_ptr cinfo)
 
   /* For now, precision must match compiled-in value... */
   if (cinfo->data_precision != BITS_IN_JSAMPLE)
-    ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
 
   /* Sanity check on image dimensions */
   if (cinfo->image_height <= 0 || cinfo->image_width <= 0 ||
       cinfo->input_components <= 0)
-    ERREXIT(cinfo, JERR_EMPTY_IMAGE);
+    LJPEG9_ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
   /* Width of an input scanline must be representable as LJPEG9_JDIMENSION. */
   samplesperrow = (long) cinfo->image_width * (long) cinfo->input_components;
   jd_samplesperrow = (LJPEG9_JDIMENSION) samplesperrow;
   if ((long) jd_samplesperrow != samplesperrow)
-    ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
+    LJPEG9_ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
   /* Initialize master control (includes parameter checking/processing) */
   LJPEG9_jinit_c_master_control(cinfo, FALSE /* full compression */);

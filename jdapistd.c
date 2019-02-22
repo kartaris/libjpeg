@@ -21,7 +21,7 @@
 
 
 /* Forward declarations */
-LOCAL(boolean) output_pass_setup LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_LOCAL(boolean) output_pass_setup LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 
 /*
@@ -73,12 +73,12 @@ jpeg_start_decompress (LJPEG9_j_decompress_ptr cinfo)
 	}
       }
 #else
-      ERREXIT(cinfo, JERR_NOT_COMPILED);
+      LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif /* D_MULTISCAN_FILES_SUPPORTED */
     }
     cinfo->output_scan_number = cinfo->input_scan_number;
   } else if (cinfo->global_state != LJPEG9_DSTATE_PRESCAN)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Perform any dummy output passes, and set up for the final pass */
   return output_pass_setup(cinfo);
 }
@@ -92,7 +92,7 @@ jpeg_start_decompress (LJPEG9_j_decompress_ptr cinfo)
  *       If suspended, returns FALSE and sets global_state = LJPEG9_DSTATE_PRESCAN.
  */
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 output_pass_setup (LJPEG9_j_decompress_ptr cinfo)
 {
   if (cinfo->global_state != LJPEG9_DSTATE_PRESCAN) {
@@ -125,7 +125,7 @@ output_pass_setup (LJPEG9_j_decompress_ptr cinfo)
     (*cinfo->master->prepare_for_output_pass) (cinfo);
     cinfo->output_scanline = 0;
 #else
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif /* QUANT_2PASS_SUPPORTED */
   }
   /* Ready for application to drive output pass through
@@ -156,7 +156,7 @@ jpeg_read_scanlines (LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
   LJPEG9_JDIMENSION row_ctr;
 
   if (cinfo->global_state != LJPEG9_DSTATE_SCANNING)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   if (cinfo->output_scanline >= cinfo->output_height) {
     WARNMS(cinfo, JWRN_TOO_MUCH_DATA);
     return 0;
@@ -189,7 +189,7 @@ jpeg_read_raw_data (LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE data,
   LJPEG9_JDIMENSION lines_per_iMCU_row;
 
   if (cinfo->global_state != LJPEG9_DSTATE_RAW_OK)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   if (cinfo->output_scanline >= cinfo->output_height) {
     WARNMS(cinfo, JWRN_TOO_MUCH_DATA);
     return 0;
@@ -205,7 +205,7 @@ jpeg_read_raw_data (LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE data,
   /* Verify that at least one iMCU row can be returned. */
   lines_per_iMCU_row = cinfo->max_v_samp_factor * cinfo->min_DCT_v_scaled_size;
   if (max_lines < lines_per_iMCU_row)
-    ERREXIT(cinfo, JERR_BUFFER_SIZE);
+    LJPEG9_ERREXIT(cinfo, JERR_BUFFER_SIZE);
 
   /* Decompress directly into user's buffer. */
   if (! (*cinfo->coef->decompress_data) (cinfo, data))
@@ -230,7 +230,7 @@ jpeg_start_output (LJPEG9_j_decompress_ptr cinfo, int scan_number)
 {
   if (cinfo->global_state != LJPEG9_DSTATE_BUFIMAGE &&
       cinfo->global_state != LJPEG9_DSTATE_PRESCAN)
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Limit scan number to valid range */
   if (scan_number <= 0)
     scan_number = 1;
@@ -261,7 +261,7 @@ jpeg_finish_output (LJPEG9_j_decompress_ptr cinfo)
     cinfo->global_state = LJPEG9_DSTATE_BUFPOST;
   } else if (cinfo->global_state != LJPEG9_DSTATE_BUFPOST) {
     /* BUFPOST = repeat call after a suspension, anything else is error */
-    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   }
   /* Read markers looking for SOS or EOI */
   while (cinfo->input_scan_number <= cinfo->output_scan_number &&

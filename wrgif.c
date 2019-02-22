@@ -77,7 +77,7 @@ typedef gif_dest_struct * gif_dest_ptr;
  * A data block consists of a count byte (1..255) and that many data bytes.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 flush_packet (gif_dest_ptr dinfo)
 /* flush any accumulated data */
 {
@@ -85,7 +85,7 @@ flush_packet (gif_dest_ptr dinfo)
     dinfo->packetbuf[0] = (char) dinfo->bytesinpkt++;
     if (JFWRITE(dinfo->pub.output_file, dinfo->packetbuf, dinfo->bytesinpkt)
 	!= (size_t) dinfo->bytesinpkt)
-      ERREXIT(dinfo->cinfo, JERR_FILE_WRITE);
+      LJPEG9_ERREXIT(dinfo->cinfo, JERR_FILE_WRITE);
     dinfo->bytesinpkt = 0;
   }
 }
@@ -101,7 +101,7 @@ flush_packet (gif_dest_ptr dinfo)
 
 /* Routine to convert variable-width codes into a byte stream */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 output (gif_dest_ptr dinfo, int code)
 /* Emit a code of n_bits bits */
 /* Uses cur_accum and cur_bits to reblock into 8-bit bytes */
@@ -139,7 +139,7 @@ output (gif_dest_ptr dinfo, int code)
  * one symbol in every 256.
  */
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 compress_init (gif_dest_ptr dinfo, int i_bits)
 /* Initialize pseudo-compressor */
 {
@@ -158,7 +158,7 @@ compress_init (gif_dest_ptr dinfo, int i_bits)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 compress_pixel (gif_dest_ptr dinfo, int c)
 /* Accept and "compress" one pixel value.
  * The given value must be less than n_bits wide.
@@ -178,7 +178,7 @@ compress_pixel (gif_dest_ptr dinfo, int c)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 compress_term (gif_dest_ptr dinfo)
 /* Clean up at end */
 {
@@ -196,7 +196,7 @@ compress_term (gif_dest_ptr dinfo)
 /* GIF header construction */
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 put_word (gif_dest_ptr dinfo, unsigned int w)
 /* Emit a 16-bit word, LSB first */
 {
@@ -205,7 +205,7 @@ put_word (gif_dest_ptr dinfo, unsigned int w)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 put_3bytes (gif_dest_ptr dinfo, int val)
 /* Emit 3 copies of same byte value --- handy subr for colormap construction */
 {
@@ -215,7 +215,7 @@ put_3bytes (gif_dest_ptr dinfo, int val)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 emit_header (gif_dest_ptr dinfo, int num_colors, LJPEG9_JSAMPARRAY colormap)
 /* Output the GIF file header, including color map */
 /* If colormap==NULL, synthesize a gray-scale colormap */
@@ -225,7 +225,7 @@ emit_header (gif_dest_ptr dinfo, int num_colors, LJPEG9_JSAMPARRAY colormap)
   int i;
 
   if (num_colors > 256)
-    ERREXIT1(dinfo->cinfo, LJPEG9_JERR_TOO_MANY_COLORS, num_colors);
+    LJPEG9_ERREXIT1(dinfo->cinfo, LJPEG9_JERR_TOO_MANY_COLORS, num_colors);
   /* Compute bits/pixel and related values */
   BitsPerPixel = 1;
   while (num_colors > (1 << BitsPerPixel))
@@ -348,7 +348,7 @@ finish_output_gif (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
   /* Make sure we wrote the output file OK */
   fflush(dest->pub.output_file);
   if (ferror(dest->pub.output_file))
-    ERREXIT(cinfo, JERR_FILE_WRITE);
+    LJPEG9_ERREXIT(cinfo, JERR_FILE_WRITE);
 }
 
 
@@ -372,7 +372,7 @@ LJPEG9_jinit_write_gif (LJPEG9_j_decompress_ptr cinfo)
 
   if (cinfo->out_color_space != JCS_GRAYSCALE &&
       cinfo->out_color_space != JCS_RGB)
-    ERREXIT(cinfo, LJPEG9_JERR_GIF_COLORSPACE);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_GIF_COLORSPACE);
 
   /* Force quantization if color or if > 8 bits input */
   if (cinfo->out_color_space != JCS_GRAYSCALE || cinfo->data_precision > 8) {
@@ -386,7 +386,7 @@ LJPEG9_jinit_write_gif (LJPEG9_j_decompress_ptr cinfo)
   jpeg_calc_output_dimensions(cinfo);
 
   if (cinfo->output_components != 1) /* safety check: just one component? */
-    ERREXIT(cinfo, LJPEG9_JERR_GIF_BUG);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_GIF_BUG);
 
   /* Create decompressor output buffer. */
   dest->pub.buffer = (*cinfo->mem->alloc_sarray)

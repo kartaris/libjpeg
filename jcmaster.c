@@ -62,7 +62,7 @@ jpeg_calc_jpeg_dimensions (LJPEG9_j_compress_ptr cinfo)
    * and we need some space for multiplication by block_size.
    */
   if (((long) cinfo->image_width >> 24) || ((long) cinfo->image_height >> 24))
-    ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) JPEG_MAX_DIMENSION);
+    LJPEG9_ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) JPEG_MAX_DIMENSION);
 
   /* Compute actual JPEG image dimensions and DCT scaling choices. */
   if (cinfo->scale_num >= cinfo->scale_denom * cinfo->block_size) {
@@ -205,18 +205,18 @@ jpeg_calc_jpeg_dimensions (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 jpeg_calc_trans_dimensions (LJPEG9_j_compress_ptr cinfo)
 {
   if (cinfo->min_DCT_h_scaled_size != cinfo->min_DCT_v_scaled_size)
-    ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
+    LJPEG9_ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
 	     cinfo->min_DCT_h_scaled_size, cinfo->min_DCT_v_scaled_size);
 
   cinfo->block_size = cinfo->min_DCT_h_scaled_size;
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 initial_setup (LJPEG9_j_compress_ptr cinfo, boolean transcode_only)
 /* Do computations that are needed before master selection phase */
 {
@@ -230,7 +230,7 @@ initial_setup (LJPEG9_j_compress_ptr cinfo, boolean transcode_only)
 
   /* Sanity check on block_size */
   if (cinfo->block_size < 1 || cinfo->block_size > 16)
-    ERREXIT2(cinfo, JERR_BAD_DCTSIZE, cinfo->block_size, cinfo->block_size);
+    LJPEG9_ERREXIT2(cinfo, JERR_BAD_DCTSIZE, cinfo->block_size, cinfo->block_size);
 
   /* Derive natural_order from block_size */
   switch (cinfo->block_size) {
@@ -250,20 +250,20 @@ initial_setup (LJPEG9_j_compress_ptr cinfo, boolean transcode_only)
   /* Sanity check on image dimensions */
   if (cinfo->jpeg_height <= 0 || cinfo->jpeg_width <= 0 ||
       cinfo->num_components <= 0)
-    ERREXIT(cinfo, JERR_EMPTY_IMAGE);
+    LJPEG9_ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
   /* Make sure image isn't bigger than I can handle */
   if ((long) cinfo->jpeg_height > (long) JPEG_MAX_DIMENSION ||
       (long) cinfo->jpeg_width > (long) JPEG_MAX_DIMENSION)
-    ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) JPEG_MAX_DIMENSION);
+    LJPEG9_ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) JPEG_MAX_DIMENSION);
 
   /* Only 8 to 12 bits data precision are supported for DCT based JPEG */
   if (cinfo->data_precision < 8 || cinfo->data_precision > 12)
-    ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
 
   /* Check that number of components won't exceed internal array sizes */
   if (cinfo->num_components > MAX_COMPONENTS)
-    ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
+    LJPEG9_ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
 	     MAX_COMPONENTS);
 
   /* Compute maximum sampling factors; check factor validity */
@@ -273,7 +273,7 @@ initial_setup (LJPEG9_j_compress_ptr cinfo, boolean transcode_only)
        ci++, compptr++) {
     if (compptr->h_samp_factor<=0 || compptr->h_samp_factor>MAX_SAMP_FACTOR ||
 	compptr->v_samp_factor<=0 || compptr->v_samp_factor>MAX_SAMP_FACTOR)
-      ERREXIT(cinfo, JERR_BAD_SAMPLING);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_SAMPLING);
     cinfo->max_h_samp_factor = MAX(cinfo->max_h_samp_factor,
 				   compptr->h_samp_factor);
     cinfo->max_v_samp_factor = MAX(cinfo->max_v_samp_factor,
@@ -348,7 +348,7 @@ initial_setup (LJPEG9_j_compress_ptr cinfo, boolean transcode_only)
 
 #ifdef C_MULTISCAN_FILES_SUPPORTED
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 validate_script (LJPEG9_j_compress_ptr cinfo)
 /* Verify that the scan script in cinfo->scan_info[] is valid; also
  * determine whether it uses progressive JPEG, and set cinfo->progressive_mode.
@@ -365,7 +365,7 @@ validate_script (LJPEG9_j_compress_ptr cinfo)
 #endif
 
   if (cinfo->num_scans <= 0)
-    ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, 0);
+    LJPEG9_ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, 0);
 
   /* For sequential JPEG, all scans must have Ss=0, Se=DCTSIZE2-1;
    * for progressive JPEG, no scan can have this.
@@ -379,7 +379,7 @@ validate_script (LJPEG9_j_compress_ptr cinfo)
       for (coefi = 0; coefi < DCTSIZE2; coefi++)
 	*last_bitpos_ptr++ = -1;
 #else
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
   } else {
     cinfo->progressive_mode = FALSE;
@@ -391,14 +391,14 @@ validate_script (LJPEG9_j_compress_ptr cinfo)
     /* Validate component indexes */
     ncomps = scanptr->comps_in_scan;
     if (ncomps <= 0 || ncomps > MAX_COMPS_IN_SCAN)
-      ERREXIT2(cinfo, JERR_COMPONENT_COUNT, ncomps, MAX_COMPS_IN_SCAN);
+      LJPEG9_ERREXIT2(cinfo, JERR_COMPONENT_COUNT, ncomps, MAX_COMPS_IN_SCAN);
     for (ci = 0; ci < ncomps; ci++) {
       thisi = scanptr->component_index[ci];
       if (thisi < 0 || thisi >= cinfo->num_components)
-	ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
+	LJPEG9_ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
       /* Components must appear in SOF order within each scan */
       if (ci > 0 && thisi <= scanptr->component_index[ci-1])
-	ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
+	LJPEG9_ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
     }
     /* Validate progression parameters */
     Ss = scanptr->Ss;
@@ -421,27 +421,27 @@ validate_script (LJPEG9_j_compress_ptr cinfo)
 #endif
       if (Ss < 0 || Ss >= DCTSIZE2 || Se < Ss || Se >= DCTSIZE2 ||
 	  Ah < 0 || Ah > MAX_AH_AL || Al < 0 || Al > MAX_AH_AL)
-	ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
+	LJPEG9_ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
       if (Ss == 0) {
 	if (Se != 0)		/* DC and AC together not OK */
-	  ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
+	  LJPEG9_ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
       } else {
 	if (ncomps != 1)	/* AC scans must be for only one component */
-	  ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
+	  LJPEG9_ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
       }
       for (ci = 0; ci < ncomps; ci++) {
 	last_bitpos_ptr = & last_bitpos[scanptr->component_index[ci]][0];
 	if (Ss != 0 && last_bitpos_ptr[0] < 0) /* AC without prior DC scan */
-	  ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
+	  LJPEG9_ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
 	for (coefi = Ss; coefi <= Se; coefi++) {
 	  if (last_bitpos_ptr[coefi] < 0) {
 	    /* first scan of this coefficient */
 	    if (Ah != 0)
-	      ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
+	      LJPEG9_ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
 	  } else {
 	    /* not first scan */
 	    if (Ah != last_bitpos_ptr[coefi] || Al != Ah-1)
-	      ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
+	      LJPEG9_ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
 	  }
 	  last_bitpos_ptr[coefi] = Al;
 	}
@@ -450,12 +450,12 @@ validate_script (LJPEG9_j_compress_ptr cinfo)
     } else {
       /* For sequential JPEG, all progression parameters must be these: */
       if (Ss != 0 || Se != DCTSIZE2-1 || Ah != 0 || Al != 0)
-	ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
+	LJPEG9_ERREXIT1(cinfo, JERR_BAD_PROG_SCRIPT, scanno);
       /* Make sure components are not sent twice */
       for (ci = 0; ci < ncomps; ci++) {
 	thisi = scanptr->component_index[ci];
 	if (component_sent[thisi])
-	  ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
+	  LJPEG9_ERREXIT1(cinfo, JERR_BAD_SCAN_SCRIPT, scanno);
 	component_sent[thisi] = TRUE;
       }
     }
@@ -471,19 +471,19 @@ validate_script (LJPEG9_j_compress_ptr cinfo)
      */
     for (ci = 0; ci < cinfo->num_components; ci++) {
       if (last_bitpos[ci][0] < 0)
-	ERREXIT(cinfo, JERR_MISSING_DATA);
+	LJPEG9_ERREXIT(cinfo, JERR_MISSING_DATA);
     }
 #endif
   } else {
     for (ci = 0; ci < cinfo->num_components; ci++) {
       if (! component_sent[ci])
-	ERREXIT(cinfo, JERR_MISSING_DATA);
+	LJPEG9_ERREXIT(cinfo, JERR_MISSING_DATA);
     }
   }
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 reduce_script (LJPEG9_j_compress_ptr cinfo)
 /* Adapt scan script for use with reduced block size;
  * assume that script has been validated before.
@@ -518,7 +518,7 @@ reduce_script (LJPEG9_j_compress_ptr cinfo)
 #endif /* C_MULTISCAN_FILES_SUPPORTED */
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 select_scan_parameters (LJPEG9_j_compress_ptr cinfo)
 /* Set up the scan parameters for the current scan */
 {
@@ -548,7 +548,7 @@ select_scan_parameters (LJPEG9_j_compress_ptr cinfo)
   {
     /* Prepare for single sequential-JPEG scan containing all components */
     if (cinfo->num_components > MAX_COMPS_IN_SCAN)
-      ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
+      LJPEG9_ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
 	       MAX_COMPS_IN_SCAN);
     cinfo->comps_in_scan = cinfo->num_components;
     for (ci = 0; ci < cinfo->num_components; ci++) {
@@ -562,7 +562,7 @@ select_scan_parameters (LJPEG9_j_compress_ptr cinfo)
 }
 
 
-LOCAL(void)
+LJPEG9_LOCAL(void)
 per_scan_setup (LJPEG9_j_compress_ptr cinfo)
 /* Do computations that are needed before processing a JPEG scan */
 /* cinfo->comps_in_scan and cinfo->cur_comp_info[] are already set */
@@ -600,7 +600,7 @@ per_scan_setup (LJPEG9_j_compress_ptr cinfo)
     
     /* Interleaved (multi-component) scan */
     if (cinfo->comps_in_scan <= 0 || cinfo->comps_in_scan > MAX_COMPS_IN_SCAN)
-      ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->comps_in_scan,
+      LJPEG9_ERREXIT2(cinfo, JERR_COMPONENT_COUNT, cinfo->comps_in_scan,
 	       MAX_COMPS_IN_SCAN);
     
     /* Overall image size in MCUs */
@@ -630,7 +630,7 @@ per_scan_setup (LJPEG9_j_compress_ptr cinfo)
       /* Prepare array describing MCU composition */
       mcublks = compptr->MCU_blocks;
       if (cinfo->blocks_in_MCU + mcublks > C_MAX_BLOCKS_IN_MCU)
-	ERREXIT(cinfo, JERR_BAD_MCU_SIZE);
+	LJPEG9_ERREXIT(cinfo, JERR_BAD_MCU_SIZE);
       while (mcublks-- > 0) {
 	cinfo->MCU_membership[cinfo->blocks_in_MCU++] = ci;
       }
@@ -720,7 +720,7 @@ prepare_for_pass (LJPEG9_j_compress_ptr cinfo)
     master->pub.call_pass_startup = FALSE;
     break;
   default:
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
   }
 
   master->pub.is_last_pass = (master->pass_number == master->total_passes-1);
@@ -820,7 +820,7 @@ LJPEG9_jinit_c_master_control (LJPEG9_j_compress_ptr cinfo, boolean transcode_on
     if (cinfo->block_size < DCTSIZE)
       reduce_script(cinfo);
 #else
-    ERREXIT(cinfo, JERR_NOT_COMPILED);
+    LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
   } else {
     cinfo->progressive_mode = FALSE;

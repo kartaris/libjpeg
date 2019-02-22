@@ -450,30 +450,30 @@ LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
   switch (cinfo->in_color_space) {
   case JCS_GRAYSCALE:
     if (cinfo->input_components != 1)
-      ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
     break;
 
   case JCS_RGB:
   case JCS_BG_RGB:
     if (cinfo->input_components != RGB_PIXELSIZE)
-      ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
     break;
 
   case JCS_YCbCr:
   case JCS_BG_YCC:
     if (cinfo->input_components != 3)
-      ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
     break;
 
   case JCS_CMYK:
   case JCS_YCCK:
     if (cinfo->input_components != 4)
-      ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
     break;
 
   default:			/* JCS_UNKNOWN can be anything */
     if (cinfo->input_components < 1)
-      ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
     break;
   }
 
@@ -481,13 +481,13 @@ LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
   if (cinfo->color_transform &&
       cinfo->jpeg_color_space != JCS_RGB &&
       cinfo->jpeg_color_space != JCS_BG_RGB)
-    ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+    LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
 
   /* Check num_components, set conversion method based on requested space */
   switch (cinfo->jpeg_color_space) {
   case JCS_GRAYSCALE:
     if (cinfo->num_components != 1)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     switch (cinfo->in_color_space) {
     case JCS_GRAYSCALE:
     case JCS_YCbCr:
@@ -499,14 +499,14 @@ LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
       cconvert->pub.color_convert = rgb_gray_convert;
       break;
     default:
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     }
     break;
 
   case JCS_RGB:
   case JCS_BG_RGB:
     if (cinfo->num_components != 3)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     if (cinfo->in_color_space == cinfo->jpeg_color_space) {
       switch (cinfo->color_transform) {
       case JCT_NONE:
@@ -516,15 +516,15 @@ LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
 	cconvert->pub.color_convert = rgb_rgb1_convert;
 	break;
       default:
-	ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+	LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
       }
     } else
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     break;
 
   case JCS_YCbCr:
     if (cinfo->num_components != 3)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     switch (cinfo->in_color_space) {
     case JCS_RGB:
       cconvert->pub.start_pass = rgb_ycc_start;
@@ -534,13 +534,13 @@ LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
       cconvert->pub.color_convert = null_convert;
       break;
     default:
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     }
     break;
 
   case JCS_BG_YCC:
     if (cinfo->num_components != 3)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     switch (cinfo->in_color_space) {
     case JCS_RGB:
       /* For conversion from normal RGB input to BG_YCC representation,
@@ -565,22 +565,22 @@ LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
       cconvert->pub.color_convert = null_convert;
       break;
     default:
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     }
     break;
 
   case JCS_CMYK:
     if (cinfo->num_components != 4)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     if (cinfo->in_color_space == JCS_CMYK)
       cconvert->pub.color_convert = null_convert;
     else
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     break;
 
   case JCS_YCCK:
     if (cinfo->num_components != 4)
-      ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_J_COLORSPACE);
     switch (cinfo->in_color_space) {
     case JCS_CMYK:
       cconvert->pub.start_pass = rgb_ycc_start;
@@ -590,14 +590,14 @@ LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
       cconvert->pub.color_convert = null_convert;
       break;
     default:
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     }
     break;
 
   default:			/* allow null conversion of JCS_UNKNOWN */
     if (cinfo->jpeg_color_space != cinfo->in_color_space ||
 	cinfo->num_components != cinfo->input_components)
-      ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
+      LJPEG9_ERREXIT(cinfo, JERR_CONVERSION_NOTIMPL);
     cconvert->pub.color_convert = null_convert;
     break;
   }

@@ -81,7 +81,7 @@ typedef struct {
 typedef ppm_source_struct * ppm_source_ptr;
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 pbm_getc (FILE * infile)
 /* Read next char, skipping over any comments */
 /* A comment/newline sequence is returned as a newline */
@@ -98,7 +98,7 @@ pbm_getc (FILE * infile)
 }
 
 
-LOCAL(unsigned int)
+LJPEG9_LOCAL(unsigned int)
 read_pbm_integer (LJPEG9_j_compress_ptr cinfo, FILE * infile)
 /* Read an unsigned decimal integer from the PPM file */
 /* Swallows one trailing character after the integer */
@@ -112,11 +112,11 @@ read_pbm_integer (LJPEG9_j_compress_ptr cinfo, FILE * infile)
   do {
     ch = pbm_getc(infile);
     if (ch == EOF)
-      ERREXIT(cinfo, JERR_INPUT_EOF);
+      LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   } while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
 
   if (ch < '0' || ch > '9')
-    ERREXIT(cinfo, LJPEG9_JERR_PPM_NONNUMERIC);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_PPM_NONNUMERIC);
 
   val = ch - '0';
   while ((ch = pbm_getc(infile)) >= '0' && ch <= '9') {
@@ -187,7 +187,7 @@ get_scaled_gray_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   LJPEG9_JDIMENSION col;
 
   if (! ReadOK(source->pub.input_file, source->iobuffer, source->buffer_width))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   ptr = source->pub.buffer[0];
   bufferptr = source->iobuffer;
   for (col = cinfo->image_width; col > 0; col--) {
@@ -208,7 +208,7 @@ get_scaled_rgb_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   LJPEG9_JDIMENSION col;
 
   if (! ReadOK(source->pub.input_file, source->iobuffer, source->buffer_width))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   ptr = source->pub.buffer[0];
   bufferptr = source->iobuffer;
   for (col = cinfo->image_width; col > 0; col--) {
@@ -230,7 +230,7 @@ get_raw_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
 
   if (! ReadOK(source->pub.input_file, source->iobuffer, source->buffer_width))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   return 1;
 }
 
@@ -246,7 +246,7 @@ get_word_gray_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   LJPEG9_JDIMENSION col;
 
   if (! ReadOK(source->pub.input_file, source->iobuffer, source->buffer_width))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   ptr = source->pub.buffer[0];
   bufferptr = source->iobuffer;
   for (col = cinfo->image_width; col > 0; col--) {
@@ -270,7 +270,7 @@ get_word_rgb_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   LJPEG9_JDIMENSION col;
 
   if (! ReadOK(source->pub.input_file, source->iobuffer, source->buffer_width))
-    ERREXIT(cinfo, JERR_INPUT_EOF);
+    LJPEG9_ERREXIT(cinfo, JERR_INPUT_EOF);
   ptr = source->pub.buffer[0];
   bufferptr = source->iobuffer;
   for (col = cinfo->image_width; col > 0; col--) {
@@ -302,7 +302,7 @@ start_input_ppm (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   boolean need_iobuffer, use_raw_buffer, need_rescale;
 
   if (getc(source->pub.input_file) != 'P')
-    ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
 
   c = getc(source->pub.input_file); /* subformat discriminator character */
 
@@ -314,7 +314,7 @@ start_input_ppm (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case '6':			/* it's a raw-format PPM file */
     break;
   default:
-    ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
     break;
   }
 
@@ -324,7 +324,7 @@ start_input_ppm (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   maxval = read_pbm_integer(cinfo, source->pub.input_file);
 
   if (w <= 0 || h <= 0 || maxval <= 0) /* error check */
-    ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
+    LJPEG9_ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
 
   cinfo->data_precision = BITS_IN_JSAMPLE; /* we always rescale data to this */
   cinfo->image_width = (LJPEG9_JDIMENSION) w;

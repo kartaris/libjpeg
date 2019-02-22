@@ -267,7 +267,7 @@ This change requires applications to be recompiled, but does not require
 any application source code change.
 
 All routine declarations changed to the style "LJPEG9_GLOBAL(type) name ...",
-that is, LJPEG9_GLOBAL, LOCAL, LJPEG9_METHODDEF, LJPEG9_EXTERN are now macros taking the
+that is, LJPEG9_GLOBAL, LJPEG9_LOCAL, LJPEG9_METHODDEF, LJPEG9_EXTERN are now macros taking the
 routine's return type as an argument.  This makes it possible to add
 Microsoft-style linkage keywords to all the routines by changing just
 these macros.  Note that any application code that was using these macros

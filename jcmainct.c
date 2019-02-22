@@ -84,7 +84,7 @@ start_pass_main (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
   case LJPEG9_JBUF_PASS_THRU:
 #ifdef FULL_MAIN_BUFFER_SUPPORTED
     if (mainp->whole_image[0] != NULL)
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 #endif
     mainp->pub.process_data = process_data_simple_main;
     break;
@@ -93,12 +93,12 @@ start_pass_main (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
   case LJPEG9_JBUF_CRANK_DEST:
   case LJPEG9_JBUF_SAVE_AND_PASS:
     if (mainp->whole_image[0] == NULL)
-      ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+      LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     mainp->pub.process_data = process_data_buffer_main;
     break;
 #endif
   default:
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     break;
   }
 }
@@ -279,7 +279,7 @@ LJPEG9_jinit_c_main_controller (LJPEG9_j_compress_ptr cinfo, boolean need_full_b
 	 (LJPEG9_JDIMENSION) (compptr->v_samp_factor * compptr->DCT_v_scaled_size));
     }
 #else
-    ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
+    LJPEG9_ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 #endif
   } else {
 #ifdef FULL_MAIN_BUFFER_SUPPORTED

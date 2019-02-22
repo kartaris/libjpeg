@@ -206,32 +206,32 @@ LJPEG9_JMESSAGE(JWRN_TOO_MUCH_DATA, "Application transferred too many scanlines"
 /* The first parameter is either type of cinfo pointer */
 
 /* Fatal errors (print message and exit) */
-#define ERREXIT(cinfo,code)  \
+#define LJPEG9_ERREXIT(cinfo,code)  \
   ((cinfo)->err->msg_code = (code), \
    (*(cinfo)->err->error_exit) ((LJPEG9_j_common_ptr) (cinfo)))
-#define ERREXIT1(cinfo,code,p1)  \
+#define LJPEG9_ERREXIT1(cinfo,code,p1)  \
   ((cinfo)->err->msg_code = (code), \
    (cinfo)->err->msg_parm.i[0] = (p1), \
    (*(cinfo)->err->error_exit) ((LJPEG9_j_common_ptr) (cinfo)))
-#define ERREXIT2(cinfo,code,p1,p2)  \
+#define LJPEG9_ERREXIT2(cinfo,code,p1,p2)  \
   ((cinfo)->err->msg_code = (code), \
    (cinfo)->err->msg_parm.i[0] = (p1), \
    (cinfo)->err->msg_parm.i[1] = (p2), \
    (*(cinfo)->err->error_exit) ((LJPEG9_j_common_ptr) (cinfo)))
-#define ERREXIT3(cinfo,code,p1,p2,p3)  \
+#define LJPEG9_ERREXIT3(cinfo,code,p1,p2,p3)  \
   ((cinfo)->err->msg_code = (code), \
    (cinfo)->err->msg_parm.i[0] = (p1), \
    (cinfo)->err->msg_parm.i[1] = (p2), \
    (cinfo)->err->msg_parm.i[2] = (p3), \
    (*(cinfo)->err->error_exit) ((LJPEG9_j_common_ptr) (cinfo)))
-#define ERREXIT4(cinfo,code,p1,p2,p3,p4)  \
+#define LJPEG9_ERREXIT4(cinfo,code,p1,p2,p3,p4)  \
   ((cinfo)->err->msg_code = (code), \
    (cinfo)->err->msg_parm.i[0] = (p1), \
    (cinfo)->err->msg_parm.i[1] = (p2), \
    (cinfo)->err->msg_parm.i[2] = (p3), \
    (cinfo)->err->msg_parm.i[3] = (p4), \
    (*(cinfo)->err->error_exit) ((LJPEG9_j_common_ptr) (cinfo)))
-#define ERREXIT6(cinfo,code,p1,p2,p3,p4,p5,p6)  \
+#define LJPEG9_ERREXIT6(cinfo,code,p1,p2,p3,p4,p5,p6)  \
   ((cinfo)->err->msg_code = (code), \
    (cinfo)->err->msg_parm.i[0] = (p1), \
    (cinfo)->err->msg_parm.i[1] = (p2), \
@@ -240,7 +240,7 @@ LJPEG9_JMESSAGE(JWRN_TOO_MUCH_DATA, "Application transferred too many scanlines"
    (cinfo)->err->msg_parm.i[4] = (p5), \
    (cinfo)->err->msg_parm.i[5] = (p6), \
    (*(cinfo)->err->error_exit) ((LJPEG9_j_common_ptr) (cinfo)))
-#define ERREXITS(cinfo,code,str)  \
+#define LJPEG9_ERREXITS(cinfo,code,str)  \
   ((cinfo)->err->msg_code = (code), \
    strncpy((cinfo)->err->msg_parm.s, (str), JMSG_STR_PARM_MAX), \
    (*(cinfo)->err->error_exit) ((LJPEG9_j_common_ptr) (cinfo)))

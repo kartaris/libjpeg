@@ -346,12 +346,12 @@ start_pass_fdctmgr (LJPEG9_j_compress_ptr cinfo)
 	break;
 #endif
       default:
-	ERREXIT(cinfo, JERR_NOT_COMPILED);
+	LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
 	break;
       }
       break;
     default:
-      ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
+      LJPEG9_ERREXIT2(cinfo, JERR_BAD_DCTSIZE,
 	       compptr->DCT_h_scaled_size, compptr->DCT_v_scaled_size);
       break;
     }
@@ -359,7 +359,7 @@ start_pass_fdctmgr (LJPEG9_j_compress_ptr cinfo)
     /* Make sure specified quantization table is present */
     if (qtblno < 0 || qtblno >= NUM_QUANT_TBLS ||
 	cinfo->quant_tbl_ptrs[qtblno] == NULL)
-      ERREXIT1(cinfo, JERR_NO_QUANT_TABLE, qtblno);
+      LJPEG9_ERREXIT1(cinfo, JERR_NO_QUANT_TABLE, qtblno);
     qtbl = cinfo->quant_tbl_ptrs[qtblno];
     /* Create divisor table from quant table */
     switch (method) {
@@ -443,7 +443,7 @@ start_pass_fdctmgr (LJPEG9_j_compress_ptr cinfo)
       break;
 #endif
     default:
-      ERREXIT(cinfo, JERR_NOT_COMPILED);
+      LJPEG9_ERREXIT(cinfo, JERR_NOT_COMPILED);
       break;
     }
   }

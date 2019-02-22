@@ -18,7 +18,7 @@
 #include <ctype.h>		/* to declare isdigit(), isspace() */
 
 
-LOCAL(int)
+LJPEG9_LOCAL(int)
 text_getc (FILE * file)
 /* Read next char, skipping over any comments (# to end of line) */
 /* A comment/newline sequence is returned as a newline */
@@ -35,7 +35,7 @@ text_getc (FILE * file)
 }
 
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 read_text_integer (FILE * file, long * result, int * termchar)
 /* Read an unsigned decimal integer from a file, store it in result */
 /* Reads one trailing character after the integer; returns it in termchar */
@@ -126,7 +126,7 @@ LJPEG9_read_quant_tables (LJPEG9_j_compress_ptr cinfo, char * filename, boolean 
 
 #ifdef C_MULTISCAN_FILES_SUPPORTED
 
-LOCAL(boolean)
+LJPEG9_LOCAL(boolean)
 read_scan_integer (FILE * file, long * result, int * termchar)
 /* Variant of read_text_integer that always looks for a non-space termchar;
  * this simplifies parsing of punctuation in scan scripts.
