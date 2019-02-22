@@ -36,12 +36,12 @@
 #endif
 
 #ifdef DONT_USE_B_MODE		/* define mode parameters for fopen() */
-#define READ_BINARY	"r"
+#define LJPEG9_READ_BINARY	"r"
 #else
 #ifdef VMS			/* VMS is very nonstandard */
-#define READ_BINARY	"rb", "ctx=stm"
+#define LJPEG9_READ_BINARY	"rb", "ctx=stm"
 #else				/* standard ANSI-compliant case */
-#define READ_BINARY	"rb"
+#define LJPEG9_READ_BINARY	"rb"
 #endif
 #endif
 
@@ -487,7 +487,7 @@ main (int argc, char **argv)
     usage();
   }
   if (argn < argc) {
-    if ((infile = fopen(argv[argn], READ_BINARY)) == NULL) {
+    if ((infile = fopen(argv[argn], LJPEG9_READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s\n", progname, argv[argn]);
       exit(LJPEG9_EXIT_FAILURE);
     }
@@ -497,7 +497,7 @@ main (int argc, char **argv)
     setmode(fileno(stdin), O_BINARY);
 #endif
 #ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
-    if ((infile = fdopen(fileno(stdin), READ_BINARY)) == NULL) {
+    if ((infile = fdopen(fileno(stdin), LJPEG9_READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open stdin\n", progname);
       exit(LJPEG9_EXIT_FAILURE);
     }

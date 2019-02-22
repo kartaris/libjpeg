@@ -44,20 +44,20 @@ typedef my_post_controller * my_post_ptr;
 
 /* Forward declarations */
 LJPEG9_METHODDEF(void) post_process_1pass
-	JPP((LJPEG9_j_decompress_ptr cinfo,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 	     JSAMPIMAGE input_buf, LJPEG9_JDIMENSION *in_row_group_ctr,
 	     LJPEG9_JDIMENSION in_row_groups_avail,
 	     LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION *out_row_ctr,
 	     LJPEG9_JDIMENSION out_rows_avail));
 #ifdef QUANT_2PASS_SUPPORTED
 LJPEG9_METHODDEF(void) post_process_prepass
-	JPP((LJPEG9_j_decompress_ptr cinfo,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 	     JSAMPIMAGE input_buf, LJPEG9_JDIMENSION *in_row_group_ctr,
 	     LJPEG9_JDIMENSION in_row_groups_avail,
 	     LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION *out_row_ctr,
 	     LJPEG9_JDIMENSION out_rows_avail));
 LJPEG9_METHODDEF(void) post_process_2pass
-	JPP((LJPEG9_j_decompress_ptr cinfo,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 	     JSAMPIMAGE input_buf, LJPEG9_JDIMENSION *in_row_group_ctr,
 	     LJPEG9_JDIMENSION in_row_groups_avail,
 	     LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION *out_row_ctr,

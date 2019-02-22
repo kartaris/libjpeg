@@ -76,7 +76,7 @@
 
 
 LOCAL(void)
-do_crop (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_crop (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	 LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	 jvirt_barray_ptr *src_coef_arrays,
 	 jvirt_barray_ptr *dst_coef_arrays)
@@ -114,7 +114,7 @@ do_crop (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_crop_ext (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_crop_ext (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	     LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	     jvirt_barray_ptr *src_coef_arrays,
 	     jvirt_barray_ptr *dst_coef_arrays)
@@ -192,7 +192,7 @@ do_crop_ext (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_wipe (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_wipe (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	 LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	 jvirt_barray_ptr *src_coef_arrays,
 	 LJPEG9_JDIMENSION drop_width, LJPEG9_JDIMENSION drop_height)
@@ -224,7 +224,7 @@ do_wipe (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_flip_h_no_crop (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_flip_h_no_crop (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 		   LJPEG9_JDIMENSION x_crop_offset,
 		   jvirt_barray_ptr *src_coef_arrays)
 /* Horizontal flip; done in-place, so no separate dest array is required.
@@ -291,7 +291,7 @@ do_flip_h_no_crop (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_flip_h (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_flip_h (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	   LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	   jvirt_barray_ptr *src_coef_arrays,
 	   jvirt_barray_ptr *dst_coef_arrays)
@@ -353,7 +353,7 @@ do_flip_h (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_flip_v (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_flip_v (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	   LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	   jvirt_barray_ptr *src_coef_arrays,
 	   jvirt_barray_ptr *dst_coef_arrays)
@@ -433,7 +433,7 @@ do_flip_v (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_transpose (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_transpose (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	      LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	      jvirt_barray_ptr *src_coef_arrays,
 	      jvirt_barray_ptr *dst_coef_arrays)
@@ -481,7 +481,7 @@ do_transpose (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_rot_90 (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_rot_90 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	   LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	   jvirt_barray_ptr *src_coef_arrays,
 	   jvirt_barray_ptr *dst_coef_arrays)
@@ -562,7 +562,7 @@ do_rot_90 (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_rot_270 (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_rot_270 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	    LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	    jvirt_barray_ptr *src_coef_arrays,
 	    jvirt_barray_ptr *dst_coef_arrays)
@@ -633,7 +633,7 @@ do_rot_270 (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_rot_180 (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_rot_180 (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	    LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	    jvirt_barray_ptr *src_coef_arrays,
 	    jvirt_barray_ptr *dst_coef_arrays)
@@ -741,7 +741,7 @@ do_rot_180 (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 
 
 LOCAL(void)
-do_transverse (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+do_transverse (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 	       LJPEG9_JDIMENSION x_crop_offset, LJPEG9_JDIMENSION y_crop_offset,
 	       jvirt_barray_ptr *src_coef_arrays,
 	       jvirt_barray_ptr *dst_coef_arrays)
@@ -1269,7 +1269,7 @@ jtransform_request_workspace (LJPEG9_j_decompress_ptr srcinfo,
 /* Transpose destination image parameters */
 
 LOCAL(void)
-transpose_critical_parameters (j_compress_ptr dstinfo)
+transpose_critical_parameters (LJPEG9_j_compress_ptr dstinfo)
 {
   int tblno, i, j, ci, itemp;
   jpeg_component_info *compptr;
@@ -1478,7 +1478,7 @@ adjust_exif_parameters (JOCTET FAR * data, unsigned int length,
 
 LJPEG9_GLOBAL(jvirt_barray_ptr *)
 jtransform_adjust_parameters (LJPEG9_j_decompress_ptr srcinfo,
-			      j_compress_ptr dstinfo,
+			      LJPEG9_j_compress_ptr dstinfo,
 			      jvirt_barray_ptr *src_coef_arrays,
 			      jpeg_transform_info *info)
 {
@@ -1574,7 +1574,7 @@ jtransform_adjust_parameters (LJPEG9_j_decompress_ptr srcinfo,
 
 LJPEG9_GLOBAL(void)
 jtransform_execute_transform (LJPEG9_j_decompress_ptr srcinfo,
-			      j_compress_ptr dstinfo,
+			      LJPEG9_j_compress_ptr dstinfo,
 			      jvirt_barray_ptr *src_coef_arrays,
 			      jpeg_transform_info *info)
 {
@@ -1718,7 +1718,7 @@ jcopy_markers_setup (LJPEG9_j_decompress_ptr srcinfo, JCOPY_OPTION option)
  */
 
 LJPEG9_GLOBAL(void)
-jcopy_markers_execute (LJPEG9_j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
+jcopy_markers_execute (LJPEG9_j_decompress_ptr srcinfo, LJPEG9_j_compress_ptr dstinfo,
 		       JCOPY_OPTION option)
 {
   jpeg_saved_marker_ptr marker;

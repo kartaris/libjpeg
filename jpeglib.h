@@ -282,7 +282,7 @@ struct jpeg_common_struct {
 };
 
 typedef struct jpeg_common_struct * LJPEG9_j_common_ptr;
-typedef struct jpeg_compress_struct * j_compress_ptr;
+typedef struct jpeg_compress_struct * LJPEG9_j_compress_ptr;
 typedef struct jpeg_decompress_struct * LJPEG9_j_decompress_ptr;
 
 
@@ -773,9 +773,9 @@ struct jpeg_destination_mgr {
   JOCTET * next_output_byte;	/* => next byte to write in buffer */
   size_t free_in_buffer;	/* # of byte spaces remaining in buffer */
 
-  LJPEG9_JMETHOD(void, init_destination, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(boolean, empty_output_buffer, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, term_destination, (j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, init_destination, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(boolean, empty_output_buffer, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, term_destination, (LJPEG9_j_compress_ptr cinfo));
 };
 
 
@@ -869,14 +869,14 @@ typedef LJPEG9_JMETHOD(boolean, LJPEG9_jpeg_marker_parser_method, (LJPEG9_j_deco
 
 
 /* Declarations for routines called by application.
- * The JPP macro hides prototype parameters from compilers that can't cope.
- * Note JPP requires double parentheses.
+ * The LJPEG9_JPP macro hides prototype parameters from compilers that can't cope.
+ * Note LJPEG9_JPP requires double parentheses.
  */
 
 #ifdef HAVE_PROTOTYPES
-#define JPP(arglist)	arglist
+#define LJPEG9_JPP(arglist)	arglist
 #else
-#define JPP(arglist)	()
+#define LJPEG9_JPP(arglist)	()
 #endif
 
 
@@ -946,7 +946,7 @@ typedef LJPEG9_JMETHOD(boolean, LJPEG9_jpeg_marker_parser_method, (LJPEG9_j_deco
 
 /* Default error-management setup */
 LJPEG9_EXTERN(struct jpeg_error_mgr *) jpeg_std_error
-	JPP((struct jpeg_error_mgr * err));
+	LJPEG9_JPP((struct jpeg_error_mgr * err));
 
 /* Initialization of JPEG compression objects.
  * jpeg_create_compress() and jpeg_create_decompress() are the exported
@@ -961,82 +961,82 @@ LJPEG9_EXTERN(struct jpeg_error_mgr *) jpeg_std_error
 #define jpeg_create_decompress(cinfo) \
     jpeg_CreateDecompress((cinfo), JPEG_LIB_VERSION, \
 			  (size_t) sizeof(struct jpeg_decompress_struct))
-LJPEG9_EXTERN(void) jpeg_CreateCompress JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_CreateCompress LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 				      int version, size_t structsize));
-LJPEG9_EXTERN(void) jpeg_CreateDecompress JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_CreateDecompress LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					int version, size_t structsize));
 /* Destruction of JPEG compression objects */
-LJPEG9_EXTERN(void) jpeg_destroy_compress JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_destroy_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_destroy_compress LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_destroy_decompress LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Standard data source and destination managers: stdio streams. */
 /* Caller is responsible for opening the file before and closing after. */
-LJPEG9_EXTERN(void) jpeg_stdio_dest JPP((j_compress_ptr cinfo, FILE * outfile));
-LJPEG9_EXTERN(void) jpeg_stdio_src JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
+LJPEG9_EXTERN(void) jpeg_stdio_dest LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, FILE * outfile));
+LJPEG9_EXTERN(void) jpeg_stdio_src LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
 
 /* Data source and destination managers: memory buffers. */
-LJPEG9_EXTERN(void) jpeg_mem_dest JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_mem_dest LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 			       unsigned char ** outbuffer,
 			       unsigned long * outsize));
-LJPEG9_EXTERN(void) jpeg_mem_src JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_mem_src LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 			      unsigned char * inbuffer,
 			      unsigned long insize));
 
 /* Default parameter setup for compression */
-LJPEG9_EXTERN(void) jpeg_set_defaults JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_set_defaults LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
 /* Compression parameter setup aids */
-LJPEG9_EXTERN(void) jpeg_set_colorspace JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_set_colorspace LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 				      J_COLOR_SPACE colorspace));
-LJPEG9_EXTERN(void) jpeg_default_colorspace JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_set_quality JPP((j_compress_ptr cinfo, int quality,
+LJPEG9_EXTERN(void) jpeg_default_colorspace LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_set_quality LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, int quality,
 				   boolean force_baseline));
-LJPEG9_EXTERN(void) jpeg_set_linear_quality JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_set_linear_quality LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					  int scale_factor,
 					  boolean force_baseline));
-LJPEG9_EXTERN(void) jpeg_default_qtables JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_default_qtables LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 				       boolean force_baseline));
-LJPEG9_EXTERN(void) jpeg_add_quant_table JPP((j_compress_ptr cinfo, int which_tbl,
+LJPEG9_EXTERN(void) jpeg_add_quant_table LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, int which_tbl,
 				       const unsigned int *basic_table,
 				       int scale_factor,
 				       boolean force_baseline));
-LJPEG9_EXTERN(int) jpeg_quality_scaling JPP((int quality));
-LJPEG9_EXTERN(void) jpeg_simple_progression JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_suppress_tables JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(int) jpeg_quality_scaling LJPEG9_JPP((int quality));
+LJPEG9_EXTERN(void) jpeg_simple_progression LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_suppress_tables LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 				       boolean suppress));
-LJPEG9_EXTERN(JQUANT_TBL *) jpeg_alloc_quant_table JPP((LJPEG9_j_common_ptr cinfo));
-LJPEG9_EXTERN(JHUFF_TBL *) jpeg_alloc_huff_table JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(JQUANT_TBL *) jpeg_alloc_quant_table LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(JHUFF_TBL *) jpeg_alloc_huff_table LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
 
 /* Main entry points for compression */
-LJPEG9_EXTERN(void) jpeg_start_compress JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_start_compress LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 				      boolean write_all_tables));
-LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_write_scanlines JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_write_scanlines LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					     LJPEG9_JSAMPARRAY scanlines,
 					     LJPEG9_JDIMENSION num_lines));
-LJPEG9_EXTERN(void) jpeg_finish_compress JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_finish_compress LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
 
 /* Precalculate JPEG dimensions for current compression parameters. */
-LJPEG9_EXTERN(void) jpeg_calc_jpeg_dimensions JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_calc_jpeg_dimensions LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
 
 /* Replaces jpeg_write_scanlines when writing raw downsampled data. */
-LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_write_raw_data JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_write_raw_data LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					    JSAMPIMAGE data,
 					    LJPEG9_JDIMENSION num_lines));
 
 /* Write a special marker.  See libjpeg.txt concerning safe usage. */
 LJPEG9_EXTERN(void) jpeg_write_marker
-	JPP((j_compress_ptr cinfo, int marker,
+	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, int marker,
 	     const JOCTET * dataptr, unsigned int datalen));
 /* Same, but piecemeal. */
 LJPEG9_EXTERN(void) jpeg_write_m_header
-	JPP((j_compress_ptr cinfo, int marker, unsigned int datalen));
+	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, int marker, unsigned int datalen));
 LJPEG9_EXTERN(void) jpeg_write_m_byte
-	JPP((j_compress_ptr cinfo, int val));
+	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, int val));
 
 /* Alternate compression function: just write an abbreviated table file */
-LJPEG9_EXTERN(void) jpeg_write_tables JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_write_tables LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
 
 /* Decompression startup: read start of JPEG datastream to see what's there */
-LJPEG9_EXTERN(int) jpeg_read_header JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(int) jpeg_read_header LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 				  boolean require_image));
 /* Return value is one of: */
 #define JPEG_SUSPENDED		0 /* Suspended due to lack of input data */
@@ -1049,25 +1049,25 @@ LJPEG9_EXTERN(int) jpeg_read_header JPP((LJPEG9_j_decompress_ptr cinfo,
  */
 
 /* Main entry points for decompression */
-LJPEG9_EXTERN(boolean) jpeg_start_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_read_scanlines JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(boolean) jpeg_start_decompress LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_read_scanlines LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					    LJPEG9_JSAMPARRAY scanlines,
 					    LJPEG9_JDIMENSION max_lines));
-LJPEG9_EXTERN(boolean) jpeg_finish_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_finish_decompress LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Replaces jpeg_read_scanlines when reading raw downsampled data. */
-LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_read_raw_data JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_read_raw_data LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					   JSAMPIMAGE data,
 					   LJPEG9_JDIMENSION max_lines));
 
 /* Additional entry points for buffered-image mode. */
-LJPEG9_EXTERN(boolean) jpeg_has_multiple_scans JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(boolean) jpeg_start_output JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(boolean) jpeg_has_multiple_scans LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_start_output LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 				       int scan_number));
-LJPEG9_EXTERN(boolean) jpeg_finish_output JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(boolean) jpeg_input_complete JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_new_colormap JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(int) jpeg_consume_input JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_finish_output LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_input_complete LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_new_colormap LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(int) jpeg_consume_input LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 /* Return value is one of: */
 /* #define JPEG_SUSPENDED	0    Suspended due to lack of input data */
 #define JPEG_REACHED_SOS	1 /* Reached start of new scan */
@@ -1076,25 +1076,25 @@ LJPEG9_EXTERN(int) jpeg_consume_input JPP((LJPEG9_j_decompress_ptr cinfo));
 #define JPEG_SCAN_COMPLETED	4 /* Completed last iMCU row of a scan */
 
 /* Precalculate output dimensions for current decompression parameters. */
-LJPEG9_EXTERN(void) jpeg_core_output_dimensions JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_calc_output_dimensions JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_core_output_dimensions LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_calc_output_dimensions LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Control saving of COM and APPn markers into marker_list. */
 LJPEG9_EXTERN(void) jpeg_save_markers
-	JPP((LJPEG9_j_decompress_ptr cinfo, int marker_code,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, int marker_code,
 	     unsigned int length_limit));
 
 /* Install a special processing method for COM or APPn markers. */
 LJPEG9_EXTERN(void) jpeg_set_marker_processor
-	JPP((LJPEG9_j_decompress_ptr cinfo, int marker_code,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, int marker_code,
 	     LJPEG9_jpeg_marker_parser_method routine));
 
 /* Read or write raw DCT coefficients --- useful for lossless transcoding. */
-LJPEG9_EXTERN(jvirt_barray_ptr *) jpeg_read_coefficients JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_write_coefficients JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(jvirt_barray_ptr *) jpeg_read_coefficients LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_write_coefficients LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					  jvirt_barray_ptr * coef_arrays));
-LJPEG9_EXTERN(void) jpeg_copy_critical_parameters JPP((LJPEG9_j_decompress_ptr srcinfo,
-						j_compress_ptr dstinfo));
+LJPEG9_EXTERN(void) jpeg_copy_critical_parameters LJPEG9_JPP((LJPEG9_j_decompress_ptr srcinfo,
+						LJPEG9_j_compress_ptr dstinfo));
 
 /* If you choose to abort compression or decompression before completing
  * jpeg_finish_(de)compress, then you need to clean up to release memory,
@@ -1102,17 +1102,17 @@ LJPEG9_EXTERN(void) jpeg_copy_critical_parameters JPP((LJPEG9_j_decompress_ptr s
  * if you're done with the JPEG object, but if you want to clean it up and
  * reuse it, call this:
  */
-LJPEG9_EXTERN(void) jpeg_abort_compress JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_abort_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_abort_compress LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_abort_decompress LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Generic versions of jpeg_abort and jpeg_destroy that work on either
  * flavor of JPEG object.  These may be more convenient in some places.
  */
-LJPEG9_EXTERN(void) jpeg_abort JPP((LJPEG9_j_common_ptr cinfo));
-LJPEG9_EXTERN(void) jpeg_destroy JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_abort LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_destroy LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
 
 /* Default restart-marker-resync procedure for use by data source modules */
-LJPEG9_EXTERN(boolean) jpeg_resync_to_restart JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(boolean) jpeg_resync_to_restart LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					    int desired));
 
 

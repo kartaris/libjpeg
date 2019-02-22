@@ -99,7 +99,7 @@ pbm_getc (FILE * infile)
 
 
 LOCAL(unsigned int)
-read_pbm_integer (j_compress_ptr cinfo, FILE * infile)
+read_pbm_integer (LJPEG9_j_compress_ptr cinfo, FILE * infile)
 /* Read an unsigned decimal integer from the PPM file */
 /* Swallows one trailing character after the integer */
 /* Note that on a 16-bit-int machine, only values up to 64k can be read. */
@@ -139,7 +139,7 @@ read_pbm_integer (j_compress_ptr cinfo, FILE * infile)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_text_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_text_gray_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading text-format PGM files with any maxval */
 {
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
@@ -157,7 +157,7 @@ get_text_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_text_rgb_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_text_rgb_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading text-format PPM files with any maxval */
 {
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
@@ -177,7 +177,7 @@ get_text_rgb_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_scaled_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_scaled_gray_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading raw-byte-format PGM files with any maxval */
 {
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
@@ -198,7 +198,7 @@ get_scaled_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_scaled_rgb_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_scaled_rgb_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading raw-byte-format PPM files with any maxval */
 {
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
@@ -221,7 +221,7 @@ get_scaled_rgb_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_raw_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_raw_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading raw-byte-format files with maxval = MAXJSAMPLE.
  * In this case we just read right into the JSAMPLE buffer!
  * Note that same code works for PPM and PGM files.
@@ -236,7 +236,7 @@ get_raw_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_word_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_word_gray_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading raw-word-format PGM files with any maxval */
 {
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
@@ -260,7 +260,7 @@ get_word_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_word_rgb_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_word_rgb_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading raw-word-format PPM files with any maxval */
 {
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
@@ -294,7 +294,7 @@ get_word_rgb_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+start_input_ppm (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   ppm_source_ptr source = (ppm_source_ptr) sinfo;
   int c;
@@ -430,7 +430,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(void)
-finish_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+finish_input_ppm (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   /* no work */
 }
@@ -441,7 +441,7 @@ finish_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_GLOBAL(LJPEG9_cjpeg_source_ptr)
-LJPEG9_jinit_read_ppm (j_compress_ptr cinfo)
+LJPEG9_jinit_read_ppm (LJPEG9_j_compress_ptr cinfo)
 {
   ppm_source_ptr source;
 

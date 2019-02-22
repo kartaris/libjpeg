@@ -21,7 +21,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
+jpeg_add_quant_table (LJPEG9_j_compress_ptr cinfo, int which_tbl,
 		      const unsigned int *basic_table,
 		      int scale_factor, boolean force_baseline)
 /* Define a quantization table equal to the basic_table times
@@ -88,7 +88,7 @@ static const unsigned int std_chrominance_quant_tbl[DCTSIZE2] = {
 
 
 LJPEG9_GLOBAL(void)
-jpeg_default_qtables (j_compress_ptr cinfo, boolean force_baseline)
+jpeg_default_qtables (LJPEG9_j_compress_ptr cinfo, boolean force_baseline)
 /* Set or change the 'quality' (quantization) setting, using default tables
  * and straight percentage-scaling quality scales.
  * This entry point allows different scalings for luminance and chrominance.
@@ -103,7 +103,7 @@ jpeg_default_qtables (j_compress_ptr cinfo, boolean force_baseline)
 
 
 LJPEG9_GLOBAL(void)
-jpeg_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
+jpeg_set_linear_quality (LJPEG9_j_compress_ptr cinfo, int scale_factor,
 			 boolean force_baseline)
 /* Set or change the 'quality' (quantization) setting, using default tables
  * and a straight percentage-scaling quality scale.  In most cases it's better
@@ -146,7 +146,7 @@ jpeg_quality_scaling (int quality)
 
 
 LJPEG9_GLOBAL(void)
-jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
+jpeg_set_quality (LJPEG9_j_compress_ptr cinfo, int quality, boolean force_baseline)
 /* Set or change the 'quality' (quantization) setting, using default tables.
  * This is the standard quality-adjusting entry point for typical user
  * interfaces; only those who want detailed control over quantization tables
@@ -166,7 +166,7 @@ jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
  */
 
 LOCAL(void)
-add_huff_table (j_compress_ptr cinfo,
+add_huff_table (LJPEG9_j_compress_ptr cinfo,
 		JHUFF_TBL **htblptr, const UINT8 *bits, const UINT8 *val)
 /* Define a Huffman table */
 {
@@ -196,7 +196,7 @@ add_huff_table (j_compress_ptr cinfo,
 
 
 LOCAL(void)
-std_huff_tables (j_compress_ptr cinfo)
+std_huff_tables (LJPEG9_j_compress_ptr cinfo)
 /* Set up the standard Huffman tables (cf. JPEG standard section K.3) */
 /* IMPORTANT: these are only valid for 8-bit data precision! */
 {
@@ -282,7 +282,7 @@ std_huff_tables (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_set_defaults (j_compress_ptr cinfo)
+jpeg_set_defaults (LJPEG9_j_compress_ptr cinfo)
 {
   int i;
 
@@ -383,7 +383,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_default_colorspace (j_compress_ptr cinfo)
+jpeg_default_colorspace (LJPEG9_j_compress_ptr cinfo)
 {
   switch (cinfo->in_color_space) {
   case JCS_UNKNOWN:
@@ -422,7 +422,7 @@ jpeg_default_colorspace (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
+jpeg_set_colorspace (LJPEG9_j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 {
   jpeg_component_info * compptr;
   int ci;
@@ -595,7 +595,7 @@ fill_dc_scans (jpeg_scan_info * scanptr, int ncomps, int Ah, int Al)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_simple_progression (j_compress_ptr cinfo)
+jpeg_simple_progression (LJPEG9_j_compress_ptr cinfo)
 {
   int ncomps = cinfo->num_components;
   int nscans;

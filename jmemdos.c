@@ -72,9 +72,9 @@ extern char * getenv JPP((const char * name));
 #endif /* NEED_FAR_POINTERS */
 
 #ifdef DONT_USE_B_MODE		/* define mode parameters for fopen() */
-#define READ_BINARY	"r"
+#define LJPEG9_READ_BINARY	"r"
 #else
-#define READ_BINARY	"rb"
+#define LJPEG9_READ_BINARY	"rb"
 #endif
 
 #ifndef USE_MSDOS_MEMMGR	/* make sure user got configuration right */
@@ -150,7 +150,7 @@ select_file_name (char * fname)
     next_file_num++;		/* advance counter */
     sprintf(ptr, "JPG%03d.TMP", next_file_num);
     /* Probe to see if file name is already in use */
-    if ((tfile = fopen(fname, READ_BINARY)) == NULL)
+    if ((tfile = fopen(fname, LJPEG9_READ_BINARY)) == NULL)
       break;
     fclose(tfile);		/* oops, it's there; close tfile & try again */
   }

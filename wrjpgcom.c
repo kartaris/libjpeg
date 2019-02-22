@@ -35,15 +35,15 @@ extern void * malloc ();
 #endif
 
 #ifdef DONT_USE_B_MODE		/* define mode parameters for fopen() */
-#define READ_BINARY	"r"
-#define WRITE_BINARY	"w"
+#define LJPEG9_READ_BINARY	"r"
+#define LJPEG9_WRITE_BINARY	"w"
 #else
 #ifdef VMS			/* VMS is very nonstandard */
-#define READ_BINARY	"rb", "ctx=stm"
-#define WRITE_BINARY	"wb", "ctx=stm"
+#define LJPEG9_READ_BINARY	"rb", "ctx=stm"
+#define LJPEG9_WRITE_BINARY	"wb", "ctx=stm"
 #else				/* standard ANSI-compliant case */
-#define READ_BINARY	"rb"
-#define WRITE_BINARY	"wb"
+#define LJPEG9_READ_BINARY	"rb"
+#define LJPEG9_WRITE_BINARY	"wb"
 #endif
 #endif
 
@@ -482,7 +482,7 @@ main (int argc, char **argv)
 
   /* Open the input file. */
   if (argn < argc) {
-    if ((infile = fopen(argv[argn], READ_BINARY)) == NULL) {
+    if ((infile = fopen(argv[argn], LJPEG9_READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s\n", progname, argv[argn]);
       exit(LJPEG9_EXIT_FAILURE);
     }
@@ -492,7 +492,7 @@ main (int argc, char **argv)
     setmode(fileno(stdin), O_BINARY);
 #endif
 #ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
-    if ((infile = fdopen(fileno(stdin), READ_BINARY)) == NULL) {
+    if ((infile = fdopen(fileno(stdin), LJPEG9_READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open stdin\n", progname);
       exit(LJPEG9_EXIT_FAILURE);
     }
@@ -509,7 +509,7 @@ main (int argc, char **argv)
 	    progname);
     usage();
   }
-  if ((outfile = fopen(argv[argn+1], WRITE_BINARY)) == NULL) {
+  if ((outfile = fopen(argv[argn+1], LJPEG9_WRITE_BINARY)) == NULL) {
     fprintf(stderr, "%s: can't open %s\n", progname, argv[argn+1]);
     exit(LJPEG9_EXIT_FAILURE);
   }
@@ -524,7 +524,7 @@ main (int argc, char **argv)
   setmode(fileno(stdout), O_BINARY);
 #endif
 #ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
-  if ((outfile = fdopen(fileno(stdout), WRITE_BINARY)) == NULL) {
+  if ((outfile = fdopen(fileno(stdout), LJPEG9_WRITE_BINARY)) == NULL) {
     fprintf(stderr, "%s: can't open stdout\n", progname);
     exit(LJPEG9_EXIT_FAILURE);
   }

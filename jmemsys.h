@@ -44,8 +44,8 @@
  * On an 80x86 machine using small-data memory model, these manage near heap.
  */
 
-LJPEG9_EXTERN(void *) LJPEG9_jpeg_get_small JPP((LJPEG9_j_common_ptr cinfo, size_t sizeofobject));
-LJPEG9_EXTERN(void) LJPEG9_jpeg_free_small JPP((LJPEG9_j_common_ptr cinfo, void * object,
+LJPEG9_EXTERN(void *) LJPEG9_jpeg_get_small LJPEG9_JPP((LJPEG9_j_common_ptr cinfo, size_t sizeofobject));
+LJPEG9_EXTERN(void) LJPEG9_jpeg_free_small LJPEG9_JPP((LJPEG9_j_common_ptr cinfo, void * object,
 				  size_t sizeofobject));
 
 /*
@@ -57,9 +57,9 @@ LJPEG9_EXTERN(void) LJPEG9_jpeg_free_small JPP((LJPEG9_j_common_ptr cinfo, void 
  * in case a different allocation strategy is desirable for large chunks.
  */
 
-LJPEG9_EXTERN(void FAR *) LJPEG9_jpeg_get_large JPP((LJPEG9_j_common_ptr cinfo,
+LJPEG9_EXTERN(void FAR *) LJPEG9_jpeg_get_large LJPEG9_JPP((LJPEG9_j_common_ptr cinfo,
 				       size_t sizeofobject));
-LJPEG9_EXTERN(void) LJPEG9_jpeg_free_large JPP((LJPEG9_j_common_ptr cinfo, void FAR * object,
+LJPEG9_EXTERN(void) LJPEG9_jpeg_free_large LJPEG9_JPP((LJPEG9_j_common_ptr cinfo, void FAR * object,
 				  size_t sizeofobject));
 
 /*
@@ -100,7 +100,7 @@ LJPEG9_EXTERN(void) LJPEG9_jpeg_free_large JPP((LJPEG9_j_common_ptr cinfo, void 
  * Conversely, zero may be returned to always use the minimum amount of memory.
  */
 
-LJPEG9_EXTERN(long) LJPEG9_jpeg_mem_available JPP((LJPEG9_j_common_ptr cinfo,
+LJPEG9_EXTERN(long) LJPEG9_jpeg_mem_available LJPEG9_JPP((LJPEG9_j_common_ptr cinfo,
 				     long min_bytes_needed,
 				     long max_bytes_needed,
 				     long already_allocated));
@@ -177,7 +177,7 @@ typedef struct backing_store_struct {
  * just take an error exit.)
  */
 
-LJPEG9_EXTERN(void) LJPEG9_jpeg_open_backing_store JPP((LJPEG9_j_common_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jpeg_open_backing_store LJPEG9_JPP((LJPEG9_j_common_ptr cinfo,
 					  backing_store_ptr info,
 					  long total_bytes_needed));
 
@@ -194,5 +194,5 @@ LJPEG9_EXTERN(void) LJPEG9_jpeg_open_backing_store JPP((LJPEG9_j_common_ptr cinf
  * all opened backing-store objects have been closed.
  */
 
-LJPEG9_EXTERN(long) LJPEG9_jpeg_mem_init JPP((LJPEG9_j_common_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jpeg_mem_term JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(long) LJPEG9_jpeg_mem_init LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jpeg_mem_term LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));

@@ -78,7 +78,7 @@ static boolean is_targa;	/* records user -targa switch */
 
 
 LOCAL(LJPEG9_cjpeg_source_ptr)
-select_file_type (j_compress_ptr cinfo, FILE * infile)
+select_file_type (LJPEG9_j_compress_ptr cinfo, FILE * infile)
 {
   int c;
 
@@ -209,7 +209,7 @@ usage (void)
 
 
 LOCAL(int)
-parse_switches (j_compress_ptr cinfo, int argc, char **argv,
+parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
 		int last_file_arg_seen, boolean for_real)
 /* Parse optional switches.
  * Returns argv[] index of first file-name argument (== argc if none).
@@ -594,7 +594,7 @@ main (int argc, char **argv)
 
   /* Open the input file. */
   if (file_index < argc) {
-    if ((input_file = fopen(argv[file_index], READ_BINARY)) == NULL) {
+    if ((input_file = fopen(argv[file_index], LJPEG9_READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index]);
       exit(LJPEG9_EXIT_FAILURE);
     }
@@ -605,7 +605,7 @@ main (int argc, char **argv)
 
   /* Open the output file. */
   if (outfilename != NULL) {
-    if ((output_file = fopen(outfilename, WRITE_BINARY)) == NULL) {
+    if ((output_file = fopen(outfilename, LJPEG9_WRITE_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s\n", progname, outfilename);
       exit(LJPEG9_EXIT_FAILURE);
     }

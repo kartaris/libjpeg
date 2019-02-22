@@ -48,7 +48,7 @@ typedef struct _tga_source_struct * tga_source_ptr;
 typedef struct _tga_source_struct {
   struct LJPEG9_cjpeg_source_struct pub; /* public fields */
 
-  j_compress_ptr cinfo;		/* back link saves passing separate parm */
+  LJPEG9_j_compress_ptr cinfo;		/* back link saves passing separate parm */
 
   LJPEG9_JSAMPARRAY colormap;		/* Targa colormap (converted to my format) */
 
@@ -68,7 +68,7 @@ typedef struct _tga_source_struct {
   int dup_pixel_count;		/* # of times to duplicate previous pixel */
 
   /* This saves the correct pixel-row-expansion method for preload_image */
-  LJPEG9_JMETHOD(LJPEG9_JDIMENSION, get_pixel_rows, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(LJPEG9_JDIMENSION, get_pixel_rows, (LJPEG9_j_compress_ptr cinfo,
 				       LJPEG9_cjpeg_source_ptr sinfo));
 } tga_source_struct;
 
@@ -171,7 +171,7 @@ read_rle_pixel (tga_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_8bit_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_8bit_gray_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading 8-bit grayscale pixels */
 {
   tga_source_ptr source = (tga_source_ptr) sinfo;
@@ -187,7 +187,7 @@ get_8bit_gray_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 }
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_8bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_8bit_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading 8-bit colormap indexes */
 {
   tga_source_ptr source = (tga_source_ptr) sinfo;
@@ -208,7 +208,7 @@ get_8bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 }
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_16bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_16bit_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading 16-bit pixels */
 {
   tga_source_ptr source = (tga_source_ptr) sinfo;
@@ -236,7 +236,7 @@ get_16bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 }
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_24bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_24bit_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading 24-bit pixels */
 {
   tga_source_ptr source = (tga_source_ptr) sinfo;
@@ -270,7 +270,7 @@ get_24bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_memory_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_memory_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   tga_source_ptr source = (tga_source_ptr) sinfo;
   LJPEG9_JDIMENSION source_row;
@@ -297,7 +297,7 @@ get_memory_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-preload_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+preload_image (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   tga_source_ptr source = (tga_source_ptr) sinfo;
   LJPEG9_JDIMENSION row;
@@ -330,7 +330,7 @@ preload_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+start_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   tga_source_ptr source = (tga_source_ptr) sinfo;
   U_CHAR targaheader[18];
@@ -470,7 +470,7 @@ start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(void)
-finish_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+finish_input_tga (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   /* no work */
 }
@@ -481,7 +481,7 @@ finish_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_GLOBAL(LJPEG9_cjpeg_source_ptr)
-LJPEG9_jinit_read_targa (j_compress_ptr cinfo)
+LJPEG9_jinit_read_targa (LJPEG9_j_compress_ptr cinfo)
 {
   tga_source_ptr source;
 

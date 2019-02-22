@@ -21,7 +21,7 @@
 
 
 /* Forward declarations */
-LOCAL(boolean) output_pass_setup JPP((LJPEG9_j_decompress_ptr cinfo));
+LOCAL(boolean) output_pass_setup LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 
 /*

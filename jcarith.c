@@ -113,7 +113,7 @@ typedef arith_entropy_encoder * arith_entropy_ptr;
 
 
 LOCAL(void)
-emit_byte (int val, j_compress_ptr cinfo)
+emit_byte (int val, LJPEG9_j_compress_ptr cinfo)
 /* Write next output byte; we do not support suspension in this module. */
 {
   struct jpeg_destination_mgr * dest = cinfo->dest;
@@ -130,7 +130,7 @@ emit_byte (int val, j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-finish_pass (j_compress_ptr cinfo)
+finish_pass (LJPEG9_j_compress_ptr cinfo)
 {
   arith_entropy_ptr e = (arith_entropy_ptr) cinfo->entropy;
   INT32 temp;
@@ -216,7 +216,7 @@ finish_pass (j_compress_ptr cinfo)
  */
 
 LOCAL(void)
-arith_encode (j_compress_ptr cinfo, unsigned char *st, int val) 
+arith_encode (LJPEG9_j_compress_ptr cinfo, unsigned char *st, int val)
 {
   register arith_entropy_ptr e = (arith_entropy_ptr) cinfo->entropy;
   register unsigned char nl, nm;
@@ -316,7 +316,7 @@ arith_encode (j_compress_ptr cinfo, unsigned char *st, int val)
  */
 
 LOCAL(void)
-emit_restart (j_compress_ptr cinfo, int restart_num)
+emit_restart (LJPEG9_j_compress_ptr cinfo, int restart_num)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   int ci;
@@ -359,7 +359,7 @@ emit_restart (j_compress_ptr cinfo, int restart_num)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_DC_first (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   unsigned char *st;
@@ -448,7 +448,7 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_AC_first (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   const int * natural_order;
@@ -555,7 +555,7 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_DC_refine (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   unsigned char *st;
@@ -590,7 +590,7 @@ encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_AC_refine (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   const int * natural_order;
@@ -689,7 +689,7 @@ encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   const int * natural_order;
@@ -838,7 +838,7 @@ encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(void)
-start_pass (j_compress_ptr cinfo, boolean gather_statistics)
+start_pass (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics)
 {
   arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
   int ci, tbl;
@@ -921,7 +921,7 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_arith_encoder (j_compress_ptr cinfo)
+LJPEG9_jinit_arith_encoder (LJPEG9_j_compress_ptr cinfo)
 {
   arith_entropy_ptr entropy;
   int i;

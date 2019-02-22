@@ -107,7 +107,7 @@ typedef my_marker_writer * my_marker_ptr;
  */
 
 LOCAL(void)
-emit_byte (j_compress_ptr cinfo, int val)
+emit_byte (LJPEG9_j_compress_ptr cinfo, int val)
 /* Emit a byte */
 {
   struct jpeg_destination_mgr * dest = cinfo->dest;
@@ -121,7 +121,7 @@ emit_byte (j_compress_ptr cinfo, int val)
 
 
 LOCAL(void)
-emit_marker (j_compress_ptr cinfo, JPEG_MARKER mark)
+emit_marker (LJPEG9_j_compress_ptr cinfo, JPEG_MARKER mark)
 /* Emit a marker code */
 {
   emit_byte(cinfo, 0xFF);
@@ -130,7 +130,7 @@ emit_marker (j_compress_ptr cinfo, JPEG_MARKER mark)
 
 
 LOCAL(void)
-emit_2bytes (j_compress_ptr cinfo, int value)
+emit_2bytes (LJPEG9_j_compress_ptr cinfo, int value)
 /* Emit a 2-byte integer; these are always MSB first in JPEG files */
 {
   emit_byte(cinfo, (value >> 8) & 0xFF);
@@ -143,7 +143,7 @@ emit_2bytes (j_compress_ptr cinfo, int value)
  */
 
 LOCAL(int)
-emit_dqt (j_compress_ptr cinfo, int index)
+emit_dqt (LJPEG9_j_compress_ptr cinfo, int index)
 /* Emit a DQT marker */
 /* Returns the precision used (0 = 8bits, 1 = 16bits) for baseline checking */
 {
@@ -184,7 +184,7 @@ emit_dqt (j_compress_ptr cinfo, int index)
 
 
 LOCAL(void)
-emit_dht (j_compress_ptr cinfo, int index, boolean is_ac)
+emit_dht (LJPEG9_j_compress_ptr cinfo, int index, boolean is_ac)
 /* Emit a DHT marker */
 {
   JHUFF_TBL * htbl;
@@ -222,7 +222,7 @@ emit_dht (j_compress_ptr cinfo, int index, boolean is_ac)
 
 
 LOCAL(void)
-emit_dac (j_compress_ptr cinfo)
+emit_dac (LJPEG9_j_compress_ptr cinfo)
 /* Emit a DAC marker */
 /* Since the useful info is so small, we want to emit all the tables in */
 /* one DAC marker.  Therefore this routine does its own scan of the table. */
@@ -271,7 +271,7 @@ emit_dac (j_compress_ptr cinfo)
 
 
 LOCAL(void)
-emit_dri (j_compress_ptr cinfo)
+emit_dri (LJPEG9_j_compress_ptr cinfo)
 /* Emit a DRI marker */
 {
   emit_marker(cinfo, M_DRI);
@@ -283,7 +283,7 @@ emit_dri (j_compress_ptr cinfo)
 
 
 LOCAL(void)
-emit_lse_ict (j_compress_ptr cinfo)
+emit_lse_ict (LJPEG9_j_compress_ptr cinfo)
 /* Emit an LSE inverse color transform specification marker */
 {
   /* Support only 1 transform */
@@ -314,7 +314,7 @@ emit_lse_ict (j_compress_ptr cinfo)
 
 
 LOCAL(void)
-emit_sof (j_compress_ptr cinfo, JPEG_MARKER code)
+emit_sof (LJPEG9_j_compress_ptr cinfo, JPEG_MARKER code)
 /* Emit a SOF marker */
 {
   int ci;
@@ -345,7 +345,7 @@ emit_sof (j_compress_ptr cinfo, JPEG_MARKER code)
 
 
 LOCAL(void)
-emit_sos (j_compress_ptr cinfo)
+emit_sos (LJPEG9_j_compress_ptr cinfo)
 /* Emit a SOS marker */
 {
   int i, td, ta;
@@ -380,7 +380,7 @@ emit_sos (j_compress_ptr cinfo)
 
 
 LOCAL(void)
-emit_pseudo_sos (j_compress_ptr cinfo)
+emit_pseudo_sos (LJPEG9_j_compress_ptr cinfo)
 /* Emit a pseudo SOS marker */
 {
   emit_marker(cinfo, M_SOS);
@@ -396,7 +396,7 @@ emit_pseudo_sos (j_compress_ptr cinfo)
 
 
 LOCAL(void)
-emit_jfif_app0 (j_compress_ptr cinfo)
+emit_jfif_app0 (LJPEG9_j_compress_ptr cinfo)
 /* Emit a JFIF-compliant APP0 marker */
 {
   /*
@@ -431,7 +431,7 @@ emit_jfif_app0 (j_compress_ptr cinfo)
 
 
 LOCAL(void)
-emit_adobe_app14 (j_compress_ptr cinfo)
+emit_adobe_app14 (LJPEG9_j_compress_ptr cinfo)
 /* Emit an Adobe APP14 marker */
 {
   /*
@@ -485,7 +485,7 @@ emit_adobe_app14 (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-write_marker_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
+write_marker_header (LJPEG9_j_compress_ptr cinfo, int marker, unsigned int datalen)
 /* Emit an arbitrary marker header */
 {
   if (datalen > (unsigned int) 65533)		/* safety check */
@@ -497,7 +497,7 @@ write_marker_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
 }
 
 LJPEG9_METHODDEF(void)
-write_marker_byte (j_compress_ptr cinfo, int val)
+write_marker_byte (LJPEG9_j_compress_ptr cinfo, int val)
 /* Emit one byte of marker parameters following write_marker_header */
 {
   emit_byte(cinfo, val);
@@ -516,7 +516,7 @@ write_marker_byte (j_compress_ptr cinfo, int val)
  */
 
 LJPEG9_METHODDEF(void)
-write_file_header (j_compress_ptr cinfo)
+write_file_header (LJPEG9_j_compress_ptr cinfo)
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
 
@@ -542,7 +542,7 @@ write_file_header (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-write_frame_header (j_compress_ptr cinfo)
+write_frame_header (LJPEG9_j_compress_ptr cinfo)
 {
   int ci, prec;
   boolean is_baseline;
@@ -610,7 +610,7 @@ write_frame_header (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-write_scan_header (j_compress_ptr cinfo)
+write_scan_header (LJPEG9_j_compress_ptr cinfo)
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
   int i;
@@ -654,7 +654,7 @@ write_scan_header (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-write_file_trailer (j_compress_ptr cinfo)
+write_file_trailer (LJPEG9_j_compress_ptr cinfo)
 {
   emit_marker(cinfo, M_EOI);
 }
@@ -668,7 +668,7 @@ write_file_trailer (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-write_tables_only (j_compress_ptr cinfo)
+write_tables_only (LJPEG9_j_compress_ptr cinfo)
 {
   int i;
 
@@ -697,7 +697,7 @@ write_tables_only (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_marker_writer (j_compress_ptr cinfo)
+LJPEG9_jinit_marker_writer (LJPEG9_j_compress_ptr cinfo)
 {
   my_marker_ptr marker;
 

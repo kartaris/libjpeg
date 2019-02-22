@@ -44,9 +44,9 @@ typedef enum {			/* Operating modes for buffer controllers */
 
 /* Master control module */
 struct LJPEG9_jpeg_comp_master {
-  LJPEG9_JMETHOD(void, prepare_for_pass, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, pass_startup, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, finish_pass, (j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, prepare_for_pass, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, pass_startup, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, finish_pass, (LJPEG9_j_compress_ptr cinfo));
 
   /* State variables made visible to other modules */
   boolean call_pass_startup;	/* True if pass_startup must be called */
@@ -55,16 +55,16 @@ struct LJPEG9_jpeg_comp_master {
 
 /* Main buffer control (downsampled-data buffer) */
 struct LJPEG9_jpeg_c_main_controller {
-  LJPEG9_JMETHOD(void, start_pass, (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode));
-  LJPEG9_JMETHOD(void, process_data, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(void, start_pass, (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode));
+  LJPEG9_JMETHOD(void, process_data, (LJPEG9_j_compress_ptr cinfo,
 			       LJPEG9_JSAMPARRAY input_buf, LJPEG9_JDIMENSION *in_row_ctr,
 			       LJPEG9_JDIMENSION in_rows_avail));
 };
 
 /* Compression preprocessing (downsampling input buffer control) */
 struct LJPEG9_jpeg_c_prep_controller {
-  LJPEG9_JMETHOD(void, start_pass, (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode));
-  LJPEG9_JMETHOD(void, pre_process_data, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(void, start_pass, (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode));
+  LJPEG9_JMETHOD(void, pre_process_data, (LJPEG9_j_compress_ptr cinfo,
 				   LJPEG9_JSAMPARRAY input_buf,
 				   LJPEG9_JDIMENSION *in_row_ctr,
 				   LJPEG9_JDIMENSION in_rows_avail,
@@ -75,23 +75,23 @@ struct LJPEG9_jpeg_c_prep_controller {
 
 /* Coefficient buffer control */
 struct LJPEG9_jpeg_c_coef_controller {
-  LJPEG9_JMETHOD(void, start_pass, (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode));
-  LJPEG9_JMETHOD(boolean, compress_data, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(void, start_pass, (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode));
+  LJPEG9_JMETHOD(boolean, compress_data, (LJPEG9_j_compress_ptr cinfo,
 				   JSAMPIMAGE input_buf));
 };
 
 /* Colorspace conversion */
 struct LJPEG9_jpeg_color_converter {
-  LJPEG9_JMETHOD(void, start_pass, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, color_convert, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(void, start_pass, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, color_convert, (LJPEG9_j_compress_ptr cinfo,
 				LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 				LJPEG9_JDIMENSION output_row, int num_rows));
 };
 
 /* Downsampling */
 struct LJPEG9_jpeg_downsampler {
-  LJPEG9_JMETHOD(void, start_pass, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, downsample, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(void, start_pass, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, downsample, (LJPEG9_j_compress_ptr cinfo,
 			     JSAMPIMAGE input_buf, LJPEG9_JDIMENSION in_row_index,
 			     JSAMPIMAGE output_buf,
 			     LJPEG9_JDIMENSION out_row_group_index));
@@ -101,36 +101,36 @@ struct LJPEG9_jpeg_downsampler {
 
 /* Forward DCT (also controls coefficient quantization) */
 typedef LJPEG9_JMETHOD(void, forward_DCT_ptr,
-		(j_compress_ptr cinfo, jpeg_component_info * compptr,
+		(LJPEG9_j_compress_ptr cinfo, jpeg_component_info * compptr,
 		 LJPEG9_JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
 		 LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION start_col,
 		 LJPEG9_JDIMENSION num_blocks));
 
 struct LJPEG9_jpeg_forward_dct {
-  LJPEG9_JMETHOD(void, start_pass, (j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, start_pass, (LJPEG9_j_compress_ptr cinfo));
   /* It is useful to allow each component to have a separate FDCT method. */
   forward_DCT_ptr forward_DCT[MAX_COMPONENTS];
 };
 
 /* Entropy encoding */
 struct LJPEG9_jpeg_entropy_encoder {
-  LJPEG9_JMETHOD(void, start_pass, (j_compress_ptr cinfo, boolean gather_statistics));
-  LJPEG9_JMETHOD(boolean, encode_mcu, (j_compress_ptr cinfo, JBLOCKROW *MCU_data));
-  LJPEG9_JMETHOD(void, finish_pass, (j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, start_pass, (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics));
+  LJPEG9_JMETHOD(boolean, encode_mcu, (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data));
+  LJPEG9_JMETHOD(void, finish_pass, (LJPEG9_j_compress_ptr cinfo));
 };
 
 /* Marker writing */
 struct LJPEG9_jpeg_marker_writer {
-  LJPEG9_JMETHOD(void, write_file_header, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, write_frame_header, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, write_scan_header, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, write_file_trailer, (j_compress_ptr cinfo));
-  LJPEG9_JMETHOD(void, write_tables_only, (j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, write_file_header, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, write_frame_header, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, write_scan_header, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, write_file_trailer, (LJPEG9_j_compress_ptr cinfo));
+  LJPEG9_JMETHOD(void, write_tables_only, (LJPEG9_j_compress_ptr cinfo));
   /* These routines are exported to allow insertion of extra markers */
   /* Probably only COM and APPn markers should be written this way */
-  LJPEG9_JMETHOD(void, write_marker_header, (j_compress_ptr cinfo, int marker,
+  LJPEG9_JMETHOD(void, write_marker_header, (LJPEG9_j_compress_ptr cinfo, int marker,
 				      unsigned int datalen));
-  LJPEG9_JMETHOD(void, write_marker_byte, (j_compress_ptr cinfo, int val));
+  LJPEG9_JMETHOD(void, write_marker_byte, (LJPEG9_j_compress_ptr cinfo, int val));
 };
 
 
@@ -350,56 +350,56 @@ struct LJPEG9_jpeg_color_quantizer {
 #ifdef USE_FMEM
 #define FMEMZERO(target,size)	_fmemset((void FAR *)(target), 0, (size_t)(size))
 #else
-LJPEG9_EXTERN(void) LJPEG9_jzero_far JPP((void FAR * target, size_t bytestozero));
+LJPEG9_EXTERN(void) LJPEG9_jzero_far LJPEG9_JPP((void FAR * target, size_t bytestozero));
 #define FMEMZERO(target,size)	LJPEG9_jzero_far(target, size)
 #endif
 #endif
 
 
 /* Compression module initialization routines */
-LJPEG9_EXTERN(void) LJPEG9_jinit_compress_master JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_c_master_control JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jinit_compress_master LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_c_master_control LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					 boolean transcode_only));
-LJPEG9_EXTERN(void) LJPEG9_jinit_c_main_controller JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jinit_c_main_controller LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					  boolean need_full_buffer));
-LJPEG9_EXTERN(void) LJPEG9_jinit_c_prep_controller JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jinit_c_prep_controller LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					  boolean need_full_buffer));
-LJPEG9_EXTERN(void) LJPEG9_jinit_c_coef_controller JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jinit_c_coef_controller LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo,
 					  boolean need_full_buffer));
-LJPEG9_EXTERN(void) LJPEG9_jinit_color_converter JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_downsampler JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_forward_dct JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_huff_encoder JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_arith_encoder JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_marker_writer JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_color_converter LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_downsampler LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_forward_dct LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_huff_encoder LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_arith_encoder LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_marker_writer LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
 /* Decompression module initialization routines */
-LJPEG9_EXTERN(void) LJPEG9_jinit_master_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_d_main_controller JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jinit_master_decompress LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_d_main_controller LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					  boolean need_full_buffer));
-LJPEG9_EXTERN(void) LJPEG9_jinit_d_coef_controller JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jinit_d_coef_controller LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					  boolean need_full_buffer));
-LJPEG9_EXTERN(void) LJPEG9_jinit_d_post_controller JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_jinit_d_post_controller LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					  boolean need_full_buffer));
-LJPEG9_EXTERN(void) LJPEG9_jinit_input_controller JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_marker_reader JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_huff_decoder JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_arith_decoder JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_inverse_dct JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_upsampler JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_color_deconverter JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_1pass_quantizer JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_2pass_quantizer JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_jinit_merged_upsampler JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_input_controller LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_marker_reader LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_huff_decoder LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_arith_decoder LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_inverse_dct LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_upsampler LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_color_deconverter LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_1pass_quantizer LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_2pass_quantizer LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_merged_upsampler LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 /* Memory manager initialization */
-LJPEG9_EXTERN(void) LJPEG9_jinit_memory_mgr JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_jinit_memory_mgr LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
 
 /* Utility routines in jutils.c */
-LJPEG9_EXTERN(long) LJPEG9_jdiv_round_up JPP((long a, long b));
-LJPEG9_EXTERN(long) LJPEG9_LJPEG9_jRound_up JPP((long a, long b));
-LJPEG9_EXTERN(void) LJPEG9_jcopy_sample_rows JPP((LJPEG9_JSAMPARRAY input_array, int source_row,
+LJPEG9_EXTERN(long) LJPEG9_jdiv_round_up LJPEG9_JPP((long a, long b));
+LJPEG9_EXTERN(long) LJPEG9_LJPEG9_jRound_up LJPEG9_JPP((long a, long b));
+LJPEG9_EXTERN(void) LJPEG9_jcopy_sample_rows LJPEG9_JPP((LJPEG9_JSAMPARRAY input_array, int source_row,
 				    LJPEG9_JSAMPARRAY output_array, int dest_row,
 				    int num_rows, LJPEG9_JDIMENSION num_cols));
-LJPEG9_EXTERN(void) LJPEG9_jcopy_block_row JPP((JBLOCKROW input_row, JBLOCKROW output_row,
+LJPEG9_EXTERN(void) LJPEG9_jcopy_block_row LJPEG9_JPP((JBLOCKROW input_row, JBLOCKROW output_row,
 				  LJPEG9_JDIMENSION num_blocks));
 /* Constant tables in jutils.c */
 #if 0				/* This table is not actually needed in v6a */

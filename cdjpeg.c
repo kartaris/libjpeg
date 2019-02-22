@@ -154,7 +154,7 @@ LJPEG9_read_stdin (void)
   setmode(fileno(stdin), O_BINARY);
 #endif
 #ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
-  if ((input_file = fdopen(fileno(stdin), READ_BINARY)) == NULL) {
+  if ((input_file = fdopen(fileno(stdin), LJPEG9_READ_BINARY)) == NULL) {
     fprintf(stderr, "Cannot reopen stdin\n");
     exit(LJPEG9_EXIT_FAILURE);
   }
@@ -172,7 +172,7 @@ LJPEG9_write_stdout (void)
   setmode(fileno(stdout), O_BINARY);
 #endif
 #ifdef LJPEG9_USE_FDOPEN		/* need to re-open in binary mode? */
-  if ((output_file = fdopen(fileno(stdout), WRITE_BINARY)) == NULL) {
+  if ((output_file = fdopen(fileno(stdout), LJPEG9_WRITE_BINARY)) == NULL) {
     fprintf(stderr, "Cannot reopen stdout\n");
     exit(LJPEG9_EXIT_FAILURE);
   }

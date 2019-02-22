@@ -71,7 +71,7 @@ typedef union {
  */
 
 LJPEG9_METHODDEF(void)
-forward_DCT (j_compress_ptr cinfo, jpeg_component_info * compptr,
+forward_DCT (LJPEG9_j_compress_ptr cinfo, jpeg_component_info * compptr,
 	     LJPEG9_JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
 	     LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION start_col,
 	     LJPEG9_JDIMENSION num_blocks)
@@ -134,7 +134,7 @@ forward_DCT (j_compress_ptr cinfo, jpeg_component_info * compptr,
 #ifdef DCT_FLOAT_SUPPORTED
 
 LJPEG9_METHODDEF(void)
-forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
+forward_DCT_float (LJPEG9_j_compress_ptr cinfo, jpeg_component_info * compptr,
 		   LJPEG9_JSAMPARRAY sample_data, JBLOCKROW coef_blocks,
 		   LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION start_col,
 		   LJPEG9_JDIMENSION num_blocks)
@@ -186,7 +186,7 @@ forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_fdctmgr (j_compress_ptr cinfo)
+start_pass_fdctmgr (LJPEG9_j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct = (my_fdct_ptr) cinfo->fdct;
   int ci, qtblno, i;
@@ -455,7 +455,7 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_forward_dct (j_compress_ptr cinfo)
+LJPEG9_jinit_forward_dct (LJPEG9_j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct;
   int ci;

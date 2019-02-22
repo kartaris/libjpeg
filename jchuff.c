@@ -104,7 +104,7 @@ typedef struct {
    */
   JOCTET * next_output_byte;	/* => next byte to write in buffer */
   size_t free_in_buffer;	/* # of byte spaces remaining in buffer */
-  j_compress_ptr cinfo;		/* link to cinfo (needed for dump_buffer) */
+  LJPEG9_j_compress_ptr cinfo;		/* link to cinfo (needed for dump_buffer) */
 
   /* Coding status for AC components */
   int ac_tbl_no;		/* the table number of the single component */
@@ -124,7 +124,7 @@ typedef struct {
   JOCTET * next_output_byte;	/* => next byte to write in buffer */
   size_t free_in_buffer;	/* # of byte spaces remaining in buffer */
   savable_state cur;		/* Current bit buffer & DC state */
-  j_compress_ptr cinfo;		/* dump_buffer needs access to this */
+  LJPEG9_j_compress_ptr cinfo;		/* dump_buffer needs access to this */
 } working_state;
 
 /* MAX_CORR_BITS is the number of bits the AC refinement correction-bit
@@ -158,7 +158,7 @@ typedef struct {
  */
 
 LOCAL(void)
-jpeg_make_c_derived_tbl (j_compress_ptr cinfo, boolean isDC, int tblno,
+jpeg_make_c_derived_tbl (LJPEG9_j_compress_ptr cinfo, boolean isDC, int tblno,
 			 c_derived_tbl ** pdtbl)
 {
   JHUFF_TBL *htbl;
@@ -543,7 +543,7 @@ emit_restart_e (huff_entropy_ptr entropy, int restart_num)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_DC_first (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   register int temp, temp2;
@@ -626,7 +626,7 @@ encode_mcu_DC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_AC_first (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   const int * natural_order;
@@ -737,7 +737,7 @@ encode_mcu_AC_first (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_DC_refine (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int Al, blkn;
@@ -780,7 +780,7 @@ encode_mcu_DC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_AC_refine (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_AC_refine (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   const int * natural_order;
@@ -1010,7 +1010,7 @@ encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_huff (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_huff (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   working_state state;
@@ -1067,7 +1067,7 @@ encode_mcu_huff (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LJPEG9_METHODDEF(void)
-finish_pass_huff (j_compress_ptr cinfo)
+finish_pass_huff (LJPEG9_j_compress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   working_state state;
@@ -1116,7 +1116,7 @@ finish_pass_huff (j_compress_ptr cinfo)
 /* Process a single block's worth of coefficients */
 
 LOCAL(void)
-htest_one_block (j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val,
+htest_one_block (LJPEG9_j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val,
 		 long dc_counts[], long ac_counts[])
 {
   register int temp;
@@ -1191,7 +1191,7 @@ htest_one_block (j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val,
  */
 
 LJPEG9_METHODDEF(boolean)
-encode_mcu_gather (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
+encode_mcu_gather (LJPEG9_j_compress_ptr cinfo, JBLOCKROW *MCU_data)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int blkn, ci;
@@ -1250,7 +1250,7 @@ encode_mcu_gather (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  */
 
 LOCAL(void)
-jpeg_gen_optimal_table (j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[])
+jpeg_gen_optimal_table (LJPEG9_j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[])
 {
 #define MAX_CLEN 32		/* assumed maximum initial code length */
   UINT8 bits[MAX_CLEN+1];	/* bits[k] = # of symbols with code length k */
@@ -1391,7 +1391,7 @@ jpeg_gen_optimal_table (j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[])
  */
 
 LJPEG9_METHODDEF(void)
-finish_pass_gather (j_compress_ptr cinfo)
+finish_pass_gather (LJPEG9_j_compress_ptr cinfo)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int ci, tbl;
@@ -1445,7 +1445,7 @@ finish_pass_gather (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_huff (j_compress_ptr cinfo, boolean gather_statistics)
+start_pass_huff (LJPEG9_j_compress_ptr cinfo, boolean gather_statistics)
 {
   huff_entropy_ptr entropy = (huff_entropy_ptr) cinfo->entropy;
   int ci, tbl;
@@ -1551,7 +1551,7 @@ start_pass_huff (j_compress_ptr cinfo, boolean gather_statistics)
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_huff_encoder (j_compress_ptr cinfo)
+LJPEG9_jinit_huff_encoder (LJPEG9_j_compress_ptr cinfo)
 {
   huff_entropy_ptr entropy;
   int i;

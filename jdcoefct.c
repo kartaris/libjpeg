@@ -64,15 +64,15 @@ typedef my_coef_controller * my_coef_ptr;
 
 /* Forward declarations */
 LJPEG9_METHODDEF(int) decompress_onepass
-	JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
 #ifdef D_MULTISCAN_FILES_SUPPORTED
 LJPEG9_METHODDEF(int) decompress_data
-	JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
 #endif
 #ifdef BLOCK_SMOOTHING_SUPPORTED
-LOCAL(boolean) smoothing_ok JPP((LJPEG9_j_decompress_ptr cinfo));
+LOCAL(boolean) smoothing_ok LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 LJPEG9_METHODDEF(int) decompress_smooth_data
-	JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf));
 #endif
 
 

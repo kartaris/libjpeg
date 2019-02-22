@@ -28,7 +28,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_compress_master (j_compress_ptr cinfo)
+LJPEG9_jinit_compress_master (LJPEG9_j_compress_ptr cinfo)
 {
   long samplesperrow;
   LJPEG9_JDIMENSION jd_samplesperrow;

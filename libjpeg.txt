@@ -797,13 +797,13 @@ cinfo fields directly.
 
 The helper routines are:
 
-jpeg_set_defaults (j_compress_ptr cinfo)
+jpeg_set_defaults (LJPEG9_j_compress_ptr cinfo)
 	This routine sets all JPEG parameters to reasonable defaults, using
 	only the input image's color space (field in_color_space, which must
 	already be set in cinfo).  Many applications will only need to use
 	this routine and perhaps jpeg_set_quality().
 
-jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
+jpeg_set_colorspace (LJPEG9_j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 	Sets the JPEG file's colorspace (field jpeg_color_space) as specified,
 	and sets other color-space-dependent parameters appropriately.  See
 	"Special color spaces", below, before using this.  A large number of
@@ -811,13 +811,13 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 	routine; if you want to twiddle individual parameters you should call
 	jpeg_set_colorspace() before rather than after.
 
-jpeg_default_colorspace (j_compress_ptr cinfo)
+jpeg_default_colorspace (LJPEG9_j_compress_ptr cinfo)
 	Selects an appropriate JPEG colorspace based on cinfo->in_color_space,
 	and calls jpeg_set_colorspace().  This is actually a subroutine of
 	jpeg_set_defaults().  It's broken out in case you want to change
 	just the colorspace-dependent JPEG parameters.
 
-jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
+jpeg_set_quality (LJPEG9_j_compress_ptr cinfo, int quality, boolean force_baseline)
 	Constructs JPEG quantization tables appropriate for the indicated
 	quality setting.  The quality value is expressed on the 0..100 scale
 	recommended by IJG (cjpeg's "-quality" switch uses this routine).
@@ -831,7 +831,7 @@ jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
 	is capable of reading the non-baseline files generated at low quality
 	settings when force_baseline is FALSE, but other decoders may not be.
 
-jpeg_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
+jpeg_set_linear_quality (LJPEG9_j_compress_ptr cinfo, int scale_factor,
 			 boolean force_baseline)
 	Same as jpeg_set_quality() except that the generated tables are the
 	sample tables given in the JPEC spec section K.1, multiplied by the
@@ -849,11 +849,11 @@ int jpeg_quality_scaling (int quality)
 	can't be expressed as a simple scalar multiplier, in which case the
 	premise of this routine collapses.  Caveat user.
 
-jpeg_default_qtables (j_compress_ptr cinfo, boolean force_baseline)
+jpeg_default_qtables (LJPEG9_j_compress_ptr cinfo, boolean force_baseline)
 	Set default quantization tables with linear q_scale_factor[] values
 	(see below).
 
-jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
+jpeg_add_quant_table (LJPEG9_j_compress_ptr cinfo, int which_tbl,
 		      const unsigned int *basic_table,
 		      int scale_factor, boolean force_baseline)
 	Allows an arbitrary quantization table to be created.  which_tbl
@@ -867,7 +867,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
 	routine, you must check the library version number.  Something like
 	"#if JPEG_LIB_VERSION >= 61" is the right test.
 
-jpeg_simple_progression (j_compress_ptr cinfo)
+jpeg_simple_progression (LJPEG9_j_compress_ptr cinfo)
 	Generates a default scan script for writing a progressive-JPEG file.
 	This is the recommended method of creating a progressive file,
 	unless you want to make a custom scan sequence.  You must ensure that
@@ -1503,13 +1503,13 @@ and total size in private fields not visible to the library.
 
 A data destination manager provides three methods:
 
-init_destination (j_compress_ptr cinfo)
+init_destination (LJPEG9_j_compress_ptr cinfo)
 	Initialize destination.  This is called by jpeg_start_compress()
 	before any data is actually written.  It must initialize
 	next_output_byte and free_in_buffer.  free_in_buffer must be
 	initialized to a positive value.
 
-empty_output_buffer (j_compress_ptr cinfo)
+empty_output_buffer (LJPEG9_j_compress_ptr cinfo)
 	This is called whenever the buffer has filled (free_in_buffer
 	reaches zero).  In typical applications, it should write out the
 	*entire* buffer (use the saved start address and buffer length;
@@ -1520,7 +1520,7 @@ empty_output_buffer (j_compress_ptr cinfo)
 	returned.  A FALSE return should only be used when I/O suspension is
 	desired (this operating mode is discussed in the next section).
 
-term_destination (j_compress_ptr cinfo)
+term_destination (LJPEG9_j_compress_ptr cinfo)
 	Terminate destination --- called by jpeg_finish_compress() after all
 	data has been written.  In most applications, this must flush any
 	data remaining in the buffer.  Use either next_output_byte or

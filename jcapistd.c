@@ -36,7 +36,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
+jpeg_start_compress (LJPEG9_j_compress_ptr cinfo, boolean write_all_tables)
 {
   if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
@@ -75,7 +75,7 @@ jpeg_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
  */
 
 LJPEG9_GLOBAL(LJPEG9_JDIMENSION)
-jpeg_write_scanlines (j_compress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
+jpeg_write_scanlines (LJPEG9_j_compress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
 		      LJPEG9_JDIMENSION num_lines)
 {
   LJPEG9_JDIMENSION row_ctr, rows_left;
@@ -118,7 +118,7 @@ jpeg_write_scanlines (j_compress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
  */
 
 LJPEG9_GLOBAL(LJPEG9_JDIMENSION)
-jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
+jpeg_write_raw_data (LJPEG9_j_compress_ptr cinfo, JSAMPIMAGE data,
 		     LJPEG9_JDIMENSION num_lines)
 {
   LJPEG9_JDIMENSION lines_per_iMCU_row;

@@ -118,7 +118,7 @@ select_transform (JXFORM_CODE transform)
 
 
 LOCAL(int)
-parse_switches (j_compress_ptr cinfo, int argc, char **argv,
+parse_switches (LJPEG9_j_compress_ptr cinfo, int argc, char **argv,
 		int last_file_arg_seen, boolean for_real)
 /* Parse optional switches.
  * Returns argv[] index of first file-name argument (== argc if none).
@@ -460,7 +460,7 @@ main (int argc, char **argv)
 
   /* Open the input file. */
   if (file_index < argc) {
-    if ((fp = fopen(argv[file_index], READ_BINARY)) == NULL) {
+    if ((fp = fopen(argv[file_index], LJPEG9_READ_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s for reading\n", progname, argv[file_index]);
       exit(LJPEG9_EXIT_FAILURE);
     }
@@ -529,7 +529,7 @@ main (int argc, char **argv)
 
   /* Open the output file. */
   if (outfilename != NULL) {
-    if ((fp = fopen(outfilename, WRITE_BINARY)) == NULL) {
+    if ((fp = fopen(outfilename, LJPEG9_WRITE_BINARY)) == NULL) {
       fprintf(stderr, "%s: can't open %s for writing\n", progname, outfilename);
       exit(LJPEG9_EXIT_FAILURE);
     }

@@ -53,7 +53,7 @@ typedef struct _bmp_source_struct * bmp_source_ptr;
 typedef struct _bmp_source_struct {
   struct LJPEG9_cjpeg_source_struct pub; /* public fields */
 
-  j_compress_ptr cinfo;		/* back link saves passing separate parm */
+  LJPEG9_j_compress_ptr cinfo;		/* back link saves passing separate parm */
 
   LJPEG9_JSAMPARRAY colormap;		/* BMP colormap (converted to my format) */
 
@@ -117,7 +117,7 @@ read_colormap (bmp_source_ptr sinfo, int cmaplen, int mapentrysize)
  */
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_8bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_8bit_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading 8-bit colormap indexes */
 {
   bmp_source_ptr source = (bmp_source_ptr) sinfo;
@@ -148,7 +148,7 @@ get_8bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_24bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_24bit_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading 24-bit pixels */
 {
   bmp_source_ptr source = (bmp_source_ptr) sinfo;
@@ -179,7 +179,7 @@ get_24bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-get_32bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+get_32bit_row (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 /* This version is for reading 32-bit pixels */
 {
   bmp_source_ptr source = (bmp_source_ptr) sinfo;
@@ -216,7 +216,7 @@ get_32bit_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(LJPEG9_JDIMENSION)
-preload_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+preload_image (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   bmp_source_ptr source = (bmp_source_ptr) sinfo;
   register FILE *infile = source->pub.input_file;
@@ -273,7 +273,7 @@ preload_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_input_bmp (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+start_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   bmp_source_ptr source = (bmp_source_ptr) sinfo;
   U_CHAR bmpfileheader[14];
@@ -450,7 +450,7 @@ start_input_bmp (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_METHODDEF(void)
-finish_input_bmp (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
+finish_input_bmp (LJPEG9_j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 {
   /* no work */
 }
@@ -461,7 +461,7 @@ finish_input_bmp (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
  */
 
 LJPEG9_GLOBAL(LJPEG9_cjpeg_source_ptr)
-LJPEG9_jinit_read_bmp (j_compress_ptr cinfo)
+LJPEG9_jinit_read_bmp (LJPEG9_j_compress_ptr cinfo)
 {
   bmp_source_ptr source;
 

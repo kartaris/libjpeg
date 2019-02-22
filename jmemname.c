@@ -27,14 +27,14 @@ extern void free JPP((void *ptr));
 #endif
 
 #ifdef DONT_USE_B_MODE		/* define mode parameters for fopen() */
-#define READ_BINARY	"r"
+#define LJPEG9_READ_BINARY	"r"
 #define RW_BINARY	"w+"
 #else
 #ifdef VMS			/* VMS is very nonstandard */
-#define READ_BINARY	"rb", "ctx=stm"
+#define LJPEG9_READ_BINARY	"rb", "ctx=stm"
 #define RW_BINARY	"w+b", "ctx=stm"
 #else				/* standard ANSI-compliant case */
-#define READ_BINARY	"rb"
+#define LJPEG9_READ_BINARY	"rb"
 #define RW_BINARY	"w+b"
 #endif
 #endif
@@ -100,7 +100,7 @@ select_file_name (char * fname)
   for (;;) {
     next_file_num++;		/* advance counter */
     sprintf(fname, TEMP_FILE_NAME, TEMP_DIRECTORY, next_file_num);
-    if ((tfile = fopen(fname, READ_BINARY)) == NULL) {
+    if ((tfile = fopen(fname, LJPEG9_READ_BINARY)) == NULL) {
       /* fopen could have failed for a reason other than the file not
        * being there; for example, file there but unreadable.
        * If <errno.h> isn't available, then we cannot test the cause.

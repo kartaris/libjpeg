@@ -17,7 +17,7 @@
 
 
 /* Forward declarations */
-LOCAL(void) transdecode_master_selection JPP((LJPEG9_j_decompress_ptr cinfo));
+LOCAL(void) transdecode_master_selection LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 
 /*

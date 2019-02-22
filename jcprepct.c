@@ -75,7 +75,7 @@ typedef my_prep_controller * my_prep_ptr;
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_prep (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
+start_pass_prep (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_prep_ptr prep = (my_prep_ptr) cinfo->prep;
 
@@ -125,7 +125,7 @@ expand_bottom_edge (LJPEG9_JSAMPARRAY image_data, LJPEG9_JDIMENSION num_cols,
  */
 
 LJPEG9_METHODDEF(void)
-pre_process_data (j_compress_ptr cinfo,
+pre_process_data (LJPEG9_j_compress_ptr cinfo,
 		  LJPEG9_JSAMPARRAY input_buf, LJPEG9_JDIMENSION *in_row_ctr,
 		  LJPEG9_JDIMENSION in_rows_avail,
 		  JSAMPIMAGE output_buf, LJPEG9_JDIMENSION *out_row_group_ctr,
@@ -194,7 +194,7 @@ pre_process_data (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-pre_process_context (j_compress_ptr cinfo,
+pre_process_context (LJPEG9_j_compress_ptr cinfo,
 		     LJPEG9_JSAMPARRAY input_buf, LJPEG9_JDIMENSION *in_row_ctr,
 		     LJPEG9_JDIMENSION in_rows_avail,
 		     JSAMPIMAGE output_buf, LJPEG9_JDIMENSION *out_row_group_ctr,
@@ -266,7 +266,7 @@ pre_process_context (j_compress_ptr cinfo,
  */
 
 LOCAL(void)
-create_context_buffer (j_compress_ptr cinfo)
+create_context_buffer (LJPEG9_j_compress_ptr cinfo)
 {
   my_prep_ptr prep = (my_prep_ptr) cinfo->prep;
   int rgroup_height = cinfo->max_v_samp_factor;
@@ -315,7 +315,7 @@ create_context_buffer (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+LJPEG9_jinit_c_prep_controller (LJPEG9_j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_prep_ptr prep;
   int ci;

@@ -24,11 +24,11 @@
 typedef struct LJPEG9_cjpeg_source_struct * LJPEG9_cjpeg_source_ptr;
 
 struct LJPEG9_cjpeg_source_struct {
-  LJPEG9_JMETHOD(void, start_input, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(void, start_input, (LJPEG9_j_compress_ptr cinfo,
 			      LJPEG9_cjpeg_source_ptr sinfo));
-  LJPEG9_JMETHOD(LJPEG9_JDIMENSION, get_pixel_rows, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(LJPEG9_JDIMENSION, get_pixel_rows, (LJPEG9_j_compress_ptr cinfo,
 				       LJPEG9_cjpeg_source_ptr sinfo));
-  LJPEG9_JMETHOD(void, finish_input, (j_compress_ptr cinfo,
+  LJPEG9_JMETHOD(void, finish_input, (LJPEG9_j_compress_ptr cinfo,
 			       LJPEG9_cjpeg_source_ptr sinfo));
 
   FILE *input_file;
@@ -117,71 +117,71 @@ typedef struct LJPEG9_cdjpeg_progress_mgr * LJPEG9_cd_progress_ptr;
 
 /* Module selection routines for I/O modules. */
 
-LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_bmp JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_bmp JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_bmp LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_bmp LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo,
 					    boolean is_os2));
-LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_gif JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_gif JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_ppm JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_ppm JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_rle JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_rle JPP((LJPEG9_j_decompress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_targa JPP((j_compress_ptr cinfo));
-LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_targa JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_gif LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_gif LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_ppm LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_ppm LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_rle LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_rle LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_targa LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_targa LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* cjpeg support routines (in rdswitch.c) */
 
-LJPEG9_EXTERN(boolean) LJPEG9_read_quant_tables JPP((j_compress_ptr cinfo, char * filename,
+LJPEG9_EXTERN(boolean) LJPEG9_read_quant_tables LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, char * filename,
 				       boolean force_baseline));
-LJPEG9_EXTERN(boolean) LJPEG9_read_scan_script JPP((j_compress_ptr cinfo, char * filename));
-LJPEG9_EXTERN(boolean) LJPEG9_set_quality_ratings JPP((j_compress_ptr cinfo, char *arg,
+LJPEG9_EXTERN(boolean) LJPEG9_read_scan_script LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, char * filename));
+LJPEG9_EXTERN(boolean) LJPEG9_set_quality_ratings LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, char *arg,
 					 boolean force_baseline));
-LJPEG9_EXTERN(boolean) LJPEG9_set_quant_slots JPP((j_compress_ptr cinfo, char *arg));
-LJPEG9_EXTERN(boolean) LJPEG9_set_sample_factors JPP((j_compress_ptr cinfo, char *arg));
+LJPEG9_EXTERN(boolean) LJPEG9_set_quant_slots LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, char *arg));
+LJPEG9_EXTERN(boolean) LJPEG9_set_sample_factors LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, char *arg));
 
 /* djpeg support routines (in rdcolmap.c) */
 
-LJPEG9_EXTERN(void) LJPEG9_read_color_map JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
+LJPEG9_EXTERN(void) LJPEG9_read_color_map LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
 
 /* common support routines (in cdjpeg.c) */
 
-LJPEG9_EXTERN(void) LJPEG9_enable_signal_catcher JPP((LJPEG9_j_common_ptr cinfo));
-LJPEG9_EXTERN(void) LJPEG9_start_progress_monitor JPP((LJPEG9_j_common_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_enable_signal_catcher LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_start_progress_monitor LJPEG9_JPP((LJPEG9_j_common_ptr cinfo,
 					 LJPEG9_cd_progress_ptr progress));
-LJPEG9_EXTERN(void) LJPEG9_end_progress_monitor JPP((LJPEG9_j_common_ptr cinfo));
-LJPEG9_EXTERN(boolean) LJPEG9_keymatch JPP((char * arg, const char * keyword, int minchars));
-LJPEG9_EXTERN(FILE *) LJPEG9_read_stdin JPP((void));
-LJPEG9_EXTERN(FILE *) LJPEG9_write_stdout JPP((void));
+LJPEG9_EXTERN(void) LJPEG9_end_progress_monitor LJPEG9_JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(boolean) LJPEG9_keymatch LJPEG9_JPP((char * arg, const char * keyword, int minchars));
+LJPEG9_EXTERN(FILE *) LJPEG9_read_stdin LJPEG9_JPP((void));
+LJPEG9_EXTERN(FILE *) LJPEG9_write_stdout LJPEG9_JPP((void));
 
 /* miscellaneous useful macros */
 
-#ifdef DONT_USE_B_MODE		/* define mode parameters for fopen() */
-#define READ_BINARY	"r"
-#define WRITE_BINARY	"w"
+#ifdef LJPEG9_DONT_USE_B_MODE		/* define mode parameters for fopen() */
+#define LJPEG9_READ_BINARY	"r"
+#define LJPEG9_WRITE_BINARY	"w"
 #else
 #ifdef VMS			/* VMS is very nonstandard */
-#define READ_BINARY	"rb", "ctx=stm"
-#define WRITE_BINARY	"wb", "ctx=stm"
+#define LJPEG9_READ_BINARY	"rb", "ctx=stm"
+#define LJPEG9_WRITE_BINARY	"wb", "ctx=stm"
 #else				/* standard ANSI-compliant case */
-#define READ_BINARY	"rb"
-#define WRITE_BINARY	"wb"
+#define LJPEG9_READ_BINARY	"rb"
+#define LJPEG9_WRITE_BINARY	"wb"
 #endif
 #endif
 
 #ifndef LJPEG9_EXIT_FAILURE		/* define exit() codes if not provided */
 #define LJPEG9_EXIT_FAILURE  1
 #endif
-#ifndef EXIT_SUCCESS
+#ifndef LJPEG9_EXIT_SUCCESS
 #ifdef VMS
-#define EXIT_SUCCESS  1		/* VMS is very nonstandard */
+#define LJPEG9_EXIT_SUCCESS  1		/* VMS is very nonstandard */
 #else
-#define EXIT_SUCCESS  0
+#define LJPEG9_EXIT_SUCCESS  0
 #endif
 #endif
-#ifndef EXIT_WARNING
+#ifndef LJPEG9_EXIT_WARNING
 #ifdef VMS
-#define EXIT_WARNING  1		/* VMS is very nonstandard */
+#define LJPEG9_EXIT_WARNING  1		/* VMS is very nonstandard */
 #else
-#define EXIT_WARNING  2
+#define LJPEG9_EXIT_WARNING  2
 #endif
 #endif

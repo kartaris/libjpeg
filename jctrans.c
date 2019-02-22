@@ -18,9 +18,9 @@
 
 /* Forward declarations */
 LOCAL(void) transencode_master_selection
-	JPP((j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays));
+	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays));
 LOCAL(void) transencode_coef_controller
-	JPP((j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays));
+	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays));
 
 
 /*
@@ -36,7 +36,7 @@ LOCAL(void) transencode_coef_controller
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
+jpeg_write_coefficients (LJPEG9_j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
 {
   if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
@@ -62,7 +62,7 @@ jpeg_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
 
 LJPEG9_GLOBAL(void)
 jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
-			       j_compress_ptr dstinfo)
+			       LJPEG9_j_compress_ptr dstinfo)
 {
   JQUANT_TBL ** qtblptr;
   jpeg_component_info *incomp, *outcomp;
@@ -163,7 +163,7 @@ jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
  */
 
 LOCAL(void)
-transencode_master_selection (j_compress_ptr cinfo,
+transencode_master_selection (LJPEG9_j_compress_ptr cinfo,
 			      jvirt_barray_ptr * coef_arrays)
 {
   /* Initialize master control (includes parameter checking/processing) */
@@ -221,7 +221,7 @@ typedef my_coef_controller * my_coef_ptr;
 
 
 LOCAL(void)
-start_iMCU_row (j_compress_ptr cinfo)
+start_iMCU_row (LJPEG9_j_compress_ptr cinfo)
 /* Reset within-iMCU-row counters for a new row */
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
@@ -249,7 +249,7 @@ start_iMCU_row (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_coef (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
+start_pass_coef (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
 
@@ -272,7 +272,7 @@ start_pass_coef (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
  */
 
 LJPEG9_METHODDEF(boolean)
-compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
+compress_output (LJPEG9_j_compress_ptr cinfo, JSAMPIMAGE input_buf)
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
   LJPEG9_JDIMENSION MCU_col_num;	/* index of current MCU within row */
@@ -357,7 +357,7 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
  */
 
 LOCAL(void)
-transencode_coef_controller (j_compress_ptr cinfo,
+transencode_coef_controller (LJPEG9_j_compress_ptr cinfo,
 			     jvirt_barray_ptr * coef_arrays)
 {
   my_coef_ptr coef;

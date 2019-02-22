@@ -142,14 +142,14 @@ typedef my_main_controller * my_main_ptr;
 
 /* Forward declarations */
 LJPEG9_METHODDEF(void) process_data_simple_main
-	JPP((LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY output_buf,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY output_buf,
 	     LJPEG9_JDIMENSION *out_row_ctr, LJPEG9_JDIMENSION out_rows_avail));
 LJPEG9_METHODDEF(void) process_data_context_main
-	JPP((LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY output_buf,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY output_buf,
 	     LJPEG9_JDIMENSION *out_row_ctr, LJPEG9_JDIMENSION out_rows_avail));
 #ifdef QUANT_2PASS_SUPPORTED
 LJPEG9_METHODDEF(void) process_data_crank_post
-	JPP((LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY output_buf,
+	LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo, LJPEG9_JSAMPARRAY output_buf,
 	     LJPEG9_JDIMENSION *out_row_ctr, LJPEG9_JDIMENSION out_rows_avail));
 #endif
 

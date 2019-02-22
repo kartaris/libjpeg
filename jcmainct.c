@@ -53,11 +53,11 @@ typedef my_main_controller * my_main_ptr;
 
 /* Forward declarations */
 LJPEG9_METHODDEF(void) process_data_simple_main
-	JPP((j_compress_ptr cinfo, LJPEG9_JSAMPARRAY input_buf,
+	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, LJPEG9_JSAMPARRAY input_buf,
 	     LJPEG9_JDIMENSION *in_row_ctr, LJPEG9_JDIMENSION in_rows_avail));
 #ifdef FULL_MAIN_BUFFER_SUPPORTED
 LJPEG9_METHODDEF(void) process_data_buffer_main
-	JPP((j_compress_ptr cinfo, LJPEG9_JSAMPARRAY input_buf,
+	LJPEG9_JPP((LJPEG9_j_compress_ptr cinfo, LJPEG9_JSAMPARRAY input_buf,
 	     LJPEG9_JDIMENSION *in_row_ctr, LJPEG9_JDIMENSION in_rows_avail));
 #endif
 
@@ -67,7 +67,7 @@ LJPEG9_METHODDEF(void) process_data_buffer_main
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_main (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
+start_pass_main (LJPEG9_j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_main_ptr mainp = (my_main_ptr) cinfo->main;
 
@@ -111,7 +111,7 @@ start_pass_main (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
  */
 
 LJPEG9_METHODDEF(void)
-process_data_simple_main (j_compress_ptr cinfo,
+process_data_simple_main (LJPEG9_j_compress_ptr cinfo,
 			  LJPEG9_JSAMPARRAY input_buf, LJPEG9_JDIMENSION *in_row_ctr,
 			  LJPEG9_JDIMENSION in_rows_avail)
 {
@@ -167,7 +167,7 @@ process_data_simple_main (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-process_data_buffer_main (j_compress_ptr cinfo,
+process_data_buffer_main (LJPEG9_j_compress_ptr cinfo,
 			  LJPEG9_JSAMPARRAY input_buf, LJPEG9_JDIMENSION *in_row_ctr,
 			  LJPEG9_JDIMENSION in_rows_avail)
 {
@@ -245,7 +245,7 @@ process_data_buffer_main (j_compress_ptr cinfo,
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+LJPEG9_jinit_c_main_controller (LJPEG9_j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_main_ptr mainp;
   int ci;

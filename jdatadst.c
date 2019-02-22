@@ -21,8 +21,8 @@
 #include "jerror.h"
 
 #ifndef HAVE_STDLIB_H		/* <stdlib.h> should declare malloc(),free() */
-extern void * malloc JPP((size_t size));
-extern void free JPP((void *ptr));
+extern void * malloc LJPEG9_JPP((size_t size));
+extern void free LJPEG9_JPP((void *ptr));
 #endif
 
 
@@ -61,7 +61,7 @@ typedef my_mem_destination_mgr * my_mem_dest_ptr;
  */
 
 LJPEG9_METHODDEF(void)
-init_destination (j_compress_ptr cinfo)
+init_destination (LJPEG9_j_compress_ptr cinfo)
 {
   my_dest_ptr dest = (my_dest_ptr) cinfo->dest;
 
@@ -75,7 +75,7 @@ init_destination (j_compress_ptr cinfo)
 }
 
 LJPEG9_METHODDEF(void)
-init_mem_destination (j_compress_ptr cinfo)
+init_mem_destination (LJPEG9_j_compress_ptr cinfo)
 {
   /* no work necessary here */
 }
@@ -105,7 +105,7 @@ init_mem_destination (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(boolean)
-empty_output_buffer (j_compress_ptr cinfo)
+empty_output_buffer (LJPEG9_j_compress_ptr cinfo)
 {
   my_dest_ptr dest = (my_dest_ptr) cinfo->dest;
 
@@ -120,7 +120,7 @@ empty_output_buffer (j_compress_ptr cinfo)
 }
 
 LJPEG9_METHODDEF(boolean)
-empty_mem_output_buffer (j_compress_ptr cinfo)
+empty_mem_output_buffer (LJPEG9_j_compress_ptr cinfo)
 {
   size_t nextsize;
   JOCTET * nextbuffer;
@@ -160,7 +160,7 @@ empty_mem_output_buffer (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-term_destination (j_compress_ptr cinfo)
+term_destination (LJPEG9_j_compress_ptr cinfo)
 {
   my_dest_ptr dest = (my_dest_ptr) cinfo->dest;
   size_t datacount = OUTPUT_BUF_SIZE - dest->pub.free_in_buffer;
@@ -177,7 +177,7 @@ term_destination (j_compress_ptr cinfo)
 }
 
 LJPEG9_METHODDEF(void)
-term_mem_destination (j_compress_ptr cinfo)
+term_mem_destination (LJPEG9_j_compress_ptr cinfo)
 {
   my_mem_dest_ptr dest = (my_mem_dest_ptr) cinfo->dest;
 
@@ -193,7 +193,7 @@ term_mem_destination (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_stdio_dest (j_compress_ptr cinfo, FILE * outfile)
+jpeg_stdio_dest (LJPEG9_j_compress_ptr cinfo, FILE * outfile)
 {
   my_dest_ptr dest;
 
@@ -232,7 +232,7 @@ jpeg_stdio_dest (j_compress_ptr cinfo, FILE * outfile)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_mem_dest (j_compress_ptr cinfo,
+jpeg_mem_dest (LJPEG9_j_compress_ptr cinfo,
 	       unsigned char ** outbuffer, unsigned long * outsize)
 {
   my_mem_dest_ptr dest;

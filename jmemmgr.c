@@ -33,7 +33,7 @@
 
 #ifndef NO_GETENV
 #ifndef HAVE_STDLIB_H		/* <stdlib.h> should declare getenv() */
-extern char * getenv JPP((const char * name));
+extern char * getenv LJPEG9_JPP((const char * name));
 #endif
 #endif
 

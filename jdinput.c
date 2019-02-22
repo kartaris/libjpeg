@@ -29,7 +29,7 @@ typedef my_input_controller * my_inputctl_ptr;
 
 
 /* Forward declarations */
-LJPEG9_METHODDEF(int) consume_markers JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_METHODDEF(int) consume_markers LJPEG9_JPP((LJPEG9_j_decompress_ptr cinfo));
 
 
 /*

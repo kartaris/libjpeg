@@ -28,7 +28,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_CreateCompress (j_compress_ptr cinfo, int version, size_t structsize)
+jpeg_CreateCompress (LJPEG9_j_compress_ptr cinfo, int version, size_t structsize)
 {
   int i;
 
@@ -93,7 +93,7 @@ jpeg_CreateCompress (j_compress_ptr cinfo, int version, size_t structsize)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_destroy_compress (j_compress_ptr cinfo)
+jpeg_destroy_compress (LJPEG9_j_compress_ptr cinfo)
 {
   jpeg_destroy((LJPEG9_j_common_ptr) cinfo); /* use common routine */
 }
@@ -105,7 +105,7 @@ jpeg_destroy_compress (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_abort_compress (j_compress_ptr cinfo)
+jpeg_abort_compress (LJPEG9_j_compress_ptr cinfo)
 {
   jpeg_abort((LJPEG9_j_common_ptr) cinfo); /* use common routine */
 }
@@ -124,7 +124,7 @@ jpeg_abort_compress (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_suppress_tables (j_compress_ptr cinfo, boolean suppress)
+jpeg_suppress_tables (LJPEG9_j_compress_ptr cinfo, boolean suppress)
 {
   int i;
   JQUANT_TBL * qtbl;
@@ -152,7 +152,7 @@ jpeg_suppress_tables (j_compress_ptr cinfo, boolean suppress)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_finish_compress (j_compress_ptr cinfo)
+jpeg_finish_compress (LJPEG9_j_compress_ptr cinfo)
 {
   LJPEG9_JDIMENSION iMCU_row;
 
@@ -197,10 +197,10 @@ jpeg_finish_compress (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_write_marker (j_compress_ptr cinfo, int marker,
+jpeg_write_marker (LJPEG9_j_compress_ptr cinfo, int marker,
 		   const JOCTET *dataptr, unsigned int datalen)
 {
-  LJPEG9_JMETHOD(void, write_marker_byte, (j_compress_ptr info, int val));
+  LJPEG9_JMETHOD(void, write_marker_byte, (LJPEG9_j_compress_ptr info, int val));
 
   if (cinfo->next_scanline != 0 ||
       (cinfo->global_state != LJPEG9_CSTATE_SCANNING &&
@@ -219,7 +219,7 @@ jpeg_write_marker (j_compress_ptr cinfo, int marker,
 /* Same, but piecemeal. */
 
 LJPEG9_GLOBAL(void)
-jpeg_write_m_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
+jpeg_write_m_header (LJPEG9_j_compress_ptr cinfo, int marker, unsigned int datalen)
 {
   if (cinfo->next_scanline != 0 ||
       (cinfo->global_state != LJPEG9_CSTATE_SCANNING &&
@@ -231,7 +231,7 @@ jpeg_write_m_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
 }
 
 LJPEG9_GLOBAL(void)
-jpeg_write_m_byte (j_compress_ptr cinfo, int val)
+jpeg_write_m_byte (LJPEG9_j_compress_ptr cinfo, int val)
 {
   (*cinfo->marker->write_marker_byte) (cinfo, val);
 }
@@ -259,7 +259,7 @@ jpeg_write_m_byte (j_compress_ptr cinfo, int val)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_write_tables (j_compress_ptr cinfo)
+jpeg_write_tables (LJPEG9_j_compress_ptr cinfo)
 {
   if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);

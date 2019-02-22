@@ -28,7 +28,7 @@
  */
 
 LJPEG9_GLOBAL(LJPEG9_cjpeg_source_ptr)
-LJPEG9_jinit_read_gif (j_compress_ptr cinfo)
+LJPEG9_jinit_read_gif (LJPEG9_j_compress_ptr cinfo)
 {
   fprintf(stderr, "GIF input is unsupported for legal reasons.  Sorry.\n");
   exit(LJPEG9_EXIT_FAILURE);

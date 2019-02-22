@@ -71,7 +71,7 @@ read_text_integer (FILE * file, long * result, int * termchar)
 
 
 LJPEG9_GLOBAL(boolean)
-LJPEG9_read_quant_tables (j_compress_ptr cinfo, char * filename, boolean force_baseline)
+LJPEG9_read_quant_tables (LJPEG9_j_compress_ptr cinfo, char * filename, boolean force_baseline)
 /* Read a set of quantization tables from the specified file.
  * The file is plain ASCII text: decimal numbers with whitespace between.
  * Comments preceded by '#' may be included in the file.
@@ -156,7 +156,7 @@ read_scan_integer (FILE * file, long * result, int * termchar)
 
 
 LJPEG9_GLOBAL(boolean)
-LJPEG9_read_scan_script (j_compress_ptr cinfo, char * filename)
+LJPEG9_read_scan_script (LJPEG9_j_compress_ptr cinfo, char * filename)
 /* Read a scan script from the specified text file.
  * Each entry in the file defines one scan to be emitted.
  * Entries are separated by semicolons ';'.
@@ -264,7 +264,7 @@ bogus:
 
 
 LJPEG9_GLOBAL(boolean)
-LJPEG9_set_quality_ratings (j_compress_ptr cinfo, char *arg, boolean force_baseline)
+LJPEG9_set_quality_ratings (LJPEG9_j_compress_ptr cinfo, char *arg, boolean force_baseline)
 /* Process a quality-ratings parameter string, of the form
  *     N[,N,...]
  * If there are more q-table slots than parameters, the last value is replicated.
@@ -296,7 +296,7 @@ LJPEG9_set_quality_ratings (j_compress_ptr cinfo, char *arg, boolean force_basel
 
 
 LJPEG9_GLOBAL(boolean)
-LJPEG9_set_quant_slots (j_compress_ptr cinfo, char *arg)
+LJPEG9_set_quant_slots (LJPEG9_j_compress_ptr cinfo, char *arg)
 /* Process a quantization-table-selectors parameter string, of the form
  *     N[,N,...]
  * If there are more components than parameters, the last value is replicated.
@@ -331,7 +331,7 @@ LJPEG9_set_quant_slots (j_compress_ptr cinfo, char *arg)
 
 
 LJPEG9_GLOBAL(boolean)
-LJPEG9_set_sample_factors (j_compress_ptr cinfo, char *arg)
+LJPEG9_set_sample_factors (LJPEG9_j_compress_ptr cinfo, char *arg)
 /* Process a sample-factors parameter string, of the form
  *     HxV[,HxV,...]
  * If there are more components than parameters, "1x1" is assumed for the rest.

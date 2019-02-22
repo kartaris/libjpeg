@@ -96,7 +96,7 @@ typedef my_color_converter * my_cconvert_ptr;
  */
 
 LJPEG9_METHODDEF(void)
-rgb_ycc_start (j_compress_ptr cinfo)
+rgb_ycc_start (LJPEG9_j_compress_ptr cinfo)
 {
   my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
   INT32 * rgb_ycc_tab;
@@ -140,7 +140,7 @@ rgb_ycc_start (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-rgb_ycc_convert (j_compress_ptr cinfo,
+rgb_ycc_convert (LJPEG9_j_compress_ptr cinfo,
 		 LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 		 LJPEG9_JDIMENSION output_row, int num_rows)
 {
@@ -196,7 +196,7 @@ rgb_ycc_convert (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-rgb_gray_convert (j_compress_ptr cinfo,
+rgb_gray_convert (LJPEG9_j_compress_ptr cinfo,
 		  LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 		  LJPEG9_JDIMENSION output_row, int num_rows)
 {
@@ -234,7 +234,7 @@ rgb_gray_convert (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-cmyk_ycck_convert (j_compress_ptr cinfo,
+cmyk_ycck_convert (LJPEG9_j_compress_ptr cinfo,
 		   LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 		   LJPEG9_JDIMENSION output_row, int num_rows)
 {
@@ -292,7 +292,7 @@ cmyk_ycck_convert (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-rgb_rgb1_convert (j_compress_ptr cinfo,
+rgb_rgb1_convert (LJPEG9_j_compress_ptr cinfo,
 		  LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 		  LJPEG9_JDIMENSION output_row, int num_rows)
 {
@@ -331,7 +331,7 @@ rgb_rgb1_convert (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-grayscale_convert (j_compress_ptr cinfo,
+grayscale_convert (LJPEG9_j_compress_ptr cinfo,
 		   LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 		   LJPEG9_JDIMENSION output_row, int num_rows)
 {
@@ -359,7 +359,7 @@ grayscale_convert (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-rgb_convert (j_compress_ptr cinfo,
+rgb_convert (LJPEG9_j_compress_ptr cinfo,
 	     LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 	     LJPEG9_JDIMENSION output_row, int num_rows)
 {
@@ -392,7 +392,7 @@ rgb_convert (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-null_convert (j_compress_ptr cinfo,
+null_convert (LJPEG9_j_compress_ptr cinfo,
 	      LJPEG9_JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
 	      LJPEG9_JDIMENSION output_row, int num_rows)
 {
@@ -424,7 +424,7 @@ null_convert (j_compress_ptr cinfo,
  */
 
 LJPEG9_METHODDEF(void)
-null_method (j_compress_ptr cinfo)
+null_method (LJPEG9_j_compress_ptr cinfo)
 {
   /* no work needed */
 }
@@ -435,7 +435,7 @@ null_method (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jinit_color_converter (j_compress_ptr cinfo)
+LJPEG9_jinit_color_converter (LJPEG9_j_compress_ptr cinfo)
 {
   my_cconvert_ptr cconvert;
 

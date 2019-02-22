@@ -145,12 +145,12 @@ test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
 : ${Xsed="$SED -e 1s/^X//"}
 
 # Global variables:
-EXIT_SUCCESS=0
+LJPEG9_EXIT_SUCCESS=0
 LJPEG9_EXIT_FAILURE=1
 EXIT_MISMATCH=63  # $? = 63 is used to indicate version mismatch to missing.
 EXIT_SKIP=77	  # $? = 77 is used to indicate a skipped test to automake.
 
-exit_status=$EXIT_SUCCESS
+exit_status=$LJPEG9_EXIT_SUCCESS
 
 # Make sure IFS has a sensible default
 lt_nl='
@@ -2287,7 +2287,7 @@ compiler."
       fi
     }
 
-    exit $EXIT_SUCCESS
+    exit $LJPEG9_EXIT_SUCCESS
 }
 
 $opt_help || {
@@ -2639,7 +2639,7 @@ func_mode_execute ()
 	echo "export $shlibpath_var"
       fi
       $ECHO "$cmd$args"
-      exit $EXIT_SUCCESS
+      exit $LJPEG9_EXIT_SUCCESS
     fi
 }
 
@@ -2712,7 +2712,7 @@ func_mode_finish ()
     fi
 
     # Exit here if they wanted silent mode.
-    $opt_silent && exit $EXIT_SUCCESS
+    $opt_silent && exit $LJPEG9_EXIT_SUCCESS
 
     if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
       echo "----------------------------------------------------------------------"
@@ -2759,7 +2759,7 @@ func_mode_finish ()
       esac
       echo "----------------------------------------------------------------------"
     fi
-    exit $EXIT_SUCCESS
+    exit $LJPEG9_EXIT_SUCCESS
 }
 
 test "$opt_mode" = finish && func_mode_finish ${1+"$@"}
@@ -3069,7 +3069,7 @@ func_mode_install ()
 	  staticobj=$func_lo2o_result
 	  func_show_eval "$install_prog \$staticobj \$staticdest" 'exit $?'
 	fi
-	exit $EXIT_SUCCESS
+	exit $LJPEG9_EXIT_SUCCESS
 	;;
 
       *)
@@ -3223,7 +3223,7 @@ func_mode_install ()
       $opt_dry_run && current_libdirs=" -n$current_libdirs"
       exec_cmd='$SHELL $progpath $preserve_args --finish$current_libdirs'
     else
-      exit $EXIT_SUCCESS
+      exit $LJPEG9_EXIT_SUCCESS
     fi
 }
 
@@ -4866,7 +4866,7 @@ lt_setenv (const char *name, const char *value)
     int len = strlen (name) + 1 + strlen (value) + 1;
     char *str = XMALLOC (char, len);
     sprintf (str, "%s=%s", name, value);
-    if (putenv (str) != EXIT_SUCCESS)
+    if (putenv (str) != LJPEG9_EXIT_SUCCESS)
       {
         XFREE (str);
       }
@@ -8562,7 +8562,7 @@ EOF
 	    fi
 	  fi
 
-	  exit $EXIT_SUCCESS
+	  exit $LJPEG9_EXIT_SUCCESS
 	fi
 
 	# Create links to the real library.
@@ -8659,7 +8659,7 @@ EOF
 	  func_show_eval '${RM}r "$gentop"'
 	fi
 
-	exit $EXIT_SUCCESS
+	exit $LJPEG9_EXIT_SUCCESS
       fi
 
       if test "$build_libtool_libs" != yes; then
@@ -8671,7 +8671,7 @@ EOF
 	# accidentally link it into a program.
 	# $show "echo timestamp > $libobj"
 	# $opt_dry_run || eval "echo timestamp > $libobj" || exit $?
-	exit $EXIT_SUCCESS
+	exit $LJPEG9_EXIT_SUCCESS
       fi
 
       if test -n "$pic_flag" || test "$pic_mode" != default; then
@@ -8685,7 +8685,7 @@ EOF
 	func_show_eval '${RM}r "$gentop"'
       fi
 
-      exit $EXIT_SUCCESS
+      exit $LJPEG9_EXIT_SUCCESS
       ;;
 
     prog)
@@ -8959,7 +8959,7 @@ EOF
 	  func_execute_cmds "$postlink_cmds" 'exit $?'
 	fi
 
-	exit $EXIT_SUCCESS
+	exit $LJPEG9_EXIT_SUCCESS
       fi
 
       if test "$hardcode_action" = relink; then
@@ -9077,7 +9077,7 @@ EOF
 	  ;;
 	esac
       }
-      exit $EXIT_SUCCESS
+      exit $LJPEG9_EXIT_SUCCESS
       ;;
     esac
 
@@ -9431,7 +9431,7 @@ relink_command=\"$relink_command\""
       func_show_eval '( cd "$output_objdir" && $RM "$outputname" && $LN_S "../$outputname" "$outputname" )' 'exit $?'
       ;;
     esac
-    exit $EXIT_SUCCESS
+    exit $LJPEG9_EXIT_SUCCESS
 }
 
 { test "$opt_mode" = link || test "$opt_mode" = relink; } &&
