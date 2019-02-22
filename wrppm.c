@@ -193,7 +193,7 @@ start_output_ppm (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 	    PPM_MAXVAL);
     break;
   default:
-    ERREXIT(cinfo, JERR_PPM_COLORSPACE);
+    ERREXIT(cinfo, LJPEG9_JERR_PPM_COLORSPACE);
   }
 }
 
@@ -223,7 +223,7 @@ LJPEG9_jinit_write_ppm (LJPEG9_j_decompress_ptr cinfo)
 
   /* Create module interface object, fill in method pointers */
   dest = (ppm_dest_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(ppm_dest_struct));
   dest->pub.start_output = start_output_ppm;
   dest->pub.finish_output = finish_output_ppm;
@@ -235,7 +235,7 @@ LJPEG9_jinit_write_ppm (LJPEG9_j_decompress_ptr cinfo)
   dest->samples_per_row = cinfo->output_width * cinfo->out_color_components;
   dest->buffer_width = dest->samples_per_row * (BYTESPERSAMPLE * SIZEOF(char));
   dest->iobuffer = (char *) (*cinfo->mem->alloc_small)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, dest->buffer_width);
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, dest->buffer_width);
 
   if (cinfo->quantize_colors || BITS_IN_JSAMPLE != 8 ||
       SIZEOF(JSAMPLE) != SIZEOF(char)) {
@@ -244,7 +244,7 @@ LJPEG9_jinit_write_ppm (LJPEG9_j_decompress_ptr cinfo)
      * separate buffer if pixel format translation must take place.
      */
     dest->pub.buffer = (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        cinfo->output_width * cinfo->output_components, (LJPEG9_JDIMENSION) 1);
     dest->pub.buffer_height = 1;
     if (! cinfo->quantize_colors)

@@ -35,7 +35,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
   long temp;
 
   /* Safety check to ensure start_compress not called yet. */
-  if (cinfo->global_state != CSTATE_START)
+  if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (which_tbl < 0 || which_tbl >= NUM_QUANT_TBLS)
@@ -44,7 +44,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
   qtblptr = & cinfo->quant_tbl_ptrs[which_tbl];
 
   if (*qtblptr == NULL)
-    *qtblptr = jpeg_alloc_quant_table((j_common_ptr) cinfo);
+    *qtblptr = jpeg_alloc_quant_table((LJPEG9_j_common_ptr) cinfo);
 
   for (i = 0; i < DCTSIZE2; i++) {
     temp = ((long) basic_table[i] * scale_factor + 50L) / 100L;
@@ -173,7 +173,7 @@ add_huff_table (j_compress_ptr cinfo,
   int nsymbols, len;
 
   if (*htblptr == NULL)
-    *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+    *htblptr = jpeg_alloc_huff_table((LJPEG9_j_common_ptr) cinfo);
 
   /* Copy the number-of-symbols-of-each-code-length counts */
   MEMCOPY((*htblptr)->bits, bits, SIZEOF((*htblptr)->bits));
@@ -287,7 +287,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
   int i;
 
   /* Safety check to ensure start_compress not called yet. */
-  if (cinfo->global_state != CSTATE_START)
+  if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* Allocate comp_info array large enough for maximum component count.
@@ -296,7 +296,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
    */
   if (cinfo->comp_info == NULL)
     cinfo->comp_info = (jpeg_component_info *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_PERMANENT,
 				  MAX_COMPONENTS * SIZEOF(jpeg_component_info));
 
   /* Initialize everything not dependent on the color space */
@@ -437,7 +437,7 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
    compptr->ac_tbl_no = (actbl) )
 
   /* Safety check to ensure start_compress not called yet. */
-  if (cinfo->global_state != CSTATE_START)
+  if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* For all colorspaces, we use Q and Huff tables 0 for luminance components,
@@ -602,7 +602,7 @@ jpeg_simple_progression (j_compress_ptr cinfo)
   jpeg_scan_info * scanptr;
 
   /* Safety check to ensure start_compress not called yet. */
-  if (cinfo->global_state != CSTATE_START)
+  if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* Figure space needed for script.  Calculation must match code below! */
@@ -629,7 +629,7 @@ jpeg_simple_progression (j_compress_ptr cinfo)
   if (cinfo->script_space == NULL || cinfo->script_space_size < nscans) {
     cinfo->script_space_size = MAX(nscans, 10);
     cinfo->script_space = (jpeg_scan_info *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_PERMANENT,
 			cinfo->script_space_size * SIZEOF(jpeg_scan_info));
   }
   scanptr = cinfo->script_space;

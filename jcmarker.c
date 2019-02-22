@@ -86,7 +86,7 @@ typedef enum {			/* JPEG marker codes */
 /* Private state */
 
 typedef struct {
-  struct jpeg_marker_writer pub; /* public fields */
+  struct LJPEG9_jpeg_marker_writer pub; /* public fields */
 
   unsigned int last_restart_interval; /* last DRI value emitted; 0 after SOI */
 } my_marker_writer;
@@ -697,13 +697,13 @@ write_tables_only (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_marker_writer (j_compress_ptr cinfo)
+LJPEG9_jinit_marker_writer (j_compress_ptr cinfo)
 {
   my_marker_ptr marker;
 
   /* Create the subobject */
   marker = (my_marker_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_marker_writer));
   cinfo->marker = &marker->pub;
   /* Initialize method pointers */

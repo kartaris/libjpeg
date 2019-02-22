@@ -281,7 +281,7 @@ struct jpeg_common_struct {
    */
 };
 
-typedef struct jpeg_common_struct * j_common_ptr;
+typedef struct jpeg_common_struct * LJPEG9_j_common_ptr;
 typedef struct jpeg_compress_struct * j_compress_ptr;
 typedef struct jpeg_decompress_struct * LJPEG9_j_decompress_ptr;
 
@@ -440,15 +440,15 @@ struct jpeg_compress_struct {
   /*
    * Links to compression subobjects (methods and private variables of modules)
    */
-  struct jpeg_comp_master * master;
-  struct jpeg_c_main_controller * main;
-  struct jpeg_c_prep_controller * prep;
-  struct jpeg_c_coef_controller * coef;
-  struct jpeg_marker_writer * marker;
-  struct jpeg_color_converter * cconvert;
-  struct jpeg_downsampler * downsample;
-  struct jpeg_forward_dct * fdct;
-  struct jpeg_entropy_encoder * entropy;
+  struct LJPEG9_jpeg_comp_master * master;
+  struct LJPEG9_jpeg_c_main_controller * main;
+  struct LJPEG9_jpeg_c_prep_controller * prep;
+  struct LJPEG9_jpeg_c_coef_controller * coef;
+  struct LJPEG9_jpeg_marker_writer * marker;
+  struct LJPEG9_jpeg_color_converter * cconvert;
+  struct LJPEG9_jpeg_downsampler * downsample;
+  struct LJPEG9_jpeg_forward_dct * fdct;
+  struct LJPEG9_jpeg_entropy_encoder * entropy;
   jpeg_scan_info * script_space; /* workspace for jpeg_simple_progression */
   int script_space_size;
 };
@@ -675,17 +675,17 @@ struct jpeg_decompress_struct {
   /*
    * Links to decompression subobjects (methods, private variables of modules)
    */
-  struct jpeg_decomp_master * master;
-  struct jpeg_d_main_controller * main;
-  struct jpeg_d_coef_controller * coef;
-  struct jpeg_d_post_controller * post;
-  struct jpeg_input_controller * inputctl;
-  struct jpeg_marker_reader * marker;
-  struct jpeg_entropy_decoder * entropy;
-  struct jpeg_inverse_dct * idct;
-  struct jpeg_upsampler * upsample;
-  struct jpeg_color_deconverter * cconvert;
-  struct jpeg_color_quantizer * cquantize;
+  struct LJPEG9_jpeg_decomp_master * master;
+  struct LJPEG9_jpeg_d_main_controller * main;
+  struct LJPEG9_jpeg_d_coef_controller * coef;
+  struct LJPEG9_jpeg_d_post_controller * post;
+  struct LJPEG9_jpeg_input_controller * inputctl;
+  struct LJPEG9_jpeg_marker_reader * marker;
+  struct LJPEG9_jpeg_entropy_decoder * entropy;
+  struct LJPEG9_jpeg_inverse_dct * idct;
+  struct LJPEG9_jpeg_upsampler * upsample;
+  struct LJPEG9_jpeg_color_deconverter * cconvert;
+  struct LJPEG9_jpeg_color_quantizer * cquantize;
 };
 
 
@@ -701,16 +701,16 @@ struct jpeg_decompress_struct {
 
 struct jpeg_error_mgr {
   /* Error exit handler: does not return to caller */
-  LJPEG9_JMETHOD(noreturn_t, error_exit, (j_common_ptr cinfo));
+  LJPEG9_JMETHOD(noreturn_t, error_exit, (LJPEG9_j_common_ptr cinfo));
   /* Conditionally emit a trace or warning message */
-  LJPEG9_JMETHOD(void, emit_message, (j_common_ptr cinfo, int msg_level));
+  LJPEG9_JMETHOD(void, emit_message, (LJPEG9_j_common_ptr cinfo, int msg_level));
   /* Routine that actually outputs a trace or error message */
-  LJPEG9_JMETHOD(void, output_message, (j_common_ptr cinfo));
+  LJPEG9_JMETHOD(void, output_message, (LJPEG9_j_common_ptr cinfo));
   /* Format a message string for the most recent JPEG error or message */
-  LJPEG9_JMETHOD(void, format_message, (j_common_ptr cinfo, char * buffer));
+  LJPEG9_JMETHOD(void, format_message, (LJPEG9_j_common_ptr cinfo, char * buffer));
 #define JMSG_LENGTH_MAX  200	/* recommended size of format_message buffer */
   /* Reset error state variables at start of a new image */
-  LJPEG9_JMETHOD(void, reset_error_mgr, (j_common_ptr cinfo));
+  LJPEG9_JMETHOD(void, reset_error_mgr, (LJPEG9_j_common_ptr cinfo));
   
   /* The message ID code and any parameters are saved here.
    * A message can have one string parameter or up to 8 int parameters.
@@ -758,7 +758,7 @@ struct jpeg_error_mgr {
 /* Progress monitor object */
 
 struct jpeg_progress_mgr {
-  LJPEG9_JMETHOD(void, LJPEG9_progress_monitor, (j_common_ptr cinfo));
+  LJPEG9_JMETHOD(void, LJPEG9_progress_monitor, (LJPEG9_j_common_ptr cinfo));
 
   long pass_counter;		/* work units completed in this pass */
   long pass_limit;		/* total number of work units in this pass */
@@ -808,47 +808,47 @@ struct jpeg_source_mgr {
 #define JPOOL_IMAGE	1	/* lasts until done with image/datastream */
 #define JPOOL_NUMPOOLS	2
 
-typedef struct jvirt_sarray_control * jvirt_sarray_ptr;
-typedef struct jvirt_barray_control * jvirt_barray_ptr;
+typedef struct LJPEG9_jvirt_sarray_control * jvirt_sarray_ptr;
+typedef struct LJPEG9_jvirt_barray_control * jvirt_barray_ptr;
 
 
 struct jpeg_memory_mgr {
   /* Method pointers */
-  LJPEG9_JMETHOD(void *, alloc_small, (j_common_ptr cinfo, int pool_id,
+  LJPEG9_JMETHOD(void *, alloc_small, (LJPEG9_j_common_ptr cinfo, int pool_id,
 				size_t sizeofobject));
-  LJPEG9_JMETHOD(void FAR *, alloc_large, (j_common_ptr cinfo, int pool_id,
+  LJPEG9_JMETHOD(void FAR *, alloc_large, (LJPEG9_j_common_ptr cinfo, int pool_id,
 				     size_t sizeofobject));
-  LJPEG9_JMETHOD(LJPEG9_JSAMPARRAY, alloc_sarray, (j_common_ptr cinfo, int pool_id,
+  LJPEG9_JMETHOD(LJPEG9_JSAMPARRAY, alloc_sarray, (LJPEG9_j_common_ptr cinfo, int pool_id,
 				     LJPEG9_JDIMENSION samplesperrow,
 				     LJPEG9_JDIMENSION numrows));
-  LJPEG9_JMETHOD(JBLOCKARRAY, alloc_barray, (j_common_ptr cinfo, int pool_id,
+  LJPEG9_JMETHOD(JBLOCKARRAY, alloc_barray, (LJPEG9_j_common_ptr cinfo, int pool_id,
 				      LJPEG9_JDIMENSION blocksperrow,
 				      LJPEG9_JDIMENSION numrows));
-  LJPEG9_JMETHOD(jvirt_sarray_ptr, request_virt_sarray, (j_common_ptr cinfo,
+  LJPEG9_JMETHOD(jvirt_sarray_ptr, request_virt_sarray, (LJPEG9_j_common_ptr cinfo,
 						  int pool_id,
 						  boolean pre_zero,
 						  LJPEG9_JDIMENSION samplesperrow,
 						  LJPEG9_JDIMENSION numrows,
 						  LJPEG9_JDIMENSION maxaccess));
-  LJPEG9_JMETHOD(jvirt_barray_ptr, request_virt_barray, (j_common_ptr cinfo,
+  LJPEG9_JMETHOD(jvirt_barray_ptr, request_virt_barray, (LJPEG9_j_common_ptr cinfo,
 						  int pool_id,
 						  boolean pre_zero,
 						  LJPEG9_JDIMENSION blocksperrow,
 						  LJPEG9_JDIMENSION numrows,
 						  LJPEG9_JDIMENSION maxaccess));
-  LJPEG9_JMETHOD(void, realize_virt_arrays, (j_common_ptr cinfo));
-  LJPEG9_JMETHOD(LJPEG9_JSAMPARRAY, access_virt_sarray, (j_common_ptr cinfo,
+  LJPEG9_JMETHOD(void, realize_virt_arrays, (LJPEG9_j_common_ptr cinfo));
+  LJPEG9_JMETHOD(LJPEG9_JSAMPARRAY, access_virt_sarray, (LJPEG9_j_common_ptr cinfo,
 					   jvirt_sarray_ptr ptr,
 					   LJPEG9_JDIMENSION start_row,
 					   LJPEG9_JDIMENSION num_rows,
 					   boolean writable));
-  LJPEG9_JMETHOD(JBLOCKARRAY, access_virt_barray, (j_common_ptr cinfo,
+  LJPEG9_JMETHOD(JBLOCKARRAY, access_virt_barray, (LJPEG9_j_common_ptr cinfo,
 					    jvirt_barray_ptr ptr,
 					    LJPEG9_JDIMENSION start_row,
 					    LJPEG9_JDIMENSION num_rows,
 					    boolean writable));
-  LJPEG9_JMETHOD(void, free_pool, (j_common_ptr cinfo, int pool_id));
-  LJPEG9_JMETHOD(void, self_destruct, (j_common_ptr cinfo));
+  LJPEG9_JMETHOD(void, free_pool, (LJPEG9_j_common_ptr cinfo, int pool_id));
+  LJPEG9_JMETHOD(void, self_destruct, (LJPEG9_j_common_ptr cinfo));
 
   /* Limit on memory allocation for this JPEG object.  (Note that this is
    * merely advisory, not a guaranteed maximum; it only affects the space
@@ -865,7 +865,7 @@ struct jpeg_memory_mgr {
 /* Routine signature for application-supplied marker processing methods.
  * Need not pass marker code since it is stored in cinfo->unread_marker.
  */
-typedef LJPEG9_JMETHOD(boolean, jpeg_marker_parser_method, (LJPEG9_j_decompress_ptr cinfo));
+typedef LJPEG9_JMETHOD(boolean, LJPEG9_jpeg_marker_parser_method, (LJPEG9_j_decompress_ptr cinfo));
 
 
 /* Declarations for routines called by application.
@@ -945,7 +945,7 @@ typedef LJPEG9_JMETHOD(boolean, jpeg_marker_parser_method, (LJPEG9_j_decompress_
 
 
 /* Default error-management setup */
-EXTERN(struct jpeg_error_mgr *) jpeg_std_error
+LJPEG9_EXTERN(struct jpeg_error_mgr *) jpeg_std_error
 	JPP((struct jpeg_error_mgr * err));
 
 /* Initialization of JPEG compression objects.
@@ -961,82 +961,82 @@ EXTERN(struct jpeg_error_mgr *) jpeg_std_error
 #define jpeg_create_decompress(cinfo) \
     jpeg_CreateDecompress((cinfo), JPEG_LIB_VERSION, \
 			  (size_t) sizeof(struct jpeg_decompress_struct))
-EXTERN(void) jpeg_CreateCompress JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_CreateCompress JPP((j_compress_ptr cinfo,
 				      int version, size_t structsize));
-EXTERN(void) jpeg_CreateDecompress JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_CreateDecompress JPP((LJPEG9_j_decompress_ptr cinfo,
 					int version, size_t structsize));
 /* Destruction of JPEG compression objects */
-EXTERN(void) jpeg_destroy_compress JPP((j_compress_ptr cinfo));
-EXTERN(void) jpeg_destroy_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_destroy_compress JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_destroy_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Standard data source and destination managers: stdio streams. */
 /* Caller is responsible for opening the file before and closing after. */
-EXTERN(void) jpeg_stdio_dest JPP((j_compress_ptr cinfo, FILE * outfile));
-EXTERN(void) jpeg_stdio_src JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
+LJPEG9_EXTERN(void) jpeg_stdio_dest JPP((j_compress_ptr cinfo, FILE * outfile));
+LJPEG9_EXTERN(void) jpeg_stdio_src JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
 
 /* Data source and destination managers: memory buffers. */
-EXTERN(void) jpeg_mem_dest JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_mem_dest JPP((j_compress_ptr cinfo,
 			       unsigned char ** outbuffer,
 			       unsigned long * outsize));
-EXTERN(void) jpeg_mem_src JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_mem_src JPP((LJPEG9_j_decompress_ptr cinfo,
 			      unsigned char * inbuffer,
 			      unsigned long insize));
 
 /* Default parameter setup for compression */
-EXTERN(void) jpeg_set_defaults JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_set_defaults JPP((j_compress_ptr cinfo));
 /* Compression parameter setup aids */
-EXTERN(void) jpeg_set_colorspace JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_set_colorspace JPP((j_compress_ptr cinfo,
 				      J_COLOR_SPACE colorspace));
-EXTERN(void) jpeg_default_colorspace JPP((j_compress_ptr cinfo));
-EXTERN(void) jpeg_set_quality JPP((j_compress_ptr cinfo, int quality,
+LJPEG9_EXTERN(void) jpeg_default_colorspace JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_set_quality JPP((j_compress_ptr cinfo, int quality,
 				   boolean force_baseline));
-EXTERN(void) jpeg_set_linear_quality JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_set_linear_quality JPP((j_compress_ptr cinfo,
 					  int scale_factor,
 					  boolean force_baseline));
-EXTERN(void) jpeg_default_qtables JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_default_qtables JPP((j_compress_ptr cinfo,
 				       boolean force_baseline));
-EXTERN(void) jpeg_add_quant_table JPP((j_compress_ptr cinfo, int which_tbl,
+LJPEG9_EXTERN(void) jpeg_add_quant_table JPP((j_compress_ptr cinfo, int which_tbl,
 				       const unsigned int *basic_table,
 				       int scale_factor,
 				       boolean force_baseline));
-EXTERN(int) jpeg_quality_scaling JPP((int quality));
-EXTERN(void) jpeg_simple_progression JPP((j_compress_ptr cinfo));
-EXTERN(void) jpeg_suppress_tables JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(int) jpeg_quality_scaling JPP((int quality));
+LJPEG9_EXTERN(void) jpeg_simple_progression JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_suppress_tables JPP((j_compress_ptr cinfo,
 				       boolean suppress));
-EXTERN(JQUANT_TBL *) jpeg_alloc_quant_table JPP((j_common_ptr cinfo));
-EXTERN(JHUFF_TBL *) jpeg_alloc_huff_table JPP((j_common_ptr cinfo));
+LJPEG9_EXTERN(JQUANT_TBL *) jpeg_alloc_quant_table JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(JHUFF_TBL *) jpeg_alloc_huff_table JPP((LJPEG9_j_common_ptr cinfo));
 
 /* Main entry points for compression */
-EXTERN(void) jpeg_start_compress JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(void) jpeg_start_compress JPP((j_compress_ptr cinfo,
 				      boolean write_all_tables));
-EXTERN(LJPEG9_JDIMENSION) jpeg_write_scanlines JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_write_scanlines JPP((j_compress_ptr cinfo,
 					     LJPEG9_JSAMPARRAY scanlines,
 					     LJPEG9_JDIMENSION num_lines));
-EXTERN(void) jpeg_finish_compress JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_finish_compress JPP((j_compress_ptr cinfo));
 
 /* Precalculate JPEG dimensions for current compression parameters. */
-EXTERN(void) jpeg_calc_jpeg_dimensions JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_calc_jpeg_dimensions JPP((j_compress_ptr cinfo));
 
 /* Replaces jpeg_write_scanlines when writing raw downsampled data. */
-EXTERN(LJPEG9_JDIMENSION) jpeg_write_raw_data JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_write_raw_data JPP((j_compress_ptr cinfo,
 					    JSAMPIMAGE data,
 					    LJPEG9_JDIMENSION num_lines));
 
 /* Write a special marker.  See libjpeg.txt concerning safe usage. */
-EXTERN(void) jpeg_write_marker
+LJPEG9_EXTERN(void) jpeg_write_marker
 	JPP((j_compress_ptr cinfo, int marker,
 	     const JOCTET * dataptr, unsigned int datalen));
 /* Same, but piecemeal. */
-EXTERN(void) jpeg_write_m_header
+LJPEG9_EXTERN(void) jpeg_write_m_header
 	JPP((j_compress_ptr cinfo, int marker, unsigned int datalen));
-EXTERN(void) jpeg_write_m_byte
+LJPEG9_EXTERN(void) jpeg_write_m_byte
 	JPP((j_compress_ptr cinfo, int val));
 
 /* Alternate compression function: just write an abbreviated table file */
-EXTERN(void) jpeg_write_tables JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_write_tables JPP((j_compress_ptr cinfo));
 
 /* Decompression startup: read start of JPEG datastream to see what's there */
-EXTERN(int) jpeg_read_header JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(int) jpeg_read_header JPP((LJPEG9_j_decompress_ptr cinfo,
 				  boolean require_image));
 /* Return value is one of: */
 #define JPEG_SUSPENDED		0 /* Suspended due to lack of input data */
@@ -1049,25 +1049,25 @@ EXTERN(int) jpeg_read_header JPP((LJPEG9_j_decompress_ptr cinfo,
  */
 
 /* Main entry points for decompression */
-EXTERN(boolean) jpeg_start_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(LJPEG9_JDIMENSION) jpeg_read_scanlines JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(boolean) jpeg_start_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_read_scanlines JPP((LJPEG9_j_decompress_ptr cinfo,
 					    LJPEG9_JSAMPARRAY scanlines,
 					    LJPEG9_JDIMENSION max_lines));
-EXTERN(boolean) jpeg_finish_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_finish_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Replaces jpeg_read_scanlines when reading raw downsampled data. */
-EXTERN(LJPEG9_JDIMENSION) jpeg_read_raw_data JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_JDIMENSION) jpeg_read_raw_data JPP((LJPEG9_j_decompress_ptr cinfo,
 					   JSAMPIMAGE data,
 					   LJPEG9_JDIMENSION max_lines));
 
 /* Additional entry points for buffered-image mode. */
-EXTERN(boolean) jpeg_has_multiple_scans JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(boolean) jpeg_start_output JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(boolean) jpeg_has_multiple_scans JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_start_output JPP((LJPEG9_j_decompress_ptr cinfo,
 				       int scan_number));
-EXTERN(boolean) jpeg_finish_output JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(boolean) jpeg_input_complete JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(void) jpeg_new_colormap JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(int) jpeg_consume_input JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_finish_output JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(boolean) jpeg_input_complete JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_new_colormap JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(int) jpeg_consume_input JPP((LJPEG9_j_decompress_ptr cinfo));
 /* Return value is one of: */
 /* #define JPEG_SUSPENDED	0    Suspended due to lack of input data */
 #define JPEG_REACHED_SOS	1 /* Reached start of new scan */
@@ -1076,24 +1076,24 @@ EXTERN(int) jpeg_consume_input JPP((LJPEG9_j_decompress_ptr cinfo));
 #define JPEG_SCAN_COMPLETED	4 /* Completed last iMCU row of a scan */
 
 /* Precalculate output dimensions for current decompression parameters. */
-EXTERN(void) jpeg_core_output_dimensions JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(void) jpeg_calc_output_dimensions JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_core_output_dimensions JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_calc_output_dimensions JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Control saving of COM and APPn markers into marker_list. */
-EXTERN(void) jpeg_save_markers
+LJPEG9_EXTERN(void) jpeg_save_markers
 	JPP((LJPEG9_j_decompress_ptr cinfo, int marker_code,
 	     unsigned int length_limit));
 
 /* Install a special processing method for COM or APPn markers. */
-EXTERN(void) jpeg_set_marker_processor
+LJPEG9_EXTERN(void) jpeg_set_marker_processor
 	JPP((LJPEG9_j_decompress_ptr cinfo, int marker_code,
-	     jpeg_marker_parser_method routine));
+	     LJPEG9_jpeg_marker_parser_method routine));
 
 /* Read or write raw DCT coefficients --- useful for lossless transcoding. */
-EXTERN(jvirt_barray_ptr *) jpeg_read_coefficients JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(void) jpeg_write_coefficients JPP((j_compress_ptr cinfo,
+LJPEG9_EXTERN(jvirt_barray_ptr *) jpeg_read_coefficients JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_write_coefficients JPP((j_compress_ptr cinfo,
 					  jvirt_barray_ptr * coef_arrays));
-EXTERN(void) jpeg_copy_critical_parameters JPP((LJPEG9_j_decompress_ptr srcinfo,
+LJPEG9_EXTERN(void) jpeg_copy_critical_parameters JPP((LJPEG9_j_decompress_ptr srcinfo,
 						j_compress_ptr dstinfo));
 
 /* If you choose to abort compression or decompression before completing
@@ -1102,17 +1102,17 @@ EXTERN(void) jpeg_copy_critical_parameters JPP((LJPEG9_j_decompress_ptr srcinfo,
  * if you're done with the JPEG object, but if you want to clean it up and
  * reuse it, call this:
  */
-EXTERN(void) jpeg_abort_compress JPP((j_compress_ptr cinfo));
-EXTERN(void) jpeg_abort_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_abort_compress JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_abort_decompress JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* Generic versions of jpeg_abort and jpeg_destroy that work on either
  * flavor of JPEG object.  These may be more convenient in some places.
  */
-EXTERN(void) jpeg_abort JPP((j_common_ptr cinfo));
-EXTERN(void) jpeg_destroy JPP((j_common_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_abort JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(void) jpeg_destroy JPP((LJPEG9_j_common_ptr cinfo));
 
 /* Default restart-marker-resync procedure for use by data source modules */
-EXTERN(boolean) jpeg_resync_to_restart JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(boolean) jpeg_resync_to_restart JPP((LJPEG9_j_decompress_ptr cinfo,
 					    int desired));
 
 
@@ -1133,28 +1133,28 @@ EXTERN(boolean) jpeg_resync_to_restart JPP((LJPEG9_j_decompress_ptr cinfo,
 
 #ifdef INCOMPLETE_TYPES_BROKEN
 #ifndef JPEG_INTERNALS		/* will be defined in jpegint.h */
-struct jvirt_sarray_control { long dummy; };
-struct jvirt_barray_control { long dummy; };
-struct jpeg_comp_master { long dummy; };
-struct jpeg_c_main_controller { long dummy; };
-struct jpeg_c_prep_controller { long dummy; };
-struct jpeg_c_coef_controller { long dummy; };
-struct jpeg_marker_writer { long dummy; };
-struct jpeg_color_converter { long dummy; };
-struct jpeg_downsampler { long dummy; };
-struct jpeg_forward_dct { long dummy; };
-struct jpeg_entropy_encoder { long dummy; };
-struct jpeg_decomp_master { long dummy; };
-struct jpeg_d_main_controller { long dummy; };
-struct jpeg_d_coef_controller { long dummy; };
-struct jpeg_d_post_controller { long dummy; };
-struct jpeg_input_controller { long dummy; };
-struct jpeg_marker_reader { long dummy; };
-struct jpeg_entropy_decoder { long dummy; };
-struct jpeg_inverse_dct { long dummy; };
-struct jpeg_upsampler { long dummy; };
-struct jpeg_color_deconverter { long dummy; };
-struct jpeg_color_quantizer { long dummy; };
+struct LJPEG9_jvirt_sarray_control { long dummy; };
+struct LJPEG9_jvirt_barray_control { long dummy; };
+struct LJPEG9_jpeg_comp_master { long dummy; };
+struct LJPEG9_jpeg_c_main_controller { long dummy; };
+struct LJPEG9_jpeg_c_prep_controller { long dummy; };
+struct LJPEG9_jpeg_c_coef_controller { long dummy; };
+struct LJPEG9_jpeg_marker_writer { long dummy; };
+struct LJPEG9_jpeg_color_converter { long dummy; };
+struct LJPEG9_jpeg_downsampler { long dummy; };
+struct LJPEG9_jpeg_forward_dct { long dummy; };
+struct LJPEG9_jpeg_entropy_encoder { long dummy; };
+struct LJPEG9_jpeg_decomp_master { long dummy; };
+struct LJPEG9_jpeg_d_main_controller { long dummy; };
+struct LJPEG9_jpeg_d_coef_controller { long dummy; };
+struct LJPEG9_jpeg_d_post_controller { long dummy; };
+struct LJPEG9_jpeg_input_controller { long dummy; };
+struct LJPEG9_jpeg_marker_reader { long dummy; };
+struct LJPEG9_jpeg_entropy_decoder { long dummy; };
+struct LJPEG9_jpeg_inverse_dct { long dummy; };
+struct LJPEG9_jpeg_upsampler { long dummy; };
+struct LJPEG9_jpeg_color_deconverter { long dummy; };
+struct LJPEG9_jpeg_color_quantizer { long dummy; };
 #endif /* JPEG_INTERNALS */
 #endif /* INCOMPLETE_TYPES_BROKEN */
 

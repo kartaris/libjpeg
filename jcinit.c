@@ -28,7 +28,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-jinit_compress_master (j_compress_ptr cinfo)
+LJPEG9_jinit_compress_master (j_compress_ptr cinfo)
 {
   long samplesperrow;
   LJPEG9_JDIMENSION jd_samplesperrow;
@@ -49,32 +49,32 @@ jinit_compress_master (j_compress_ptr cinfo)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
   /* Initialize master control (includes parameter checking/processing) */
-  jinit_c_master_control(cinfo, FALSE /* full compression */);
+  LJPEG9_jinit_c_master_control(cinfo, FALSE /* full compression */);
 
   /* Preprocessing */
   if (! cinfo->raw_data_in) {
-    jinit_color_converter(cinfo);
-    jinit_downsampler(cinfo);
-    jinit_c_prep_controller(cinfo, FALSE /* never need full buffer here */);
+    LJPEG9_jinit_color_converter(cinfo);
+    LJPEG9_jinit_downsampler(cinfo);
+    LJPEG9_jinit_c_prep_controller(cinfo, FALSE /* never need full buffer here */);
   }
   /* Forward DCT */
-  jinit_forward_dct(cinfo);
+  LJPEG9_jinit_forward_dct(cinfo);
   /* Entropy encoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code)
-    jinit_arith_encoder(cinfo);
+    LJPEG9_jinit_arith_encoder(cinfo);
   else {
-    jinit_huff_encoder(cinfo);
+    LJPEG9_jinit_huff_encoder(cinfo);
   }
 
   /* Need a full-image coefficient buffer in any multi-pass mode. */
-  jinit_c_coef_controller(cinfo,
+  LJPEG9_jinit_c_coef_controller(cinfo,
 		(boolean) (cinfo->num_scans > 1 || cinfo->optimize_coding));
-  jinit_c_main_controller(cinfo, FALSE /* never need full buffer here */);
+  LJPEG9_jinit_c_main_controller(cinfo, FALSE /* never need full buffer here */);
 
-  jinit_marker_writer(cinfo);
+  LJPEG9_jinit_marker_writer(cinfo);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
-  (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
+  (*cinfo->mem->realize_virt_arrays) ((LJPEG9_j_common_ptr) cinfo);
 
   /* Write the datastream header (SOI) immediately.
    * Frame and scan headers are postponed till later.

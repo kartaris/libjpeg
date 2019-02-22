@@ -148,7 +148,7 @@ typedef my_memory_mgr * my_mem_ptr;
  * inside the backing_store_info struct.
  */
 
-struct jvirt_sarray_control {
+struct LJPEG9_jvirt_sarray_control {
   LJPEG9_JSAMPARRAY mem_buffer;	/* => the in-memory buffer */
   LJPEG9_JDIMENSION rows_in_array;	/* total virtual array height */
   LJPEG9_JDIMENSION samplesperrow;	/* width of array (and of memory buffer) */
@@ -164,7 +164,7 @@ struct jvirt_sarray_control {
   backing_store_info b_s_info;	/* System-dependent control info */
 };
 
-struct jvirt_barray_control {
+struct LJPEG9_jvirt_barray_control {
   JBLOCKARRAY mem_buffer;	/* => the in-memory buffer */
   LJPEG9_JDIMENSION rows_in_array;	/* total virtual array height */
   LJPEG9_JDIMENSION blocksperrow;	/* width of array (and of memory buffer) */
@@ -184,7 +184,7 @@ struct jvirt_barray_control {
 #ifdef MEM_STATS		/* optional extra stuff for statistics */
 
 LOCAL(void)
-print_mem_stats (j_common_ptr cinfo, int pool_id)
+print_mem_stats (LJPEG9_j_common_ptr cinfo, int pool_id)
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
   small_pool_ptr shdr_ptr;
@@ -215,7 +215,7 @@ print_mem_stats (j_common_ptr cinfo, int pool_id)
 
 
 LOCAL(noreturn_t)
-out_of_memory (j_common_ptr cinfo, int which)
+out_of_memory (LJPEG9_j_common_ptr cinfo, int which)
 /* Report an out-of-memory error and stop execution */
 /* If we compiled MEM_STATS support, report alloc requests before dying */
 {
@@ -255,7 +255,7 @@ static const size_t extra_pool_slop[JPOOL_NUMPOOLS] =
 
 
 LJPEG9_METHODDEF(void *)
-alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
+alloc_small (LJPEG9_j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 /* Allocate a "small" object */
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
@@ -340,7 +340,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
  */
 
 LJPEG9_METHODDEF(void FAR *)
-alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
+alloc_large (LJPEG9_j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 /* Allocate a "large" object */
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
@@ -393,7 +393,7 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
  */
 
 LJPEG9_METHODDEF(LJPEG9_JSAMPARRAY)
-alloc_sarray (j_common_ptr cinfo, int pool_id,
+alloc_sarray (LJPEG9_j_common_ptr cinfo, int pool_id,
 	      LJPEG9_JDIMENSION samplesperrow, LJPEG9_JDIMENSION numrows)
 /* Allocate a 2-D sample array */
 {
@@ -441,7 +441,7 @@ alloc_sarray (j_common_ptr cinfo, int pool_id,
  */
 
 LJPEG9_METHODDEF(JBLOCKARRAY)
-alloc_barray (j_common_ptr cinfo, int pool_id,
+alloc_barray (LJPEG9_j_common_ptr cinfo, int pool_id,
 	      LJPEG9_JDIMENSION blocksperrow, LJPEG9_JDIMENSION numrows)
 /* Allocate a 2-D coefficient-block array */
 {
@@ -521,7 +521,7 @@ alloc_barray (j_common_ptr cinfo, int pool_id,
 
 
 LJPEG9_METHODDEF(jvirt_sarray_ptr)
-request_virt_sarray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
+request_virt_sarray (LJPEG9_j_common_ptr cinfo, int pool_id, boolean pre_zero,
 		     LJPEG9_JDIMENSION samplesperrow, LJPEG9_JDIMENSION numrows,
 		     LJPEG9_JDIMENSION maxaccess)
 /* Request a virtual 2-D sample array */
@@ -535,7 +535,7 @@ request_virt_sarray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
 
   /* get control block */
   result = (jvirt_sarray_ptr) alloc_small(cinfo, pool_id,
-					  SIZEOF(struct jvirt_sarray_control));
+					  SIZEOF(struct LJPEG9_jvirt_sarray_control));
 
   result->mem_buffer = NULL;	/* marks array not yet realized */
   result->rows_in_array = numrows;
@@ -551,7 +551,7 @@ request_virt_sarray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
 
 
 LJPEG9_METHODDEF(jvirt_barray_ptr)
-request_virt_barray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
+request_virt_barray (LJPEG9_j_common_ptr cinfo, int pool_id, boolean pre_zero,
 		     LJPEG9_JDIMENSION blocksperrow, LJPEG9_JDIMENSION numrows,
 		     LJPEG9_JDIMENSION maxaccess)
 /* Request a virtual 2-D coefficient-block array */
@@ -565,7 +565,7 @@ request_virt_barray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
 
   /* get control block */
   result = (jvirt_barray_ptr) alloc_small(cinfo, pool_id,
-					  SIZEOF(struct jvirt_barray_control));
+					  SIZEOF(struct LJPEG9_jvirt_barray_control));
 
   result->mem_buffer = NULL;	/* marks array not yet realized */
   result->rows_in_array = numrows;
@@ -581,7 +581,7 @@ request_virt_barray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
 
 
 LJPEG9_METHODDEF(void)
-realize_virt_arrays (j_common_ptr cinfo)
+realize_virt_arrays (LJPEG9_j_common_ptr cinfo)
 /* Allocate the in-memory buffers for any unrealized virtual arrays */
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
@@ -688,7 +688,7 @@ realize_virt_arrays (j_common_ptr cinfo)
 
 
 LOCAL(void)
-do_sarray_io (j_common_ptr cinfo, jvirt_sarray_ptr ptr, boolean writing)
+do_sarray_io (LJPEG9_j_common_ptr cinfo, jvirt_sarray_ptr ptr, boolean writing)
 /* Do backing store read or write of a virtual sample array */
 {
   long bytesperrow, file_offset, byte_count, rows, thisrow, i;
@@ -721,7 +721,7 @@ do_sarray_io (j_common_ptr cinfo, jvirt_sarray_ptr ptr, boolean writing)
 
 
 LOCAL(void)
-do_barray_io (j_common_ptr cinfo, jvirt_barray_ptr ptr, boolean writing)
+do_barray_io (LJPEG9_j_common_ptr cinfo, jvirt_barray_ptr ptr, boolean writing)
 /* Do backing store read or write of a virtual coefficient-block array */
 {
   long bytesperrow, file_offset, byte_count, rows, thisrow, i;
@@ -754,7 +754,7 @@ do_barray_io (j_common_ptr cinfo, jvirt_barray_ptr ptr, boolean writing)
 
 
 LJPEG9_METHODDEF(LJPEG9_JSAMPARRAY)
-access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
+access_virt_sarray (LJPEG9_j_common_ptr cinfo, jvirt_sarray_ptr ptr,
 		    LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION num_rows,
 		    boolean writable)
 /* Access the part of a virtual sample array starting at start_row */
@@ -839,7 +839,7 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
 
 
 LJPEG9_METHODDEF(JBLOCKARRAY)
-access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
+access_virt_barray (LJPEG9_j_common_ptr cinfo, jvirt_barray_ptr ptr,
 		    LJPEG9_JDIMENSION start_row, LJPEG9_JDIMENSION num_rows,
 		    boolean writable)
 /* Access the part of a virtual block array starting at start_row */
@@ -928,7 +928,7 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
  */
 
 LJPEG9_METHODDEF(void)
-free_pool (j_common_ptr cinfo, int pool_id)
+free_pool (LJPEG9_j_common_ptr cinfo, int pool_id)
 {
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
   small_pool_ptr shdr_ptr;
@@ -1000,7 +1000,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
  */
 
 LJPEG9_METHODDEF(void)
-self_destruct (j_common_ptr cinfo)
+self_destruct (LJPEG9_j_common_ptr cinfo)
 {
   int pool;
 
@@ -1026,7 +1026,7 @@ self_destruct (j_common_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_memory_mgr (j_common_ptr cinfo)
+LJPEG9_jinit_memory_mgr (LJPEG9_j_common_ptr cinfo)
 {
   my_mem_ptr mem;
   long max_to_use;

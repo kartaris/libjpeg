@@ -56,7 +56,7 @@ jpeg_CreateDecompress (LJPEG9_j_decompress_ptr cinfo, int version, size_t struct
   cinfo->is_decompressor = TRUE;
 
   /* Initialize a memory manager instance for this object */
-  jinit_memory_mgr((j_common_ptr) cinfo);
+  LJPEG9_jinit_memory_mgr((LJPEG9_j_common_ptr) cinfo);
 
   /* Zero out pointers to permanent structures. */
   cinfo->progress = NULL;
@@ -74,13 +74,13 @@ jpeg_CreateDecompress (LJPEG9_j_decompress_ptr cinfo, int version, size_t struct
    * for COM, APPn markers before calling jpeg_read_header.
    */
   cinfo->marker_list = NULL;
-  jinit_marker_reader(cinfo);
+  LJPEG9_jinit_marker_reader(cinfo);
 
   /* And initialize the overall input controller. */
-  jinit_input_controller(cinfo);
+  LJPEG9_jinit_input_controller(cinfo);
 
   /* OK, I'm ready */
-  cinfo->global_state = DSTATE_START;
+  cinfo->global_state = LJPEG9_DSTATE_START;
 }
 
 
@@ -91,7 +91,7 @@ jpeg_CreateDecompress (LJPEG9_j_decompress_ptr cinfo, int version, size_t struct
 LJPEG9_GLOBAL(void)
 jpeg_destroy_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
-  jpeg_destroy((j_common_ptr) cinfo); /* use common routine */
+  jpeg_destroy((LJPEG9_j_common_ptr) cinfo); /* use common routine */
 }
 
 
@@ -103,7 +103,7 @@ jpeg_destroy_decompress (LJPEG9_j_decompress_ptr cinfo)
 LJPEG9_GLOBAL(void)
 jpeg_abort_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
-  jpeg_abort((j_common_ptr) cinfo); /* use common routine */
+  jpeg_abort((LJPEG9_j_common_ptr) cinfo); /* use common routine */
 }
 
 
@@ -246,8 +246,8 @@ jpeg_read_header (LJPEG9_j_decompress_ptr cinfo, boolean require_image)
 {
   int retcode;
 
-  if (cinfo->global_state != DSTATE_START &&
-      cinfo->global_state != DSTATE_INHEADER)
+  if (cinfo->global_state != LJPEG9_DSTATE_START &&
+      cinfo->global_state != LJPEG9_DSTATE_INHEADER)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   retcode = jpeg_consume_input(cinfo);
@@ -263,7 +263,7 @@ jpeg_read_header (LJPEG9_j_decompress_ptr cinfo, boolean require_image)
      * call jpeg_abort, but we can't change it now for compatibility reasons.
      * A side effect is to free any temporary memory (there shouldn't be any).
      */
-    jpeg_abort((j_common_ptr) cinfo); /* sets state = DSTATE_START */
+    jpeg_abort((LJPEG9_j_common_ptr) cinfo); /* sets state = LJPEG9_DSTATE_START */
     retcode = JPEG_HEADER_TABLES_ONLY;
     break;
   case JPEG_SUSPENDED:
@@ -294,33 +294,33 @@ jpeg_consume_input (LJPEG9_j_decompress_ptr cinfo)
 
   /* NB: every possible DSTATE value should be listed in this switch */
   switch (cinfo->global_state) {
-  case DSTATE_START:
+  case LJPEG9_DSTATE_START:
     /* Start-of-datastream actions: reset appropriate modules */
     (*cinfo->inputctl->reset_input_controller) (cinfo);
     /* Initialize application's data source module */
     (*cinfo->src->init_source) (cinfo);
-    cinfo->global_state = DSTATE_INHEADER;
+    cinfo->global_state = LJPEG9_DSTATE_INHEADER;
     /*FALLTHROUGH*/
-  case DSTATE_INHEADER:
+  case LJPEG9_DSTATE_INHEADER:
     retcode = (*cinfo->inputctl->consume_input) (cinfo);
     if (retcode == JPEG_REACHED_SOS) { /* Found SOS, prepare to decompress */
       /* Set up default parameters based on header data */
       default_decompress_parms(cinfo);
       /* Set global state: ready for start_decompress */
-      cinfo->global_state = DSTATE_READY;
+      cinfo->global_state = LJPEG9_DSTATE_READY;
     }
     break;
-  case DSTATE_READY:
+  case LJPEG9_DSTATE_READY:
     /* Can't advance past first SOS until start_decompress is called */
     retcode = JPEG_REACHED_SOS;
     break;
-  case DSTATE_PRELOAD:
-  case DSTATE_PRESCAN:
-  case DSTATE_SCANNING:
-  case DSTATE_RAW_OK:
-  case DSTATE_BUFIMAGE:
-  case DSTATE_BUFPOST:
-  case DSTATE_STOPPING:
+  case LJPEG9_DSTATE_PRELOAD:
+  case LJPEG9_DSTATE_PRESCAN:
+  case LJPEG9_DSTATE_SCANNING:
+  case LJPEG9_DSTATE_RAW_OK:
+  case LJPEG9_DSTATE_BUFIMAGE:
+  case LJPEG9_DSTATE_BUFPOST:
+  case LJPEG9_DSTATE_STOPPING:
     retcode = (*cinfo->inputctl->consume_input) (cinfo);
     break;
   default:
@@ -338,8 +338,8 @@ LJPEG9_GLOBAL(boolean)
 jpeg_input_complete (LJPEG9_j_decompress_ptr cinfo)
 {
   /* Check for valid jpeg object */
-  if (cinfo->global_state < DSTATE_START ||
-      cinfo->global_state > DSTATE_STOPPING)
+  if (cinfo->global_state < LJPEG9_DSTATE_START ||
+      cinfo->global_state > LJPEG9_DSTATE_STOPPING)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   return cinfo->inputctl->eoi_reached;
 }
@@ -353,8 +353,8 @@ LJPEG9_GLOBAL(boolean)
 jpeg_has_multiple_scans (LJPEG9_j_decompress_ptr cinfo)
 {
   /* Only valid after jpeg_read_header completes */
-  if (cinfo->global_state < DSTATE_READY ||
-      cinfo->global_state > DSTATE_STOPPING)
+  if (cinfo->global_state < LJPEG9_DSTATE_READY ||
+      cinfo->global_state > LJPEG9_DSTATE_STOPPING)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   return cinfo->inputctl->has_multiple_scans;
 }
@@ -372,17 +372,17 @@ jpeg_has_multiple_scans (LJPEG9_j_decompress_ptr cinfo)
 LJPEG9_GLOBAL(boolean)
 jpeg_finish_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
-  if ((cinfo->global_state == DSTATE_SCANNING ||
-       cinfo->global_state == DSTATE_RAW_OK) && ! cinfo->buffered_image) {
+  if ((cinfo->global_state == LJPEG9_DSTATE_SCANNING ||
+       cinfo->global_state == LJPEG9_DSTATE_RAW_OK) && ! cinfo->buffered_image) {
     /* Terminate final pass of non-buffered mode */
     if (cinfo->output_scanline < cinfo->output_height)
       ERREXIT(cinfo, JERR_TOO_LITTLE_DATA);
     (*cinfo->master->finish_output_pass) (cinfo);
-    cinfo->global_state = DSTATE_STOPPING;
-  } else if (cinfo->global_state == DSTATE_BUFIMAGE) {
+    cinfo->global_state = LJPEG9_DSTATE_STOPPING;
+  } else if (cinfo->global_state == LJPEG9_DSTATE_BUFIMAGE) {
     /* Finishing after a buffered-image operation */
-    cinfo->global_state = DSTATE_STOPPING;
-  } else if (cinfo->global_state != DSTATE_STOPPING) {
+    cinfo->global_state = LJPEG9_DSTATE_STOPPING;
+  } else if (cinfo->global_state != LJPEG9_DSTATE_STOPPING) {
     /* STOPPING = repeat call after a suspension, anything else is error */
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   }
@@ -394,6 +394,6 @@ jpeg_finish_decompress (LJPEG9_j_decompress_ptr cinfo)
   /* Do final cleanup */
   (*cinfo->src->term_source) (cinfo);
   /* We can use jpeg_abort to release memory and reset global_state */
-  jpeg_abort((j_common_ptr) cinfo);
+  jpeg_abort((LJPEG9_j_common_ptr) cinfo);
   return TRUE;
 }

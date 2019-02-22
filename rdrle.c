@@ -94,19 +94,19 @@ start_input_rle (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     /* A-OK */
     break;
   case RLE_NOT_RLE:
-    ERREXIT(cinfo, JERR_RLE_NOT);
+    ERREXIT(cinfo, LJPEG9_JERR_RLE_NOT);
     break;
   case RLE_NO_SPACE:
-    ERREXIT(cinfo, JERR_RLE_MEM);
+    ERREXIT(cinfo, LJPEG9_JERR_RLE_MEM);
     break;
   case RLE_EMPTY:
-    ERREXIT(cinfo, JERR_RLE_EMPTY);
+    ERREXIT(cinfo, LJPEG9_JERR_RLE_EMPTY);
     break;
   case RLE_EOF:
-    ERREXIT(cinfo, JERR_RLE_EOF);
+    ERREXIT(cinfo, LJPEG9_JERR_RLE_EOF);
     break;
   default:
-    ERREXIT(cinfo, JERR_RLE_BADERROR);
+    ERREXIT(cinfo, LJPEG9_JERR_RLE_BADERROR);
     break;
   }
 
@@ -123,24 +123,24 @@ start_input_rle (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
   if (source->header.ncolors == 1 && source->header.ncmap == 0) {
     source->visual     = GRAYSCALE;
-    TRACEMS2(cinfo, 1, JTRC_RLE_GRAY, width, height);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_RLE_GRAY, width, height);
   } else if (source->header.ncolors == 1 && source->header.ncmap == 1) {
     source->visual     = MAPPEDGRAY;
-    TRACEMS3(cinfo, 1, JTRC_RLE_MAPGRAY, width, height,
+    TRACEMS3(cinfo, 1, LJPEG9_JTRC_RLE_MAPGRAY, width, height,
              1 << source->header.cmaplen);
   } else if (source->header.ncolors == 1 && source->header.ncmap == 3) {
     source->visual     = PSEUDOCOLOR;
-    TRACEMS3(cinfo, 1, JTRC_RLE_MAPPED, width, height,
+    TRACEMS3(cinfo, 1, LJPEG9_JTRC_RLE_MAPPED, width, height,
 	     1 << source->header.cmaplen);
   } else if (source->header.ncolors == 3 && source->header.ncmap == 3) {
     source->visual     = TRUECOLOR;
-    TRACEMS3(cinfo, 1, JTRC_RLE_FULLMAP, width, height,
+    TRACEMS3(cinfo, 1, LJPEG9_JTRC_RLE_FULLMAP, width, height,
 	     1 << source->header.cmaplen);
   } else if (source->header.ncolors == 3 && source->header.ncmap == 0) {
     source->visual     = DIRECTCOLOR;
-    TRACEMS2(cinfo, 1, JTRC_RLE, width, height);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_RLE, width, height);
   } else
-    ERREXIT(cinfo, JERR_RLE_UNSUPPORTED);
+    ERREXIT(cinfo, LJPEG9_JERR_RLE_UNSUPPORTED);
   
   if (source->visual == GRAYSCALE || source->visual == MAPPEDGRAY) {
     cinfo->in_color_space   = JCS_GRAYSCALE;
@@ -156,13 +156,13 @@ start_input_rle (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
    */
   if (source->visual != GRAYSCALE) {
     source->rle_row = (rle_pixel**) (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        (LJPEG9_JDIMENSION) width, (LJPEG9_JDIMENSION) cinfo->input_components);
   }
 
   /* request a virtual array to hold the image */
   source->image = (*cinfo->mem->request_virt_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
      (LJPEG9_JDIMENSION) (width * source->header.ncolors),
      (LJPEG9_JDIMENSION) height, (LJPEG9_JDIMENSION) 1);
 
@@ -190,7 +190,7 @@ get_rle_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
   source->row--;
   source->pub.buffer = (*cinfo->mem->access_virt_sarray)
-    ((j_common_ptr) cinfo, source->image, source->row, (LJPEG9_JDIMENSION) 1, FALSE);
+    ((LJPEG9_j_common_ptr) cinfo, source->image, source->row, (LJPEG9_JDIMENSION) 1, FALSE);
 
   return 1;
 }
@@ -214,7 +214,7 @@ get_pseudocolor_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   dest_row = source->pub.buffer[0];
   source->row--;
   src_row = * (*cinfo->mem->access_virt_sarray)
-    ((j_common_ptr) cinfo, source->image, source->row, (LJPEG9_JDIMENSION) 1, FALSE);
+    ((LJPEG9_j_common_ptr) cinfo, source->image, source->row, (LJPEG9_JDIMENSION) 1, FALSE);
 
   for (col = cinfo->image_width; col > 0; col--) {
     val = GETJSAMPLE(*src_row++);
@@ -263,7 +263,7 @@ load_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   if (progress != NULL) {
     progress->pub.pass_limit = cinfo->image_height;
     progress->pub.pass_counter = 0;
-    (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+    (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
   }
 #endif
 
@@ -273,12 +273,12 @@ load_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case PSEUDOCOLOR:
     for (row = 0; row < cinfo->image_height; row++) {
       rle_row = (rle_pixel **) (*cinfo->mem->access_virt_sarray)
-         ((j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
+         ((LJPEG9_j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
       rle_getrow(&source->header, rle_row);
 #ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
       }
 #endif
     }
@@ -288,7 +288,7 @@ load_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case TRUECOLOR:
     for (row = 0; row < cinfo->image_height; row++) {
       scanline = * (*cinfo->mem->access_virt_sarray)
-        ((j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
+        ((LJPEG9_j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
       rle_row = source->rle_row;
       rle_getrow(&source->header, rle_row);
 
@@ -302,7 +302,7 @@ load_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 #ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
       }
 #endif
     }
@@ -311,7 +311,7 @@ load_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case DIRECTCOLOR:
     for (row = 0; row < cinfo->image_height; row++) {
       scanline = * (*cinfo->mem->access_virt_sarray)
-        ((j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
+        ((LJPEG9_j_common_ptr) cinfo, source->image, row, (LJPEG9_JDIMENSION) 1, TRUE);
       rle_getrow(&source->header, rle_row);
 
       red_ptr   = rle_row[0];
@@ -327,7 +327,7 @@ load_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 #ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
       }
 #endif
     }
@@ -374,7 +374,7 @@ LJPEG9_jinit_read_rle (j_compress_ptr cinfo)
 
   /* Create module interface object */
   source = (rle_source_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
                                   SIZEOF(rle_source_struct));
   /* Fill in method ptrs */
   source->pub.start_input = start_input_rle;

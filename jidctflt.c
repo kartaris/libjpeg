@@ -66,7 +66,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_idct_float (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
+LJPEG9_jpeg_idct_float (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 		 JCOEFPTR coef_block,
 		 LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col)
 {

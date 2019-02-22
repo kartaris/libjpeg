@@ -18,13 +18,13 @@
 
 
 /*
- * jpeg_zigzag_order[i] is the zigzag-order position of the i'th element
+ * LJPEG9_jpeg_zigzag_order[i] is the zigzag-order position of the i'th element
  * of a DCT block read in natural order (left to right, top to bottom).
  */
 
 #if 0				/* This table is not actually needed in v6a */
 
-const int jpeg_zigzag_order[DCTSIZE2] = {
+const int LJPEG9_jpeg_zigzag_order[DCTSIZE2] = {
    0,  1,  5,  6, 14, 15, 27, 28,
    2,  4,  7, 13, 16, 26, 29, 42,
    3,  8, 12, 17, 25, 30, 41, 43,
@@ -38,7 +38,7 @@ const int jpeg_zigzag_order[DCTSIZE2] = {
 #endif
 
 /*
- * jpeg_natural_order[i] is the natural-order position of the i'th element
+ * LJPEG9_jpeg_natural_order[i] is the natural-order position of the i'th element
  * of zigzag order.
  *
  * When reading corrupted data, the Huffman decoders could attempt
@@ -51,7 +51,7 @@ const int jpeg_zigzag_order[DCTSIZE2] = {
  * fake entries.
  */
 
-const int jpeg_natural_order[DCTSIZE2+16] = {
+const int LJPEG9_jpeg_natural_order[DCTSIZE2+16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 32, 25, 18, 11,  4,  5,
  12, 19, 26, 33, 40, 48, 41, 34,
@@ -64,7 +64,7 @@ const int jpeg_natural_order[DCTSIZE2+16] = {
  63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order7[7*7+16] = {
+const int LJPEG9_jpeg_natural_order7[7*7+16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 32, 25, 18, 11,  4,  5,
  12, 19, 26, 33, 40, 48, 41, 34,
@@ -76,7 +76,7 @@ const int jpeg_natural_order7[7*7+16] = {
  63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order6[6*6+16] = {
+const int LJPEG9_jpeg_natural_order6[6*6+16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 32, 25, 18, 11,  4,  5,
  12, 19, 26, 33, 40, 41, 34, 27,
@@ -86,7 +86,7 @@ const int jpeg_natural_order6[6*6+16] = {
  63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order5[5*5+16] = {
+const int LJPEG9_jpeg_natural_order5[5*5+16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 32, 25, 18, 11,  4, 12,
  19, 26, 33, 34, 27, 20, 28, 35,
@@ -95,21 +95,21 @@ const int jpeg_natural_order5[5*5+16] = {
  63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order4[4*4+16] = {
+const int LJPEG9_jpeg_natural_order4[4*4+16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 25, 18, 11, 19, 26, 27,
  63, 63, 63, 63, 63, 63, 63, 63, /* extra entries for safety in decoder */
  63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order3[3*3+16] = {
+const int LJPEG9_jpeg_natural_order3[3*3+16] = {
   0,  1,  8, 16,  9,  2, 10, 17,
  18,
  63, 63, 63, 63, 63, 63, 63, 63, /* extra entries for safety in decoder */
  63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order2[2*2+16] = {
+const int LJPEG9_jpeg_natural_order2[2*2+16] = {
   0,  1,  8,  9,
  63, 63, 63, 63, 63, 63, 63, 63, /* extra entries for safety in decoder */
  63, 63, 63, 63, 63, 63, 63, 63
@@ -121,7 +121,7 @@ const int jpeg_natural_order2[2*2+16] = {
  */
 
 LJPEG9_GLOBAL(long)
-jdiv_round_up (long a, long b)
+LJPEG9_jdiv_round_up (long a, long b)
 /* Compute a/b rounded up to next integer, ie, ceil(a/b) */
 /* Assumes a >= 0, b > 0 */
 {
@@ -130,7 +130,7 @@ jdiv_round_up (long a, long b)
 
 
 LJPEG9_GLOBAL(long)
-jround_up (long a, long b)
+LJPEG9_LJPEG9_jRound_up (long a, long b)
 /* Compute a rounded up to next multiple of b, ie, ceil(a/b)*b */
 /* Assumes a >= 0, b > 0 */
 {
@@ -158,7 +158,7 @@ jround_up (long a, long b)
  * Do not call this function directly, use the FMEMZERO macro instead.
  */
 LJPEG9_GLOBAL(void)
-jzero_far (void FAR * target, size_t bytestozero)
+LJPEG9_jzero_far (void FAR * target, size_t bytestozero)
 /* Zero out a chunk of FAR memory. */
 /* This might be sample-array data, block-array data, or alloc_large data. */
 {
@@ -174,7 +174,7 @@ jzero_far (void FAR * target, size_t bytestozero)
 
 
 LJPEG9_GLOBAL(void)
-jcopy_sample_rows (LJPEG9_JSAMPARRAY input_array, int source_row,
+LJPEG9_jcopy_sample_rows (LJPEG9_JSAMPARRAY input_array, int source_row,
 		   LJPEG9_JSAMPARRAY output_array, int dest_row,
 		   int num_rows, LJPEG9_JDIMENSION num_cols)
 /* Copy some rows of samples from one place to another.
@@ -208,7 +208,7 @@ jcopy_sample_rows (LJPEG9_JSAMPARRAY input_array, int source_row,
 
 
 LJPEG9_GLOBAL(void)
-jcopy_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
+LJPEG9_jcopy_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
 		 LJPEG9_JDIMENSION num_blocks)
 /* Copy a row of coefficient blocks from one place to another. */
 {

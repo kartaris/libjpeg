@@ -548,7 +548,7 @@ main (int argc, char **argv)
 
   /* Now safe to enable signal catcher. */
 #ifdef LJPEG9_NEED_SIGNAL_CATCHER
-  LJPEG9_enable_signal_catcher((j_common_ptr) &cinfo);
+  LJPEG9_enable_signal_catcher((LJPEG9_j_common_ptr) &cinfo);
 #endif
 
   /* Initialize JPEG parameters.
@@ -615,7 +615,7 @@ main (int argc, char **argv)
   }
 
 #ifdef LJPEG9_PROGRESS_REPORT
-  LJPEG9_start_progress_monitor((j_common_ptr) &cinfo, &progress);
+  LJPEG9_start_progress_monitor((LJPEG9_j_common_ptr) &cinfo, &progress);
 #endif
 
   /* Figure out the input file format, and set up to read it. */
@@ -655,7 +655,7 @@ main (int argc, char **argv)
     fclose(output_file);
 
 #ifdef LJPEG9_PROGRESS_REPORT
-  LJPEG9_end_progress_monitor((j_common_ptr) &cinfo);
+  LJPEG9_end_progress_monitor((LJPEG9_j_common_ptr) &cinfo);
 #endif
 
   /* All done. */

@@ -155,7 +155,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_islow (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_islow (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12, tmp13;
@@ -332,7 +332,7 @@ jpeg_fdct_islow (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_7x7 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_7x7 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12;
@@ -468,7 +468,7 @@ jpeg_fdct_7x7 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_6x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_6x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2;
   INT32 tmp10, tmp11, tmp12;
@@ -582,7 +582,7 @@ jpeg_fdct_6x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_5x5 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_5x5 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2;
   INT32 tmp10, tmp11;
@@ -693,7 +693,7 @@ jpeg_fdct_5x5 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_4x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_4x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1;
   INT32 tmp10, tmp11;
@@ -788,7 +788,7 @@ jpeg_fdct_4x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_3x3 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_3x3 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2;
   DCTELEM *dataptr;
@@ -874,7 +874,7 @@ jpeg_fdct_3x3 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_2x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_2x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   JSAMPROW elemptr;
@@ -919,7 +919,7 @@ jpeg_fdct_2x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_1x1 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_1x1 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   /* Pre-zero output coefficient block. */
   MEMZERO(data, SIZEOF(DCTELEM) * DCTSIZE2);
@@ -937,7 +937,7 @@ jpeg_fdct_1x1 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_9x9 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_9x9 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4;
   INT32 tmp10, tmp11, tmp12, tmp13;
@@ -1088,7 +1088,7 @@ jpeg_fdct_9x9 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_10x10 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_10x10 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
@@ -1252,7 +1252,7 @@ jpeg_fdct_10x10 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_11x11 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_11x11 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
@@ -1436,7 +1436,7 @@ jpeg_fdct_11x11 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_12x12 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_12x12 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
@@ -1602,7 +1602,7 @@ jpeg_fdct_12x12 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_13x13 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_13x13 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
@@ -1802,7 +1802,7 @@ jpeg_fdct_13x13 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_14x14 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_14x14 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
@@ -2003,7 +2003,7 @@ jpeg_fdct_14x14 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_15x15 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_15x15 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
@@ -2183,7 +2183,7 @@ jpeg_fdct_15x15 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_16x16 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_16x16 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17;
@@ -2393,7 +2393,7 @@ jpeg_fdct_16x16 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSIO
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_16x8 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_16x8 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17;
@@ -2576,7 +2576,7 @@ jpeg_fdct_16x8 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_14x7 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_14x7 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
@@ -2741,7 +2741,7 @@ jpeg_fdct_14x7 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_12x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_12x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
@@ -2881,7 +2881,7 @@ jpeg_fdct_12x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_10x5 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_10x5 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
@@ -3014,7 +3014,7 @@ jpeg_fdct_10x5 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_8x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_8x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12, tmp13;
@@ -3155,7 +3155,7 @@ jpeg_fdct_8x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_6x3 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_6x3 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2;
   INT32 tmp10, tmp11, tmp12;
@@ -3256,7 +3256,7 @@ jpeg_fdct_6x3 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_4x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_4x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1;
   INT32 tmp10, tmp11;
@@ -3340,7 +3340,7 @@ jpeg_fdct_4x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_2x1 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_2x1 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1;
   JSAMPROW elemptr;
@@ -3375,7 +3375,7 @@ jpeg_fdct_2x1 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_8x16 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_8x16 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17;
@@ -3569,7 +3569,7 @@ jpeg_fdct_8x16 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_7x14 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_7x14 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
@@ -3751,7 +3751,7 @@ jpeg_fdct_7x14 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_6x12 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_6x12 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
@@ -3901,7 +3901,7 @@ jpeg_fdct_6x12 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_5x10 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_5x10 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3, tmp4;
   INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
@@ -4048,7 +4048,7 @@ jpeg_fdct_5x10 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_4x8 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_4x8 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12, tmp13;
@@ -4189,7 +4189,7 @@ jpeg_fdct_4x8 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_3x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_3x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2;
   INT32 tmp10, tmp11, tmp12;
@@ -4295,7 +4295,7 @@ jpeg_fdct_3x6 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_2x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_2x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1;
   INT32 tmp10, tmp11;
@@ -4375,7 +4375,7 @@ jpeg_fdct_2x4 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION 
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_fdct_1x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
+LJPEG9_jpeg_fdct_1x2 (DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col)
 {
   INT32 tmp0, tmp1;
 

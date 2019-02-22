@@ -17,7 +17,7 @@
 /* Private subobject */
 
 typedef struct {
-  struct jpeg_color_deconverter pub; /* public fields */
+  struct LJPEG9_jpeg_color_deconverter pub; /* public fields */
 
   /* Private state for YCbCr->RGB and BG_YCC->RGB conversion */
   int * Cr_r_tab;		/* => table for Cr to R conversion */
@@ -122,16 +122,16 @@ build_ycc_rgb_table (LJPEG9_j_decompress_ptr cinfo)
   SHIFT_TEMPS
 
   cconvert->Cr_r_tab = (int *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(int));
   cconvert->Cb_b_tab = (int *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(int));
   cconvert->Cr_g_tab = (INT32 *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(INT32));
   cconvert->Cb_g_tab = (INT32 *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(INT32));
 
   cconvert->range_limit = cinfo->sample_range_limit;
@@ -164,20 +164,20 @@ build_bg_ycc_rgb_table (LJPEG9_j_decompress_ptr cinfo)
   SHIFT_TEMPS
 
   cconvert->Cr_r_tab = (int *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(int));
   cconvert->Cb_b_tab = (int *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(int));
   cconvert->Cr_g_tab = (INT32 *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(INT32));
   cconvert->Cb_g_tab = (INT32 *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(MAXJSAMPLE+1) * SIZEOF(INT32));
 
   cconvert->range_limit = (JSAMPLE *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				5 * (MAXJSAMPLE+1) * SIZEOF(JSAMPLE));
 
   for (i = 0, x = -CENTERJSAMPLE; i <= MAXJSAMPLE; i++, x++) {
@@ -282,7 +282,7 @@ build_rgb_y_table (LJPEG9_j_decompress_ptr cinfo)
 
   /* Allocate and fill in the conversion tables. */
   cconvert->rgb_y_tab = rgb_y_tab = (INT32 *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(TABLE_SIZE * SIZEOF(INT32)));
 
   for (i = 0; i <= MAXJSAMPLE; i++) {
@@ -487,7 +487,7 @@ grayscale_convert (LJPEG9_j_decompress_ptr cinfo,
 		   JSAMPIMAGE input_buf, LJPEG9_JDIMENSION input_row,
 		   LJPEG9_JSAMPARRAY output_buf, int num_rows)
 {
-  jcopy_sample_rows(input_buf[0], (int) input_row, output_buf, 0,
+  LJPEG9_jcopy_sample_rows(input_buf[0], (int) input_row, output_buf, 0,
 		    num_rows, cinfo->output_width);
 }
 
@@ -589,13 +589,13 @@ start_pass_dcolor (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_color_deconverter (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cconvert_ptr cconvert;
   int ci;
 
   cconvert = (my_cconvert_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_color_deconverter));
   cinfo->cconvert = &cconvert->pub;
   cconvert->pub.start_pass = start_pass_dcolor;

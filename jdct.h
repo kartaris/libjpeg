@@ -90,247 +90,247 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
 /* Short forms of external names for systems with brain-damaged linkers. */
 
 #ifdef LJPEG9_NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_fdct_islow		jFDislow
-#define jpeg_fdct_ifast		jFDifast
-#define jpeg_fdct_float		jFDfloat
-#define jpeg_fdct_7x7		jFD7x7
-#define jpeg_fdct_6x6		jFD6x6
-#define jpeg_fdct_5x5		jFD5x5
-#define jpeg_fdct_4x4		jFD4x4
-#define jpeg_fdct_3x3		jFD3x3
-#define jpeg_fdct_2x2		jFD2x2
-#define jpeg_fdct_1x1		jFD1x1
-#define jpeg_fdct_9x9		jFD9x9
-#define jpeg_fdct_10x10		jFD10x10
-#define jpeg_fdct_11x11		jFD11x11
-#define jpeg_fdct_12x12		jFD12x12
-#define jpeg_fdct_13x13		jFD13x13
-#define jpeg_fdct_14x14		jFD14x14
-#define jpeg_fdct_15x15		jFD15x15
-#define jpeg_fdct_16x16		jFD16x16
-#define jpeg_fdct_16x8		jFD16x8
-#define jpeg_fdct_14x7		jFD14x7
-#define jpeg_fdct_12x6		jFD12x6
-#define jpeg_fdct_10x5		jFD10x5
-#define jpeg_fdct_8x4		jFD8x4
-#define jpeg_fdct_6x3		jFD6x3
-#define jpeg_fdct_4x2		jFD4x2
-#define jpeg_fdct_2x1		jFD2x1
-#define jpeg_fdct_8x16		jFD8x16
-#define jpeg_fdct_7x14		jFD7x14
-#define jpeg_fdct_6x12		jFD6x12
-#define jpeg_fdct_5x10		jFD5x10
-#define jpeg_fdct_4x8		jFD4x8
-#define jpeg_fdct_3x6		jFD3x6
-#define jpeg_fdct_2x4		jFD2x4
-#define jpeg_fdct_1x2		jFD1x2
-#define jpeg_idct_islow		jRDislow
-#define jpeg_idct_ifast		jRDifast
-#define jpeg_idct_float		jRDfloat
-#define jpeg_idct_7x7		jRD7x7
-#define jpeg_idct_6x6		jRD6x6
-#define jpeg_idct_5x5		jRD5x5
-#define jpeg_idct_4x4		jRD4x4
-#define jpeg_idct_3x3		jRD3x3
-#define jpeg_idct_2x2		jRD2x2
-#define jpeg_idct_1x1		jRD1x1
-#define jpeg_idct_9x9		jRD9x9
-#define jpeg_idct_10x10		jRD10x10
-#define jpeg_idct_11x11		jRD11x11
-#define jpeg_idct_12x12		jRD12x12
-#define jpeg_idct_13x13		jRD13x13
-#define jpeg_idct_14x14		jRD14x14
-#define jpeg_idct_15x15		jRD15x15
-#define jpeg_idct_16x16		jRD16x16
-#define jpeg_idct_16x8		jRD16x8
-#define jpeg_idct_14x7		jRD14x7
-#define jpeg_idct_12x6		jRD12x6
-#define jpeg_idct_10x5		jRD10x5
-#define jpeg_idct_8x4		jRD8x4
-#define jpeg_idct_6x3		jRD6x3
-#define jpeg_idct_4x2		jRD4x2
-#define jpeg_idct_2x1		jRD2x1
-#define jpeg_idct_8x16		jRD8x16
-#define jpeg_idct_7x14		jRD7x14
-#define jpeg_idct_6x12		jRD6x12
-#define jpeg_idct_5x10		jRD5x10
-#define jpeg_idct_4x8		jRD4x8
-#define jpeg_idct_3x6		jRD3x8
-#define jpeg_idct_2x4		jRD2x4
-#define jpeg_idct_1x2		jRD1x2
+#define LJPEG9_jpeg_fdct_islow		LJPEG9_jFDislow
+#define LJPEG9_jpeg_fdct_ifast		LJPEG9_jFDifast
+#define LJPEG9_jpeg_fdct_float		LJPEG9_jFDfloat
+#define LJPEG9_jpeg_fdct_7x7		LJPEG9_jFD7x7
+#define LJPEG9_jpeg_fdct_6x6		LJPEG9_jFD6x6
+#define LJPEG9_jpeg_fdct_5x5		LJPEG9_jFD5x5
+#define LJPEG9_jpeg_fdct_4x4		LJPEG9_jFD4x4
+#define LJPEG9_jpeg_fdct_3x3		LJPEG9_jFD3x3
+#define LJPEG9_jpeg_fdct_2x2		LJPEG9_jFD2x2
+#define LJPEG9_jpeg_fdct_1x1		LJPEG9_jFD1x1
+#define LJPEG9_jpeg_fdct_9x9		LJPEG9_jFD9x9
+#define LJPEG9_jpeg_fdct_10x10		LJPEG9_jFD10x10
+#define LJPEG9_jpeg_fdct_11x11		LJPEG9_jFD11x11
+#define LJPEG9_jpeg_fdct_12x12		LJPEG9_jFD12x12
+#define LJPEG9_jpeg_fdct_13x13		LJPEG9_jFD13x13
+#define LJPEG9_jpeg_fdct_14x14		LJPEG9_jFD14x14
+#define LJPEG9_jpeg_fdct_15x15		LJPEG9_jFD15x15
+#define LJPEG9_jpeg_fdct_16x16		LJPEG9_jFD16x16
+#define LJPEG9_jpeg_fdct_16x8		LJPEG9_jFD16x8
+#define LJPEG9_jpeg_fdct_14x7		LJPEG9_jFD14x7
+#define LJPEG9_jpeg_fdct_12x6		LJPEG9_jFD12x6
+#define LJPEG9_jpeg_fdct_10x5		LJPEG9_jFD10x5
+#define LJPEG9_jpeg_fdct_8x4		LJPEG9_jFD8x4
+#define LJPEG9_jpeg_fdct_6x3		LJPEG9_jFD6x3
+#define LJPEG9_jpeg_fdct_4x2		LJPEG9_jFD4x2
+#define LJPEG9_jpeg_fdct_2x1		LJPEG9_jFD2x1
+#define LJPEG9_jpeg_fdct_8x16		LJPEG9_jFD8x16
+#define LJPEG9_jpeg_fdct_7x14		LJPEG9_jFD7x14
+#define LJPEG9_jpeg_fdct_6x12		LJPEG9_jFD6x12
+#define LJPEG9_jpeg_fdct_5x10		LJPEG9_jFD5x10
+#define LJPEG9_jpeg_fdct_4x8		LJPEG9_jFD4x8
+#define LJPEG9_jpeg_fdct_3x6		LJPEG9_jFD3x6
+#define LJPEG9_jpeg_fdct_2x4		LJPEG9_jFD2x4
+#define LJPEG9_jpeg_fdct_1x2		LJPEG9_jFD1x2
+#define LJPEG9_jpeg_idct_islow		LJPEG9_jRDislow
+#define LJPEG9_jpeg_idct_ifast		LJPEG9_jRDifast
+#define LJPEG9_jpeg_idct_float		LJPEG9_jRDfloat
+#define LJPEG9_jpeg_idct_7x7		LJPEG9_jRD7x7
+#define LJPEG9_jpeg_idct_6x6		LJPEG9_jRD6x6
+#define LJPEG9_jpeg_idct_5x5		LJPEG9_jRD5x5
+#define LJPEG9_jpeg_idct_4x4		LJPEG9_jRD4x4
+#define LJPEG9_jpeg_idct_3x3		LJPEG9_jRD3x3
+#define LJPEG9_jpeg_idct_2x2		LJPEG9_jRD2x2
+#define LJPEG9_jpeg_idct_1x1		LJPEG9_jRD1x1
+#define LJPEG9_jpeg_idct_9x9		LJPEG9_jRD9x9
+#define LJPEG9_jpeg_idct_10x10		LJPEG9_jRD10x10
+#define LJPEG9_jpeg_idct_11x11		LJPEG9_jRD11x11
+#define LJPEG9_jpeg_idct_12x12		LJPEG9_jRD12x12
+#define LJPEG9_jpeg_idct_13x13		LJPEG9_jRD13x13
+#define LJPEG9_jpeg_idct_14x14		LJPEG9_jRD14x14
+#define LJPEG9_jpeg_idct_15x15		LJPEG9_jRD15x15
+#define LJPEG9_jpeg_idct_16x16		LJPEG9_jRD16x16
+#define LJPEG9_jpeg_idct_16x8		LJPEG9_jRD16x8
+#define LJPEG9_jpeg_idct_14x7		LJPEG9_jRD14x7
+#define LJPEG9_jpeg_idct_12x6		LJPEG9_jRD12x6
+#define LJPEG9_jpeg_idct_10x5		LJPEG9_jRD10x5
+#define LJPEG9_jpeg_idct_8x4		LJPEG9_jRD8x4
+#define LJPEG9_jpeg_idct_6x3		LJPEG9_jRD6x3
+#define LJPEG9_jpeg_idct_4x2		LJPEG9_jRD4x2
+#define LJPEG9_jpeg_idct_2x1		LJPEG9_jRD2x1
+#define LJPEG9_jpeg_idct_8x16		LJPEG9_jRD8x16
+#define LJPEG9_jpeg_idct_7x14		LJPEG9_jRD7x14
+#define LJPEG9_jpeg_idct_6x12		LJPEG9_jRD6x12
+#define LJPEG9_jpeg_idct_5x10		LJPEG9_jRD5x10
+#define LJPEG9_jpeg_idct_4x8		LJPEG9_jRD4x8
+#define LJPEG9_jpeg_idct_3x6		LJPEG9_jRD3x8
+#define LJPEG9_jpeg_idct_2x4		LJPEG9_jRD2x4
+#define LJPEG9_jpeg_idct_1x2		LJPEG9_jRD1x2
 #endif /* LJPEG9_NEED_SHORT_EXTERNAL_NAMES */
 
 /* Extern declarations for the forward and inverse DCT routines. */
 
-EXTERN(void) jpeg_fdct_islow
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_islow
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_ifast
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_ifast
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_float
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_float
     JPP((FAST_FLOAT * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_7x7
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_7x7
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_6x6
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_6x6
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_5x5
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_5x5
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_4x4
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_4x4
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_3x3
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_3x3
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_2x2
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_2x2
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_1x1
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_1x1
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_9x9
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_9x9
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_10x10
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_10x10
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_11x11
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_11x11
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_12x12
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_12x12
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_13x13
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_13x13
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_14x14
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_14x14
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_15x15
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_15x15
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_16x16
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_16x16
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_16x8
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_16x8
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_14x7
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_14x7
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_12x6
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_12x6
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_10x5
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_10x5
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_8x4
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_8x4
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_6x3
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_6x3
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_4x2
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_4x2
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_2x1
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_2x1
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_8x16
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_8x16
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_7x14
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_7x14
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_6x12
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_6x12
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_5x10
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_5x10
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_4x8
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_4x8
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_3x6
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_3x6
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_2x4
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_2x4
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
-EXTERN(void) jpeg_fdct_1x2
+LJPEG9_EXTERN(void) LJPEG9_jpeg_fdct_1x2
     JPP((DCTELEM * data, LJPEG9_JSAMPARRAY sample_data, LJPEG9_JDIMENSION start_col));
 
-EXTERN(void) jpeg_idct_islow
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_islow
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_ifast
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_ifast
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_float
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_float
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_7x7
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_7x7
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_6x6
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_6x6
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_5x5
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_5x5
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_4x4
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_4x4
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_3x3
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_3x3
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_2x2
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_2x2
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_1x1
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_1x1
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_9x9
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_9x9
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_10x10
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_10x10
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_11x11
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_11x11
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_12x12
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_12x12
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_13x13
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_13x13
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_14x14
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_14x14
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_15x15
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_15x15
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_16x16
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_16x16
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_16x8
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_16x8
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_14x7
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_14x7
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_12x6
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_12x6
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_10x5
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_10x5
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_8x4
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_8x4
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_6x3
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_6x3
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_4x2
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_4x2
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_2x1
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_2x1
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_8x16
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_8x16
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_7x14
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_7x14
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_6x12
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_6x12
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_5x10
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_5x10
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_4x8
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_4x8
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_3x6
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_3x6
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_2x4
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_2x4
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
-EXTERN(void) jpeg_idct_1x2
+LJPEG9_EXTERN(void) LJPEG9_jpeg_idct_1x2
     JPP((LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
 	 JCOEFPTR coef_block, LJPEG9_JSAMPARRAY output_buf, LJPEG9_JDIMENSION output_col));
 

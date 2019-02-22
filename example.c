@@ -260,7 +260,7 @@ typedef struct my_error_mgr * my_error_ptr;
  */
 
 LJPEG9_METHODDEF(void)
-my_error_exit (j_common_ptr cinfo)
+my_error_exit (LJPEG9_j_common_ptr cinfo)
 {
   /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
   my_error_ptr myerr = (my_error_ptr) cinfo->err;
@@ -361,7 +361,7 @@ read_JPEG_file (char * filename)
   row_stride = cinfo.output_width * cinfo.output_components;
   /* Make a one-row-high sample array that will go away when done with image */
   buffer = (*cinfo.mem->alloc_sarray)
-		((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
+		((LJPEG9_j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
 
   /* Step 6: while (scan lines remain to be read) */
   /*           jpeg_read_scanlines(...); */

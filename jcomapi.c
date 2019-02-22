@@ -26,7 +26,7 @@
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_abort (j_common_ptr cinfo)
+jpeg_abort (LJPEG9_j_common_ptr cinfo)
 {
   int pool;
 
@@ -43,13 +43,13 @@ jpeg_abort (j_common_ptr cinfo)
 
   /* Reset overall state for possible reuse of object */
   if (cinfo->is_decompressor) {
-    cinfo->global_state = DSTATE_START;
+    cinfo->global_state = LJPEG9_DSTATE_START;
     /* Try to keep application from accessing now-deleted marker list.
      * A bit kludgy to do it here, but this is the most central place.
      */
     ((LJPEG9_j_decompress_ptr) cinfo)->marker_list = NULL;
   } else {
-    cinfo->global_state = CSTATE_START;
+    cinfo->global_state = LJPEG9_CSTATE_START;
   }
 }
 
@@ -66,7 +66,7 @@ jpeg_abort (j_common_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jpeg_destroy (j_common_ptr cinfo)
+jpeg_destroy (LJPEG9_j_common_ptr cinfo)
 {
   /* We need only tell the memory manager to release everything. */
   /* NB: mem pointer is NULL if memory mgr failed to initialize. */
@@ -83,7 +83,7 @@ jpeg_destroy (j_common_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(JQUANT_TBL *)
-jpeg_alloc_quant_table (j_common_ptr cinfo)
+jpeg_alloc_quant_table (LJPEG9_j_common_ptr cinfo)
 {
   JQUANT_TBL *tbl;
 
@@ -95,7 +95,7 @@ jpeg_alloc_quant_table (j_common_ptr cinfo)
 
 
 LJPEG9_GLOBAL(JHUFF_TBL *)
-jpeg_alloc_huff_table (j_common_ptr cinfo)
+jpeg_alloc_huff_table (LJPEG9_j_common_ptr cinfo)
 {
   JHUFF_TBL *tbl;
 

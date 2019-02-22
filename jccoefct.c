@@ -33,7 +33,7 @@
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpeg_c_coef_controller pub; /* public fields */
+  struct LJPEG9_jpeg_c_coef_controller pub; /* public fields */
 
   LJPEG9_JDIMENSION iMCU_row_num;	/* iMCU row # within image */
   LJPEG9_JDIMENSION mcu_ctr;		/* counts MCUs processed in current row */
@@ -98,7 +98,7 @@ start_iMCU_row (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_coef (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
+start_pass_coef (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
 
@@ -106,18 +106,18 @@ start_pass_coef (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
   start_iMCU_row(cinfo);
 
   switch (pass_mode) {
-  case JBUF_PASS_THRU:
+  case LJPEG9_JBUF_PASS_THRU:
     if (coef->whole_image[0] != NULL)
       ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     coef->pub.compress_data = compress_data;
     break;
 #ifdef FULL_COEF_BUFFER_SUPPORTED
-  case JBUF_SAVE_AND_PASS:
+  case LJPEG9_JBUF_SAVE_AND_PASS:
     if (coef->whole_image[0] == NULL)
       ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     coef->pub.compress_data = compress_first_pass;
     break;
-  case JBUF_CRANK_DEST:
+  case LJPEG9_JBUF_CRANK_DEST:
     if (coef->whole_image[0] == NULL)
       ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     coef->pub.compress_data = compress_output;
@@ -262,7 +262,7 @@ compress_first_pass (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
        ci++, compptr++) {
     /* Align the virtual buffer for this component. */
     buffer = (*cinfo->mem->access_virt_barray)
-      ((j_common_ptr) cinfo, coef->whole_image[ci],
+      ((LJPEG9_j_common_ptr) cinfo, coef->whole_image[ci],
        coef->iMCU_row_num * compptr->v_samp_factor,
        (LJPEG9_JDIMENSION) compptr->v_samp_factor, TRUE);
     /* Count non-dummy DCT block rows in this iMCU row. */
@@ -360,7 +360,7 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
   for (ci = 0; ci < cinfo->comps_in_scan; ci++) {
     compptr = cinfo->cur_comp_info[ci];
     buffer[ci] = (*cinfo->mem->access_virt_barray)
-      ((j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
+      ((LJPEG9_j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
        coef->iMCU_row_num * compptr->v_samp_factor,
        (LJPEG9_JDIMENSION) compptr->v_samp_factor, FALSE);
   }
@@ -407,14 +407,14 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+LJPEG9_jinit_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_coef_ptr coef;
 
   coef = (my_coef_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_coef_controller));
-  cinfo->coef = (struct jpeg_c_coef_controller *) coef;
+  cinfo->coef = (struct LJPEG9_jpeg_c_coef_controller *) coef;
   coef->pub.start_pass = start_pass_coef;
 
   /* Create the coefficient buffer. */
@@ -428,10 +428,10 @@ jinit_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	 ci++, compptr++) {
       coef->whole_image[ci] = (*cinfo->mem->request_virt_barray)
-	((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
-	 (LJPEG9_JDIMENSION) jround_up((long) compptr->width_in_blocks,
+	((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
+	 (LJPEG9_JDIMENSION) LJPEG9_LJPEG9_jRound_up((long) compptr->width_in_blocks,
 				(long) compptr->h_samp_factor),
-	 (LJPEG9_JDIMENSION) jround_up((long) compptr->height_in_blocks,
+	 (LJPEG9_JDIMENSION) LJPEG9_LJPEG9_jRound_up((long) compptr->height_in_blocks,
 				(long) compptr->v_samp_factor),
 	 (LJPEG9_JDIMENSION) compptr->v_samp_factor);
     }
@@ -444,7 +444,7 @@ jinit_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
     int i;
 
     buffer = (JBLOCKROW)
-      (*cinfo->mem->alloc_large) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_large) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  C_MAX_BLOCKS_IN_MCU * SIZEOF(JBLOCK));
     for (i = 0; i < C_MAX_BLOCKS_IN_MCU; i++) {
       coef->MCU_buffer[i] = buffer + i;

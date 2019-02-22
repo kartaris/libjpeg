@@ -198,7 +198,7 @@ start_output_tga (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
       dest->pub.put_pixel_rows = put_pixel_rows;
     }
   } else {
-    ERREXIT(cinfo, JERR_TGA_COLORSPACE);
+    ERREXIT(cinfo, LJPEG9_JERR_TGA_COLORSPACE);
   }
 }
 
@@ -228,7 +228,7 @@ LJPEG9_jinit_write_targa (LJPEG9_j_decompress_ptr cinfo)
 
   /* Create module interface object, fill in method pointers */
   dest = (tga_dest_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(tga_dest_struct));
   dest->pub.start_output = start_output_tga;
   dest->pub.finish_output = finish_output_tga;
@@ -239,12 +239,12 @@ LJPEG9_jinit_write_targa (LJPEG9_j_decompress_ptr cinfo)
   /* Create I/O buffer.  Note we make this near on a PC. */
   dest->buffer_width = cinfo->output_width * cinfo->output_components;
   dest->iobuffer = (char *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(size_t) (dest->buffer_width * SIZEOF(char)));
 
   /* Create decompressor output buffer. */
   dest->pub.buffer = (*cinfo->mem->alloc_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, dest->buffer_width, (LJPEG9_JDIMENSION) 1);
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, dest->buffer_width, (LJPEG9_JDIMENSION) 1);
   dest->pub.buffer_height = 1;
 
   return (LJPEG9_djpeg_dest_ptr) dest;

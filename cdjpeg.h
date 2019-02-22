@@ -117,41 +117,41 @@ typedef struct LJPEG9_cdjpeg_progress_mgr * LJPEG9_cd_progress_ptr;
 
 /* Module selection routines for I/O modules. */
 
-EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_bmp JPP((j_compress_ptr cinfo));
-EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_bmp JPP((LJPEG9_j_decompress_ptr cinfo,
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_bmp JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_bmp JPP((LJPEG9_j_decompress_ptr cinfo,
 					    boolean is_os2));
-EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_gif JPP((j_compress_ptr cinfo));
-EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_gif JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_ppm JPP((j_compress_ptr cinfo));
-EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_ppm JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_rle JPP((j_compress_ptr cinfo));
-EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_rle JPP((LJPEG9_j_decompress_ptr cinfo));
-EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_targa JPP((j_compress_ptr cinfo));
-EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_targa JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_gif JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_gif JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_ppm JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_ppm JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_rle JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_rle JPP((LJPEG9_j_decompress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_cjpeg_source_ptr) LJPEG9_jinit_read_targa JPP((j_compress_ptr cinfo));
+LJPEG9_EXTERN(LJPEG9_djpeg_dest_ptr) LJPEG9_jinit_write_targa JPP((LJPEG9_j_decompress_ptr cinfo));
 
 /* cjpeg support routines (in rdswitch.c) */
 
-EXTERN(boolean) LJPEG9_read_quant_tables JPP((j_compress_ptr cinfo, char * filename,
+LJPEG9_EXTERN(boolean) LJPEG9_read_quant_tables JPP((j_compress_ptr cinfo, char * filename,
 				       boolean force_baseline));
-EXTERN(boolean) LJPEG9_read_scan_script JPP((j_compress_ptr cinfo, char * filename));
-EXTERN(boolean) LJPEG9_set_quality_ratings JPP((j_compress_ptr cinfo, char *arg,
+LJPEG9_EXTERN(boolean) LJPEG9_read_scan_script JPP((j_compress_ptr cinfo, char * filename));
+LJPEG9_EXTERN(boolean) LJPEG9_set_quality_ratings JPP((j_compress_ptr cinfo, char *arg,
 					 boolean force_baseline));
-EXTERN(boolean) LJPEG9_set_quant_slots JPP((j_compress_ptr cinfo, char *arg));
-EXTERN(boolean) LJPEG9_set_sample_factors JPP((j_compress_ptr cinfo, char *arg));
+LJPEG9_EXTERN(boolean) LJPEG9_set_quant_slots JPP((j_compress_ptr cinfo, char *arg));
+LJPEG9_EXTERN(boolean) LJPEG9_set_sample_factors JPP((j_compress_ptr cinfo, char *arg));
 
 /* djpeg support routines (in rdcolmap.c) */
 
-EXTERN(void) LJPEG9_read_color_map JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
+LJPEG9_EXTERN(void) LJPEG9_read_color_map JPP((LJPEG9_j_decompress_ptr cinfo, FILE * infile));
 
 /* common support routines (in cdjpeg.c) */
 
-EXTERN(void) LJPEG9_enable_signal_catcher JPP((j_common_ptr cinfo));
-EXTERN(void) LJPEG9_start_progress_monitor JPP((j_common_ptr cinfo,
+LJPEG9_EXTERN(void) LJPEG9_enable_signal_catcher JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(void) LJPEG9_start_progress_monitor JPP((LJPEG9_j_common_ptr cinfo,
 					 LJPEG9_cd_progress_ptr progress));
-EXTERN(void) LJPEG9_end_progress_monitor JPP((j_common_ptr cinfo));
-EXTERN(boolean) LJPEG9_keymatch JPP((char * arg, const char * keyword, int minchars));
-EXTERN(FILE *) LJPEG9_read_stdin JPP((void));
-EXTERN(FILE *) LJPEG9_write_stdout JPP((void));
+LJPEG9_EXTERN(void) LJPEG9_end_progress_monitor JPP((LJPEG9_j_common_ptr cinfo));
+LJPEG9_EXTERN(boolean) LJPEG9_keymatch JPP((char * arg, const char * keyword, int minchars));
+LJPEG9_EXTERN(FILE *) LJPEG9_read_stdin JPP((void));
+LJPEG9_EXTERN(FILE *) LJPEG9_write_stdout JPP((void));
 
 /* miscellaneous useful macros */
 

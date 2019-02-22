@@ -58,7 +58,7 @@ typedef LJPEG9_JMETHOD(void, downsample1_ptr,
 /* Private subobject */
 
 typedef struct {
-  struct jpeg_downsampler pub;	/* public fields */
+  struct LJPEG9_jpeg_downsampler pub;	/* public fields */
 
   /* Downsampling method pointers, one per component */
   downsample1_ptr methods[MAX_COMPONENTS];
@@ -200,7 +200,7 @@ fullsize_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
 		     LJPEG9_JSAMPARRAY input_data, LJPEG9_JSAMPARRAY output_data)
 {
   /* Copy the data */
-  jcopy_sample_rows(input_data, 0, output_data, 0,
+  LJPEG9_jcopy_sample_rows(input_data, 0, output_data, 0,
 		    cinfo->max_v_samp_factor, cinfo->image_width);
   /* Edge-expand */
   expand_right_edge(output_data, cinfo->max_v_samp_factor, cinfo->image_width,
@@ -475,7 +475,7 @@ fullsize_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info *compptr,
  */
 
 LJPEG9_GLOBAL(void)
-jinit_downsampler (j_compress_ptr cinfo)
+LJPEG9_jinit_downsampler (j_compress_ptr cinfo)
 {
   my_downsample_ptr downsample;
   int ci;
@@ -484,9 +484,9 @@ jinit_downsampler (j_compress_ptr cinfo)
   int h_in_group, v_in_group, h_out_group, v_out_group;
 
   downsample = (my_downsample_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_downsampler));
-  cinfo->downsample = (struct jpeg_downsampler *) downsample;
+  cinfo->downsample = (struct LJPEG9_jpeg_downsampler *) downsample;
   downsample->pub.start_pass = start_pass_downsample;
   downsample->pub.downsample = sep_downsample;
   downsample->pub.need_context_rows = FALSE;

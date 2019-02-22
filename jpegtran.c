@@ -419,7 +419,7 @@ main (int argc, char **argv)
    * Note: we assume only the decompression object will have virtual arrays.
    */
 #ifdef LJPEG9_NEED_SIGNAL_CATCHER
-  LJPEG9_enable_signal_catcher((j_common_ptr) &srcinfo);
+  LJPEG9_enable_signal_catcher((LJPEG9_j_common_ptr) &srcinfo);
 #endif
 
   /* Scan command line to find file names.
@@ -470,7 +470,7 @@ main (int argc, char **argv)
   }
 
 #ifdef LJPEG9_PROGRESS_REPORT
-  LJPEG9_start_progress_monitor((j_common_ptr) &dstinfo, &progress);
+  LJPEG9_start_progress_monitor((LJPEG9_j_common_ptr) &dstinfo, &progress);
 #endif
 
   /* Specify data source for decompression */
@@ -568,7 +568,7 @@ main (int argc, char **argv)
     fclose(fp);
 
 #ifdef LJPEG9_PROGRESS_REPORT
-  LJPEG9_end_progress_monitor((j_common_ptr) &dstinfo);
+  LJPEG9_end_progress_monitor((LJPEG9_j_common_ptr) &dstinfo);
 #endif
 
   /* All done. */

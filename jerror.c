@@ -68,7 +68,7 @@ const char * const LJPEG9_jpeg_std_message_table[] = {
  */
 
 LJPEG9_METHODDEF(noreturn_t)
-error_exit (j_common_ptr cinfo)
+error_exit (LJPEG9_j_common_ptr cinfo)
 {
   /* Always display the message */
   (*cinfo->err->output_message) (cinfo);
@@ -96,7 +96,7 @@ error_exit (j_common_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-output_message (j_common_ptr cinfo)
+output_message (LJPEG9_j_common_ptr cinfo)
 {
   char buffer[JMSG_LENGTH_MAX];
 
@@ -126,7 +126,7 @@ output_message (j_common_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-emit_message (j_common_ptr cinfo, int msg_level)
+emit_message (LJPEG9_j_common_ptr cinfo, int msg_level)
 {
   struct jpeg_error_mgr * err = cinfo->err;
 
@@ -155,7 +155,7 @@ emit_message (j_common_ptr cinfo, int msg_level)
  */
 
 LJPEG9_METHODDEF(void)
-format_message (j_common_ptr cinfo, char * buffer)
+format_message (LJPEG9_j_common_ptr cinfo, char * buffer)
 {
   struct jpeg_error_mgr * err = cinfo->err;
   int msg_code = err->msg_code;
@@ -210,7 +210,7 @@ format_message (j_common_ptr cinfo, char * buffer)
  */
 
 LJPEG9_METHODDEF(void)
-reset_error_mgr (j_common_ptr cinfo)
+reset_error_mgr (LJPEG9_j_common_ptr cinfo)
 {
   cinfo->err->num_warnings = 0;
   /* trace_level is not reset since it is an application-supplied parameter */

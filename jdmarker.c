@@ -90,11 +90,11 @@ typedef enum {			/* JPEG marker codes */
 /* Private state */
 
 typedef struct {
-  struct jpeg_marker_reader pub; /* public fields */
+  struct LJPEG9_jpeg_marker_reader pub; /* public fields */
 
   /* Application-overridable marker processing methods */
-  jpeg_marker_parser_method process_COM;
-  jpeg_marker_parser_method process_APPn[16];
+  LJPEG9_jpeg_marker_parser_method process_COM;
+  LJPEG9_jpeg_marker_parser_method process_APPn[16];
 
   /* Limit on marker data length to save for each marker type */
   unsigned int length_limit_COM;
@@ -278,7 +278,7 @@ get_sof (LJPEG9_j_decompress_ptr cinfo, boolean is_baseline, boolean is_prog,
 
   if (cinfo->comp_info == NULL)	/* do only once, even if suspend */
     cinfo->comp_info = (jpeg_component_info *) (*cinfo->mem->alloc_small)
-			((j_common_ptr) cinfo, JPOOL_IMAGE,
+			((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 			 cinfo->num_components * SIZEOF(jpeg_component_info));
 
   for (ci = 0; ci < cinfo->num_components; ci++) {
@@ -514,7 +514,7 @@ get_dht (LJPEG9_j_decompress_ptr cinfo)
       ERREXIT1(cinfo, JERR_DHT_INDEX, index);
 
     if (*htblptr == NULL)
-      *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+      *htblptr = jpeg_alloc_huff_table((LJPEG9_j_common_ptr) cinfo);
   
     MEMCOPY((*htblptr)->bits, bits, SIZEOF((*htblptr)->bits));
     MEMCOPY((*htblptr)->huffval, huffval, SIZEOF((*htblptr)->huffval));
@@ -554,7 +554,7 @@ get_dqt (LJPEG9_j_decompress_ptr cinfo)
       ERREXIT1(cinfo, JERR_DQT_INDEX, n);
       
     if (cinfo->quant_tbl_ptrs[n] == NULL)
-      cinfo->quant_tbl_ptrs[n] = jpeg_alloc_quant_table((j_common_ptr) cinfo);
+      cinfo->quant_tbl_ptrs[n] = jpeg_alloc_quant_table((LJPEG9_j_common_ptr) cinfo);
     quant_ptr = cinfo->quant_tbl_ptrs[n];
 
     if (prec) {
@@ -578,13 +578,13 @@ get_dqt (LJPEG9_j_decompress_ptr cinfo)
     }
 
     switch (count) {
-    case (2*2): natural_order = jpeg_natural_order2; break;
-    case (3*3): natural_order = jpeg_natural_order3; break;
-    case (4*4): natural_order = jpeg_natural_order4; break;
-    case (5*5): natural_order = jpeg_natural_order5; break;
-    case (6*6): natural_order = jpeg_natural_order6; break;
-    case (7*7): natural_order = jpeg_natural_order7; break;
-    default:    natural_order = jpeg_natural_order;  break;
+    case (2*2): natural_order = LJPEG9_jpeg_natural_order2; break;
+    case (3*3): natural_order = LJPEG9_jpeg_natural_order3; break;
+    case (4*4): natural_order = LJPEG9_jpeg_natural_order4; break;
+    case (5*5): natural_order = LJPEG9_jpeg_natural_order5; break;
+    case (6*6): natural_order = LJPEG9_jpeg_natural_order6; break;
+    case (7*7): natural_order = LJPEG9_jpeg_natural_order7; break;
+    default:    natural_order = LJPEG9_jpeg_natural_order;  break;
     }
 
     for (i = 0; i < count; i++) {
@@ -898,7 +898,7 @@ save_marker (LJPEG9_j_decompress_ptr cinfo)
 	limit = (unsigned int) length;
       /* allocate and initialize the marker item */
       cur_marker = (jpeg_saved_marker_ptr)
-	(*cinfo->mem->alloc_large) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+	(*cinfo->mem->alloc_large) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				    SIZEOF(struct jpeg_marker_struct) + limit);
       cur_marker->next = NULL;
       cur_marker->marker = (UINT8) cinfo->unread_marker;
@@ -1410,14 +1410,14 @@ reset_marker_reader (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_marker_reader (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_marker_reader (LJPEG9_j_decompress_ptr cinfo)
 {
   my_marker_ptr marker;
   int i;
 
   /* Create subobject in permanent pool */
   marker = (my_marker_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_PERMANENT,
 				SIZEOF(my_marker_reader));
   cinfo->marker = &marker->pub;
   /* Initialize public method pointers */
@@ -1453,7 +1453,7 @@ jpeg_save_markers (LJPEG9_j_decompress_ptr cinfo, int marker_code,
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
   long maxlength;
-  jpeg_marker_parser_method processor;
+  LJPEG9_jpeg_marker_parser_method processor;
 
   /* Length limit mustn't be larger than what we can allocate
    * (should only be a concern in a 16-bit environment).
@@ -1498,7 +1498,7 @@ jpeg_save_markers (LJPEG9_j_decompress_ptr cinfo, int marker_code,
 
 LJPEG9_GLOBAL(void)
 jpeg_set_marker_processor (LJPEG9_j_decompress_ptr cinfo, int marker_code,
-			   jpeg_marker_parser_method routine)
+			   LJPEG9_jpeg_marker_parser_method routine)
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
 

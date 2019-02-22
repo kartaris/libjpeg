@@ -140,13 +140,13 @@ select_file_name (char * fname)
  */
 
 LJPEG9_GLOBAL(void *)
-LJPEG9_jpeg_get_small (j_common_ptr cinfo, size_t sizeofobject)
+LJPEG9_jpeg_get_small (LJPEG9_j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void *) malloc(sizeofobject);
 }
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
+LJPEG9_jpeg_free_small (LJPEG9_j_common_ptr cinfo, void * object, size_t sizeofobject)
 {
   free(object);
 }
@@ -160,13 +160,13 @@ LJPEG9_jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
  */
 
 LJPEG9_GLOBAL(void FAR *)
-LJPEG9_jpeg_get_large (j_common_ptr cinfo, size_t sizeofobject)
+LJPEG9_jpeg_get_large (LJPEG9_j_common_ptr cinfo, size_t sizeofobject)
 {
   return (void FAR *) malloc(sizeofobject);
 }
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
+LJPEG9_jpeg_free_large (LJPEG9_j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 {
   free(object);
 }
@@ -185,7 +185,7 @@ LJPEG9_jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobje
 #endif
 
 LJPEG9_GLOBAL(long)
-LJPEG9_jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
+LJPEG9_jpeg_mem_available (LJPEG9_j_common_ptr cinfo, long min_bytes_needed,
 		    long max_bytes_needed, long already_allocated)
 {
   return cinfo->mem->max_memory_to_use - already_allocated;
@@ -201,7 +201,7 @@ LJPEG9_jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
 
 
 LJPEG9_METHODDEF(void)
-read_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+read_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 		    void FAR * buffer_address,
 		    long file_offset, long byte_count)
 {
@@ -214,7 +214,7 @@ read_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 
 
 LJPEG9_METHODDEF(void)
-write_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+write_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 		     void FAR * buffer_address,
 		     long file_offset, long byte_count)
 {
@@ -227,7 +227,7 @@ write_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 
 
 LJPEG9_METHODDEF(void)
-close_backing_store (j_common_ptr cinfo, backing_store_ptr info)
+close_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info)
 {
   fclose(info->temp_file);	/* close the file */
   unlink(info->temp_name);	/* delete the file */
@@ -244,7 +244,7 @@ close_backing_store (j_common_ptr cinfo, backing_store_ptr info)
  */
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+LJPEG9_jpeg_open_backing_store (LJPEG9_j_common_ptr cinfo, backing_store_ptr info,
 			 long total_bytes_needed)
 {
   select_file_name(info->temp_name);
@@ -263,14 +263,14 @@ LJPEG9_jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
  */
 
 LJPEG9_GLOBAL(long)
-LJPEG9_jpeg_mem_init (j_common_ptr cinfo)
+LJPEG9_jpeg_mem_init (LJPEG9_j_common_ptr cinfo)
 {
   next_file_num = 0;		/* initialize temp file name generator */
   return DEFAULT_MAX_MEM;	/* default for max_memory_to_use */
 }
 
 LJPEG9_GLOBAL(void)
-LJPEG9_jpeg_mem_term (j_common_ptr cinfo)
+LJPEG9_jpeg_mem_term (LJPEG9_j_common_ptr cinfo)
 {
   /* no work */
 }

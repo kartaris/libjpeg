@@ -45,18 +45,18 @@ LOCAL(void) transdecode_master_selection JPP((LJPEG9_j_decompress_ptr cinfo));
 LJPEG9_GLOBAL(jvirt_barray_ptr *)
 jpeg_read_coefficients (LJPEG9_j_decompress_ptr cinfo)
 {
-  if (cinfo->global_state == DSTATE_READY) {
+  if (cinfo->global_state == LJPEG9_DSTATE_READY) {
     /* First call: initialize active modules */
     transdecode_master_selection(cinfo);
-    cinfo->global_state = DSTATE_RDCOEFS;
+    cinfo->global_state = LJPEG9_DSTATE_RDCOEFS;
   }
-  if (cinfo->global_state == DSTATE_RDCOEFS) {
+  if (cinfo->global_state == LJPEG9_DSTATE_RDCOEFS) {
     /* Absorb whole file into the coef buffer */
     for (;;) {
       int retcode;
       /* Call progress monitor hook if present */
       if (cinfo->progress != NULL)
-	(*cinfo->progress->LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+	(*cinfo->progress->LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
       /* Absorb some more input */
       retcode = (*cinfo->inputctl->consume_input) (cinfo);
       if (retcode == JPEG_SUSPENDED)
@@ -73,14 +73,14 @@ jpeg_read_coefficients (LJPEG9_j_decompress_ptr cinfo)
       }
     }
     /* Set state so that jpeg_finish_decompress does the right thing */
-    cinfo->global_state = DSTATE_STOPPING;
+    cinfo->global_state = LJPEG9_DSTATE_STOPPING;
   }
-  /* At this point we should be in state DSTATE_STOPPING if being used
-   * standalone, or in state DSTATE_BUFIMAGE if being invoked to get access
+  /* At this point we should be in state LJPEG9_DSTATE_STOPPING if being used
+   * standalone, or in state LJPEG9_DSTATE_BUFIMAGE if being invoked to get access
    * to the coefficients during a full buffered-image-mode decompression.
    */
-  if ((cinfo->global_state == DSTATE_STOPPING ||
-       cinfo->global_state == DSTATE_BUFIMAGE) && cinfo->buffered_image) {
+  if ((cinfo->global_state == LJPEG9_DSTATE_STOPPING ||
+       cinfo->global_state == LJPEG9_DSTATE_BUFIMAGE) && cinfo->buffered_image) {
     return cinfo->coef->coef_arrays;
   }
   /* Oops, improper usage */
@@ -105,16 +105,16 @@ transdecode_master_selection (LJPEG9_j_decompress_ptr cinfo)
 
   /* Entropy decoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code)
-    jinit_arith_decoder(cinfo);
+    LJPEG9_jinit_arith_decoder(cinfo);
   else {
-    jinit_huff_decoder(cinfo);
+    LJPEG9_jinit_huff_decoder(cinfo);
   }
 
   /* Always get a full-image coefficient buffer. */
-  jinit_d_coef_controller(cinfo, TRUE);
+  LJPEG9_jinit_d_coef_controller(cinfo, TRUE);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
-  (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
+  (*cinfo->mem->realize_virt_arrays) ((LJPEG9_j_common_ptr) cinfo);
 
   /* Initialize input side of decompressor to consume first scan. */
   (*cinfo->inputctl->start_input_pass) (cinfo);

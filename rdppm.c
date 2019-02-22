@@ -116,7 +116,7 @@ read_pbm_integer (j_compress_ptr cinfo, FILE * infile)
   } while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
 
   if (ch < '0' || ch > '9')
-    ERREXIT(cinfo, JERR_PPM_NONNUMERIC);
+    ERREXIT(cinfo, LJPEG9_JERR_PPM_NONNUMERIC);
 
   val = ch - '0';
   while ((ch = pbm_getc(infile)) >= '0' && ch <= '9') {
@@ -302,7 +302,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   boolean need_iobuffer, use_raw_buffer, need_rescale;
 
   if (getc(source->pub.input_file) != 'P')
-    ERREXIT(cinfo, JERR_PPM_NOT);
+    ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
 
   c = getc(source->pub.input_file); /* subformat discriminator character */
 
@@ -314,7 +314,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case '6':			/* it's a raw-format PPM file */
     break;
   default:
-    ERREXIT(cinfo, JERR_PPM_NOT);
+    ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
     break;
   }
 
@@ -324,7 +324,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   maxval = read_pbm_integer(cinfo, source->pub.input_file);
 
   if (w <= 0 || h <= 0 || maxval <= 0) /* error check */
-    ERREXIT(cinfo, JERR_PPM_NOT);
+    ERREXIT(cinfo, LJPEG9_JERR_PPM_NOT);
 
   cinfo->data_precision = BITS_IN_JSAMPLE; /* we always rescale data to this */
   cinfo->image_width = (LJPEG9_JDIMENSION) w;
@@ -339,7 +339,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case '2':			/* it's a text-format PGM file */
     cinfo->input_components = 1;
     cinfo->in_color_space = JCS_GRAYSCALE;
-    TRACEMS2(cinfo, 1, JTRC_PGM_TEXT, w, h);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_PGM_TEXT, w, h);
     source->pub.get_pixel_rows = get_text_gray_row;
     need_iobuffer = FALSE;
     break;
@@ -347,7 +347,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case '3':			/* it's a text-format PPM file */
     cinfo->input_components = 3;
     cinfo->in_color_space = JCS_RGB;
-    TRACEMS2(cinfo, 1, JTRC_PPM_TEXT, w, h);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_PPM_TEXT, w, h);
     source->pub.get_pixel_rows = get_text_rgb_row;
     need_iobuffer = FALSE;
     break;
@@ -355,7 +355,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case '5':			/* it's a raw-format PGM file */
     cinfo->input_components = 1;
     cinfo->in_color_space = JCS_GRAYSCALE;
-    TRACEMS2(cinfo, 1, JTRC_PGM, w, h);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_PGM, w, h);
     if (maxval > 255) {
       source->pub.get_pixel_rows = get_word_gray_row;
     } else if (maxval == MAXJSAMPLE && SIZEOF(JSAMPLE) == SIZEOF(U_CHAR)) {
@@ -370,7 +370,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   case '6':			/* it's a raw-format PPM file */
     cinfo->input_components = 3;
     cinfo->in_color_space = JCS_RGB;
-    TRACEMS2(cinfo, 1, JTRC_PPM, w, h);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_PPM, w, h);
     if (maxval > 255) {
       source->pub.get_pixel_rows = get_word_rgb_row;
     } else if (maxval == MAXJSAMPLE && SIZEOF(JSAMPLE) == SIZEOF(U_CHAR)) {
@@ -388,7 +388,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     source->buffer_width = (size_t) w * cinfo->input_components *
       ((maxval<=255) ? SIZEOF(U_CHAR) : (2*SIZEOF(U_CHAR)));
     source->iobuffer = (U_CHAR *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  source->buffer_width);
   }
 
@@ -403,7 +403,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
   } else {
     /* Need to translate anyway, so make a separate sample buffer. */
     source->pub.buffer = (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        (LJPEG9_JDIMENSION) w * cinfo->input_components, (LJPEG9_JDIMENSION) 1);
     source->pub.buffer_height = 1;
   }
@@ -414,7 +414,7 @@ start_input_ppm (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
     /* On 16-bit-int machines we have to be careful of maxval = 65535 */
     source->rescale = (JSAMPLE *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  (size_t) (((long) maxval + 1L) * SIZEOF(JSAMPLE)));
     half_maxval = maxval / 2;
     for (val = 0; val <= (INT32) maxval; val++) {
@@ -447,7 +447,7 @@ LJPEG9_jinit_read_ppm (j_compress_ptr cinfo)
 
   /* Create module interface object */
   source = (ppm_source_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(ppm_source_struct));
   /* Fill in method ptrs, except get_pixel_rows which start_input sets */
   source->pub.start_input = start_input_ppm;

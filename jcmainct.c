@@ -27,12 +27,12 @@
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpeg_c_main_controller pub; /* public fields */
+  struct LJPEG9_jpeg_c_main_controller pub; /* public fields */
 
   LJPEG9_JDIMENSION cur_iMCU_row;	/* number of current iMCU row */
   LJPEG9_JDIMENSION rowgroup_ctr;	/* counts row groups received in iMCU row */
   boolean suspended;		/* remember if we suspended output */
-  J_BUF_MODE pass_mode;		/* current operating mode */
+  LJPEG9_J_BUF_MODE pass_mode;		/* current operating mode */
 
   /* If using just a strip buffer, this points to the entire set of buffers
    * (we allocate one for each component).  In the full-image case, this
@@ -67,7 +67,7 @@ LJPEG9_METHODDEF(void) process_data_buffer_main
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_main (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
+start_pass_main (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_main_ptr mainp = (my_main_ptr) cinfo->main;
 
@@ -81,7 +81,7 @@ start_pass_main (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
   mainp->pass_mode = pass_mode;	/* save mode for use by process_data */
 
   switch (pass_mode) {
-  case JBUF_PASS_THRU:
+  case LJPEG9_JBUF_PASS_THRU:
 #ifdef FULL_MAIN_BUFFER_SUPPORTED
     if (mainp->whole_image[0] != NULL)
       ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
@@ -89,9 +89,9 @@ start_pass_main (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
     mainp->pub.process_data = process_data_simple_main;
     break;
 #ifdef FULL_MAIN_BUFFER_SUPPORTED
-  case JBUF_SAVE_SOURCE:
-  case JBUF_CRANK_DEST:
-  case JBUF_SAVE_AND_PASS:
+  case LJPEG9_JBUF_SAVE_SOURCE:
+  case LJPEG9_JBUF_CRANK_DEST:
+  case LJPEG9_JBUF_SAVE_AND_PASS:
     if (mainp->whole_image[0] == NULL)
       ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
     mainp->pub.process_data = process_data_buffer_main;
@@ -174,7 +174,7 @@ process_data_buffer_main (j_compress_ptr cinfo,
   my_main_ptr mainp = (my_main_ptr) cinfo->main;
   int ci;
   jpeg_component_info *compptr;
-  boolean writing = (mainp->pass_mode != JBUF_CRANK_DEST);
+  boolean writing = (mainp->pass_mode != LJPEG9_JBUF_CRANK_DEST);
 
   while (mainp->cur_iMCU_row < cinfo->total_iMCU_rows) {
     /* Realign the virtual buffers if at the start of an iMCU row. */
@@ -182,7 +182,7 @@ process_data_buffer_main (j_compress_ptr cinfo,
       for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	   ci++, compptr++) {
 	mainp->buffer[ci] = (*cinfo->mem->access_virt_sarray)
-	  ((j_common_ptr) cinfo, mainp->whole_image[ci], mainp->cur_iMCU_row *
+	  ((LJPEG9_j_common_ptr) cinfo, mainp->whole_image[ci], mainp->cur_iMCU_row *
 	   ((LJPEG9_JDIMENSION) (compptr->v_samp_factor * cinfo->min_DCT_v_scaled_size)),
 	   (LJPEG9_JDIMENSION) (compptr->v_samp_factor * cinfo->min_DCT_v_scaled_size),
 	   writing);
@@ -208,7 +208,7 @@ process_data_buffer_main (j_compress_ptr cinfo,
     }
 
     /* Emit data, unless this is a sink-only pass. */
-    if (mainp->pass_mode != JBUF_SAVE_SOURCE) {
+    if (mainp->pass_mode != LJPEG9_JBUF_SAVE_SOURCE) {
       if (! (*cinfo->coef->compress_data) (cinfo, mainp->buffer)) {
 	/* If compressor did not consume the whole row, then we must need to
 	 * suspend processing and return to the application.  In this situation
@@ -245,14 +245,14 @@ process_data_buffer_main (j_compress_ptr cinfo,
  */
 
 LJPEG9_GLOBAL(void)
-jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+LJPEG9_jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_main_ptr mainp;
   int ci;
   jpeg_component_info *compptr;
 
   mainp = (my_main_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_main_controller));
   cinfo->main = &mainp->pub;
   mainp->pub.start_pass = start_pass_main;
@@ -271,9 +271,9 @@ jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	 ci++, compptr++) {
       mainp->whole_image[ci] = (*cinfo->mem->request_virt_sarray)
-	((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
+	((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
 	 compptr->width_in_blocks * ((LJPEG9_JDIMENSION) compptr->DCT_h_scaled_size),
-	 ((LJPEG9_JDIMENSION) jround_up((long) compptr->height_in_blocks,
+	 ((LJPEG9_JDIMENSION) LJPEG9_LJPEG9_jRound_up((long) compptr->height_in_blocks,
 				 (long) compptr->v_samp_factor)) *
 	 ((LJPEG9_JDIMENSION) cinfo->min_DCT_v_scaled_size),
 	 (LJPEG9_JDIMENSION) (compptr->v_samp_factor * compptr->DCT_v_scaled_size));
@@ -289,7 +289,7 @@ jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	 ci++, compptr++) {
       mainp->buffer[ci] = (*cinfo->mem->alloc_sarray)
-	((j_common_ptr) cinfo, JPOOL_IMAGE,
+	((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 	 compptr->width_in_blocks * ((LJPEG9_JDIMENSION) compptr->DCT_h_scaled_size),
 	 (LJPEG9_JDIMENSION) (compptr->v_samp_factor * compptr->DCT_v_scaled_size));
     }

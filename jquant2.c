@@ -192,7 +192,7 @@ typedef FSERROR FAR *FSERRPTR;	/* pointer to error array (in FAR storage!) */
 /* Private subobject */
 
 typedef struct {
-  struct jpeg_color_quantizer pub; /* public fields */
+  struct LJPEG9_jpeg_color_quantizer pub; /* public fields */
 
   /* Space for the eventually created colormap is stashed here */
   LJPEG9_JSAMPARRAY sv_colormap;	/* colormap allocated at init time */
@@ -546,7 +546,7 @@ select_colors (LJPEG9_j_decompress_ptr cinfo, int desired_colors)
 
   /* Allocate workspace for box list */
   boxlist = (boxptr) (*cinfo->mem->alloc_small)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, desired_colors * SIZEOF(box));
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, desired_colors * SIZEOF(box));
   /* Initialize one box containing whole space */
   numboxes = 1;
   boxlist[0].c0min = 0;
@@ -1114,7 +1114,7 @@ init_error_limit (LJPEG9_j_decompress_ptr cinfo)
   int in, out;
 
   table = (int *) (*cinfo->mem->alloc_small)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, (MAXJSAMPLE*2+1) * SIZEOF(int));
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, (MAXJSAMPLE*2+1) * SIZEOF(int));
   table += MAXJSAMPLE;		/* so can index -MAXJSAMPLE .. +MAXJSAMPLE */
   cquantize->error_limiter = table;
 
@@ -1202,7 +1202,7 @@ start_pass_2_quant (LJPEG9_j_decompress_ptr cinfo, boolean is_pre_scan)
       /* Allocate Floyd-Steinberg workspace if we didn't already. */
       if (cquantize->fserrors == NULL)
 	cquantize->fserrors = (FSERRPTR) (*cinfo->mem->alloc_large)
-	  ((j_common_ptr) cinfo, JPOOL_IMAGE, arraysize);
+	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, arraysize);
       /* Initialize the propagated errors to zero. */
       FMEMZERO((void FAR *) cquantize->fserrors, arraysize);
       /* Make the error-limit table if we didn't already. */
@@ -1242,15 +1242,15 @@ new_color_map_2_quant (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_2pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_2pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize;
   int i;
 
   cquantize = (my_cquantize_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_cquantizer));
-  cinfo->cquantize = (struct jpeg_color_quantizer *) cquantize;
+  cinfo->cquantize = (struct LJPEG9_jpeg_color_quantizer *) cquantize;
   cquantize->pub.start_pass = start_pass_2_quant;
   cquantize->pub.new_color_map = new_color_map_2_quant;
   cquantize->fserrors = NULL;	/* flag optional arrays not allocated */
@@ -1262,10 +1262,10 @@ jinit_2pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
 
   /* Allocate the histogram/inverse colormap storage */
   cquantize->histogram = (hist3d) (*cinfo->mem->alloc_small)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, HIST_C0_ELEMS * SIZEOF(hist2d));
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, HIST_C0_ELEMS * SIZEOF(hist2d));
   for (i = 0; i < HIST_C0_ELEMS; i++) {
     cquantize->histogram[i] = (hist2d) (*cinfo->mem->alloc_large)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        HIST_C1_ELEMS*HIST_C2_ELEMS * SIZEOF(histcell));
   }
   cquantize->needs_zeroed = TRUE; /* histogram is garbage now */
@@ -1284,7 +1284,7 @@ jinit_2pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
     if (desired > MAXNUMCOLORS)
       ERREXIT1(cinfo, JERR_QUANT_MANY_COLORS, MAXNUMCOLORS);
     cquantize->sv_colormap = (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo,JPOOL_IMAGE, (LJPEG9_JDIMENSION) desired, (LJPEG9_JDIMENSION) 3);
+      ((LJPEG9_j_common_ptr) cinfo,JPOOL_IMAGE, (LJPEG9_JDIMENSION) desired, (LJPEG9_JDIMENSION) 3);
     cquantize->desired = desired;
   } else
     cquantize->sv_colormap = NULL;
@@ -1301,7 +1301,7 @@ jinit_2pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
    */
   if (cinfo->dither_mode == JDITHER_FS) {
     cquantize->fserrors = (FSERRPTR) (*cinfo->mem->alloc_large)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        (size_t) ((cinfo->output_width + 2) * (3 * SIZEOF(FSERROR))));
     /* Might as well create the error-limiting table too. */
     init_error_limit(cinfo);

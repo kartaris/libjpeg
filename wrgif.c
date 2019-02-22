@@ -363,7 +363,7 @@ LJPEG9_jinit_write_gif (LJPEG9_j_decompress_ptr cinfo)
 
   /* Create module interface object, fill in method pointers */
   dest = (gif_dest_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(gif_dest_struct));
   dest->cinfo = cinfo;		/* make back link for subroutines */
   dest->pub.start_output = start_output_gif;
@@ -372,7 +372,7 @@ LJPEG9_jinit_write_gif (LJPEG9_j_decompress_ptr cinfo)
 
   if (cinfo->out_color_space != JCS_GRAYSCALE &&
       cinfo->out_color_space != JCS_RGB)
-    ERREXIT(cinfo, JERR_GIF_COLORSPACE);
+    ERREXIT(cinfo, LJPEG9_JERR_GIF_COLORSPACE);
 
   /* Force quantization if color or if > 8 bits input */
   if (cinfo->out_color_space != JCS_GRAYSCALE || cinfo->data_precision > 8) {
@@ -386,11 +386,11 @@ LJPEG9_jinit_write_gif (LJPEG9_j_decompress_ptr cinfo)
   jpeg_calc_output_dimensions(cinfo);
 
   if (cinfo->output_components != 1) /* safety check: just one component? */
-    ERREXIT(cinfo, JERR_GIF_BUG);
+    ERREXIT(cinfo, LJPEG9_JERR_GIF_BUG);
 
   /* Create decompressor output buffer. */
   dest->pub.buffer = (*cinfo->mem->alloc_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, cinfo->output_width, (LJPEG9_JDIMENSION) 1);
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, cinfo->output_width, (LJPEG9_JDIMENSION) 1);
   dest->pub.buffer_height = 1;
 
   return (LJPEG9_djpeg_dest_ptr) dest;

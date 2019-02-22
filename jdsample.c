@@ -32,7 +32,7 @@ typedef LJPEG9_JMETHOD(void, upsample1_ptr,
 /* Private subobject */
 
 typedef struct {
-  struct jpeg_upsampler pub;	/* public fields */
+  struct LJPEG9_jpeg_upsampler pub;	/* public fields */
 
   /* Color conversion buffer.  When using separate upsampling and color
    * conversion steps, this buffer holds one upsampled row group until it
@@ -216,7 +216,7 @@ int_upsample (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
     }
     /* Generate any additional output rows by duplicating the first one */
     if (v_expand > 1) {
-      jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
+      LJPEG9_jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
 			v_expand-1, cinfo->output_width);
     }
     inrow++;
@@ -278,7 +278,7 @@ h2v2_upsample (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
       *outptr++ = invalue;
       *outptr++ = invalue;
     }
-    jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
+    LJPEG9_jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
 		      1, cinfo->output_width);
     inrow++;
     outrow += 2;
@@ -291,7 +291,7 @@ h2v2_upsample (LJPEG9_j_decompress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 LJPEG9_GLOBAL(void)
-jinit_upsampler (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_upsampler (LJPEG9_j_decompress_ptr cinfo)
 {
   my_upsample_ptr upsample;
   int ci;
@@ -300,9 +300,9 @@ jinit_upsampler (LJPEG9_j_decompress_ptr cinfo)
   int h_in_group, v_in_group, h_out_group, v_out_group;
 
   upsample = (my_upsample_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_upsampler));
-  cinfo->upsample = (struct jpeg_upsampler *) upsample;
+  cinfo->upsample = (struct LJPEG9_jpeg_upsampler *) upsample;
   upsample->pub.start_pass = start_pass_upsample;
   upsample->pub.upsample = sep_upsample;
   upsample->pub.need_context_rows = FALSE; /* until we find out differently */
@@ -352,8 +352,8 @@ jinit_upsampler (LJPEG9_j_decompress_ptr cinfo)
       ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
     if (need_buffer) {
       upsample->color_buf[ci] = (*cinfo->mem->alloc_sarray)
-	((j_common_ptr) cinfo, JPOOL_IMAGE,
-	 (LJPEG9_JDIMENSION) jround_up((long) cinfo->output_width,
+	((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
+	 (LJPEG9_JDIMENSION) LJPEG9_LJPEG9_jRound_up((long) cinfo->output_width,
 				(long) cinfo->max_h_samp_factor),
 	 (LJPEG9_JDIMENSION) cinfo->max_v_samp_factor);
     }

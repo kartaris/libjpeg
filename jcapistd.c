@@ -38,24 +38,24 @@
 LJPEG9_GLOBAL(void)
 jpeg_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
 {
-  if (cinfo->global_state != CSTATE_START)
+  if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (write_all_tables)
     jpeg_suppress_tables(cinfo, FALSE);	/* mark all tables to be written */
 
   /* (Re)initialize error mgr and destination modules */
-  (*cinfo->err->reset_error_mgr) ((j_common_ptr) cinfo);
+  (*cinfo->err->reset_error_mgr) ((LJPEG9_j_common_ptr) cinfo);
   (*cinfo->dest->init_destination) (cinfo);
   /* Perform master selection of active modules */
-  jinit_compress_master(cinfo);
+  LJPEG9_jinit_compress_master(cinfo);
   /* Set up for the first pass */
   (*cinfo->master->prepare_for_pass) (cinfo);
   /* Ready for application to drive first pass through jpeg_write_scanlines
    * or jpeg_write_raw_data.
    */
   cinfo->next_scanline = 0;
-  cinfo->global_state = (cinfo->raw_data_in ? CSTATE_RAW_OK : CSTATE_SCANNING);
+  cinfo->global_state = (cinfo->raw_data_in ? LJPEG9_CSTATE_RAW_OK : LJPEG9_CSTATE_SCANNING);
 }
 
 
@@ -80,7 +80,7 @@ jpeg_write_scanlines (j_compress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
 {
   LJPEG9_JDIMENSION row_ctr, rows_left;
 
-  if (cinfo->global_state != CSTATE_SCANNING)
+  if (cinfo->global_state != LJPEG9_CSTATE_SCANNING)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   if (cinfo->next_scanline >= cinfo->image_height)
     WARNMS(cinfo, JWRN_TOO_MUCH_DATA);
@@ -89,7 +89,7 @@ jpeg_write_scanlines (j_compress_ptr cinfo, LJPEG9_JSAMPARRAY scanlines,
   if (cinfo->progress != NULL) {
     cinfo->progress->pass_counter = (long) cinfo->next_scanline;
     cinfo->progress->pass_limit = (long) cinfo->image_height;
-    (*cinfo->progress->LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+    (*cinfo->progress->LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
   }
 
   /* Give master control module another chance if this is first call to
@@ -123,7 +123,7 @@ jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
 {
   LJPEG9_JDIMENSION lines_per_iMCU_row;
 
-  if (cinfo->global_state != CSTATE_RAW_OK)
+  if (cinfo->global_state != LJPEG9_CSTATE_RAW_OK)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   if (cinfo->next_scanline >= cinfo->image_height) {
     WARNMS(cinfo, JWRN_TOO_MUCH_DATA);
@@ -134,7 +134,7 @@ jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
   if (cinfo->progress != NULL) {
     cinfo->progress->pass_counter = (long) cinfo->next_scanline;
     cinfo->progress->pass_limit = (long) cinfo->image_height;
-    (*cinfo->progress->LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+    (*cinfo->progress->LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
   }
 
   /* Give master control module another chance if this is first call to

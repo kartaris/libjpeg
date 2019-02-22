@@ -21,7 +21,7 @@
 /* Expanded entropy decoder object for arithmetic decoding. */
 
 typedef struct {
-  struct jpeg_entropy_decoder pub; /* public fields */
+  struct LJPEG9_jpeg_entropy_decoder pub; /* public fields */
 
   INT32 c;       /* C register, base of coding interval + input bit buffer */
   INT32 a;               /* A register, normalized size of coding interval */
@@ -149,7 +149,7 @@ arith_decode (LJPEG9_j_decompress_ptr cinfo, unsigned char *st)
    * Qe values and probability estimation state machine
    */
   sv = *st;
-  qe = jpeg_aritab[sv & 0x7F];	/* => Qe_Value */
+  qe = LJPEG9_jpeg_aritab[sv & 0x7F];	/* => Qe_Value */
   nl = qe & 0xFF; qe >>= 8;	/* Next_Index_LPS + Switch_MPS */
   nm = qe & 0xFF; qe >>= 8;	/* Next_Index_MPS */
 
@@ -304,7 +304,7 @@ decode_mcu_DC_first (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
       entropy->last_dc_val[ci] += v;
     }
 
-    /* Scale and output the DC coefficient (assumes jpeg_natural_order[0]=0) */
+    /* Scale and output the DC coefficient (assumes LJPEG9_jpeg_natural_order[0]=0) */
     (*block)[0] = (JCOEF) (entropy->last_dc_val[ci] << cinfo->Al);
   }
 
@@ -717,7 +717,7 @@ start_pass (LJPEG9_j_decompress_ptr cinfo)
 	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->dc_stats[tbl] == NULL)
 	entropy->dc_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
-	  ((j_common_ptr) cinfo, JPOOL_IMAGE, DC_STAT_BINS);
+	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, DC_STAT_BINS);
       MEMZERO(entropy->dc_stats[tbl], DC_STAT_BINS);
       /* Initialize DC predictions to 0 */
       entropy->last_dc_val[ci] = 0;
@@ -730,7 +730,7 @@ start_pass (LJPEG9_j_decompress_ptr cinfo)
 	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->ac_stats[tbl] == NULL)
 	entropy->ac_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
-	  ((j_common_ptr) cinfo, JPOOL_IMAGE, AC_STAT_BINS);
+	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, AC_STAT_BINS);
       MEMZERO(entropy->ac_stats[tbl], AC_STAT_BINS);
     }
   }
@@ -761,13 +761,13 @@ finish_pass (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_arith_decoder (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_arith_decoder (LJPEG9_j_decompress_ptr cinfo)
 {
   arith_entropy_ptr entropy;
   int i;
 
   entropy = (arith_entropy_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(arith_entropy_decoder));
   cinfo->entropy = &entropy->pub;
   entropy->pub.start_pass = start_pass;
@@ -786,7 +786,7 @@ jinit_arith_decoder (LJPEG9_j_decompress_ptr cinfo)
     /* Create progression status table */
     int *coef_bit_ptr, ci;
     cinfo->coef_bits = (int (*)[DCTSIZE2])
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  cinfo->num_components*DCTSIZE2*SIZEOF(int));
     coef_bit_ptr = & cinfo->coef_bits[0][0];
     for (ci = 0; ci < cinfo->num_components; ci++) 

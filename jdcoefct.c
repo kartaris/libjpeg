@@ -27,7 +27,7 @@
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpeg_d_coef_controller pub; /* public fields */
+  struct LJPEG9_jpeg_d_coef_controller pub; /* public fields */
 
   /* These variables keep track of the current location of the input side. */
   /* cinfo->input_iMCU_row is also used for this. */
@@ -257,7 +257,7 @@ consume_data (LJPEG9_j_decompress_ptr cinfo)
   for (ci = 0; ci < cinfo->comps_in_scan; ci++) {
     compptr = cinfo->cur_comp_info[ci];
     buffer[ci] = (*cinfo->mem->access_virt_barray)
-      ((j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
+      ((LJPEG9_j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
        cinfo->input_iMCU_row * compptr->v_samp_factor,
        (LJPEG9_JDIMENSION) compptr->v_samp_factor, TRUE);
     /* Note: entropy decoder expects buffer to be zeroed,
@@ -343,7 +343,7 @@ decompress_data (LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
       continue;
     /* Align the virtual buffer for this component. */
     buffer = (*cinfo->mem->access_virt_barray)
-      ((j_common_ptr) cinfo, coef->whole_image[ci],
+      ((LJPEG9_j_common_ptr) cinfo, coef->whole_image[ci],
        cinfo->output_iMCU_row * compptr->v_samp_factor,
        (LJPEG9_JDIMENSION) compptr->v_samp_factor, FALSE);
     /* Count non-dummy DCT block rows in this iMCU row. */
@@ -420,7 +420,7 @@ smoothing_ok (LJPEG9_j_decompress_ptr cinfo)
   /* Allocate latch area if not already done */
   if (coef->coef_bits_latch == NULL)
     coef->coef_bits_latch = (int *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  cinfo->num_components *
 				  (SAVED_COEFS * SIZEOF(int)));
   coef_bits_latch = coef->coef_bits_latch;
@@ -519,14 +519,14 @@ decompress_smooth_data (LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
     if (cinfo->output_iMCU_row > 0) {
       access_rows += compptr->v_samp_factor; /* prior iMCU row too */
       buffer = (*cinfo->mem->access_virt_barray)
-	((j_common_ptr) cinfo, coef->whole_image[ci],
+	((LJPEG9_j_common_ptr) cinfo, coef->whole_image[ci],
 	 (cinfo->output_iMCU_row - 1) * compptr->v_samp_factor,
 	 (LJPEG9_JDIMENSION) access_rows, FALSE);
       buffer += compptr->v_samp_factor;	/* point to current iMCU row */
       first_row = FALSE;
     } else {
       buffer = (*cinfo->mem->access_virt_barray)
-	((j_common_ptr) cinfo, coef->whole_image[ci],
+	((LJPEG9_j_common_ptr) cinfo, coef->whole_image[ci],
 	 (LJPEG9_JDIMENSION) 0, (LJPEG9_JDIMENSION) access_rows, FALSE);
       first_row = TRUE;
     }
@@ -562,7 +562,7 @@ decompress_smooth_data (LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
       last_block_column = compptr->width_in_blocks - 1;
       for (block_num = 0; block_num <= last_block_column; block_num++) {
 	/* Fetch current DCT block into workspace so we can modify it. */
-	jcopy_block_row(buffer_ptr, (JBLOCKROW) workspace, (LJPEG9_JDIMENSION) 1);
+	LJPEG9_jcopy_block_row(buffer_ptr, (JBLOCKROW) workspace, (LJPEG9_JDIMENSION) 1);
 	/* Update DC values */
 	if (block_num < last_block_column) {
 	  DC3 = (int) prev_block_row[1][0];
@@ -675,14 +675,14 @@ decompress_smooth_data (LJPEG9_j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_d_coef_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full_buffer)
+LJPEG9_jinit_d_coef_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full_buffer)
 {
   my_coef_ptr coef;
 
   coef = (my_coef_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_coef_controller));
-  cinfo->coef = (struct jpeg_d_coef_controller *) coef;
+  cinfo->coef = (struct LJPEG9_jpeg_d_coef_controller *) coef;
   coef->pub.start_input_pass = start_input_pass;
   coef->pub.start_output_pass = start_output_pass;
 #ifdef BLOCK_SMOOTHING_SUPPORTED
@@ -707,10 +707,10 @@ jinit_d_coef_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full_buffer
 	access_rows *= 3;
 #endif
       coef->whole_image[ci] = (*cinfo->mem->request_virt_barray)
-	((j_common_ptr) cinfo, JPOOL_IMAGE, TRUE,
-	 (LJPEG9_JDIMENSION) jround_up((long) compptr->width_in_blocks,
+	((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, TRUE,
+	 (LJPEG9_JDIMENSION) LJPEG9_LJPEG9_jRound_up((long) compptr->width_in_blocks,
 				(long) compptr->h_samp_factor),
-	 (LJPEG9_JDIMENSION) jround_up((long) compptr->height_in_blocks,
+	 (LJPEG9_JDIMENSION) LJPEG9_LJPEG9_jRound_up((long) compptr->height_in_blocks,
 				(long) compptr->v_samp_factor),
 	 (LJPEG9_JDIMENSION) access_rows);
     }
@@ -726,7 +726,7 @@ jinit_d_coef_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full_buffer
     int i;
 
     buffer = (JBLOCKROW)
-      (*cinfo->mem->alloc_large) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_large) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  D_MAX_BLOCKS_IN_MCU * SIZEOF(JBLOCK));
     for (i = 0; i < D_MAX_BLOCKS_IN_MCU; i++) {
       coef->MCU_buffer[i] = buffer + i;

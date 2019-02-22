@@ -113,7 +113,7 @@
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpeg_d_main_controller pub; /* public fields */
+  struct LJPEG9_jpeg_d_main_controller pub; /* public fields */
 
   /* Pointer to allocated workspace (M or M+2 row groups). */
   LJPEG9_JSAMPARRAY buffer[MAX_COMPONENTS];
@@ -170,7 +170,7 @@ alloc_funny_pointers (LJPEG9_j_decompress_ptr cinfo)
    * We alloc both arrays with one call to save a few cycles.
    */
   mainp->xbuffer[0] = (JSAMPIMAGE)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				cinfo->num_components * 2 * SIZEOF(LJPEG9_JSAMPARRAY));
   mainp->xbuffer[1] = mainp->xbuffer[0] + cinfo->num_components;
 
@@ -182,7 +182,7 @@ alloc_funny_pointers (LJPEG9_j_decompress_ptr cinfo)
      * We alloc both pointer lists with one call to save a few cycles.
      */
     xbuf = (LJPEG9_JSAMPARRAY)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  2 * (rgroup * (M + 4)) * SIZEOF(JSAMPROW));
     xbuf += rgroup;		/* want one row group at negative offsets */
     mainp->xbuffer[0][ci] = xbuf;
@@ -305,12 +305,12 @@ set_bottom_pointers (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_main (LJPEG9_j_decompress_ptr cinfo, J_BUF_MODE pass_mode)
+start_pass_main (LJPEG9_j_decompress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_main_ptr mainp = (my_main_ptr) cinfo->main;
 
   switch (pass_mode) {
-  case JBUF_PASS_THRU:
+  case LJPEG9_JBUF_PASS_THRU:
     if (cinfo->upsample->need_context_rows) {
       mainp->pub.process_data = process_data_context_main;
       make_funny_pointers(cinfo); /* Create the xbuffer[] lists */
@@ -325,7 +325,7 @@ start_pass_main (LJPEG9_j_decompress_ptr cinfo, J_BUF_MODE pass_mode)
     mainp->rowgroup_ctr = 0;
     break;
 #ifdef QUANT_2PASS_SUPPORTED
-  case JBUF_CRANK_DEST:
+  case LJPEG9_JBUF_CRANK_DEST:
     /* For last pass of 2-pass quantization, just crank the postprocessor */
     mainp->pub.process_data = process_data_crank_post;
     break;
@@ -474,14 +474,14 @@ process_data_crank_post (LJPEG9_j_decompress_ptr cinfo,
  */
 
 LJPEG9_GLOBAL(void)
-jinit_d_main_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full_buffer)
+LJPEG9_jinit_d_main_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full_buffer)
 {
   my_main_ptr mainp;
   int ci, rgroup, ngroups;
   jpeg_component_info *compptr;
 
   mainp = (my_main_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_main_controller));
   cinfo->main = &mainp->pub;
   mainp->pub.start_pass = start_pass_main;
@@ -506,7 +506,7 @@ jinit_d_main_controller (LJPEG9_j_decompress_ptr cinfo, boolean need_full_buffer
     rgroup = (compptr->v_samp_factor * compptr->DCT_v_scaled_size) /
       cinfo->min_DCT_v_scaled_size; /* height of a row group of component */
     mainp->buffer[ci] = (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        compptr->width_in_blocks * ((LJPEG9_JDIMENSION) compptr->DCT_h_scaled_size),
        (LJPEG9_JDIMENSION) (rgroup * ngroups));
   }

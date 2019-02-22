@@ -51,7 +51,7 @@
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpeg_c_prep_controller pub; /* public fields */
+  struct LJPEG9_jpeg_c_prep_controller pub; /* public fields */
 
   /* Downsampling input buffer.  This buffer holds color-converted data
    * until we have enough to do a downsample step.
@@ -75,11 +75,11 @@ typedef my_prep_controller * my_prep_ptr;
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_prep (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
+start_pass_prep (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_prep_ptr prep = (my_prep_ptr) cinfo->prep;
 
-  if (pass_mode != JBUF_PASS_THRU)
+  if (pass_mode != LJPEG9_JBUF_PASS_THRU)
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 
   /* Initialize total-height counter for detecting bottom of image */
@@ -109,7 +109,7 @@ expand_bottom_edge (LJPEG9_JSAMPARRAY image_data, LJPEG9_JDIMENSION num_cols,
   register int row;
 
   for (row = input_rows; row < output_rows; row++) {
-    jcopy_sample_rows(image_data, input_rows-1, image_data, row,
+    LJPEG9_jcopy_sample_rows(image_data, input_rows-1, image_data, row,
 		      1, num_cols);
   }
 }
@@ -220,7 +220,7 @@ pre_process_context (j_compress_ptr cinfo,
 	for (ci = 0; ci < cinfo->num_components; ci++) {
 	  int row;
 	  for (row = 1; row <= cinfo->max_v_samp_factor; row++) {
-	    jcopy_sample_rows(prep->color_buf[ci], 0,
+	    LJPEG9_jcopy_sample_rows(prep->color_buf[ci], 0,
 			      prep->color_buf[ci], -row,
 			      1, cinfo->image_width);
 	  }
@@ -278,7 +278,7 @@ create_context_buffer (j_compress_ptr cinfo)
    * we need five row groups' worth of pointers for each component.
    */
   fake_buffer = (LJPEG9_JSAMPARRAY)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				(cinfo->num_components * 5 * rgroup_height) *
 				SIZEOF(JSAMPROW));
 
@@ -289,7 +289,7 @@ create_context_buffer (j_compress_ptr cinfo)
      * horizontally within the buffer, if it so chooses.
      */
     true_buffer = (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        (LJPEG9_JDIMENSION) (((long) compptr->width_in_blocks *
 		      cinfo->min_DCT_h_scaled_size *
 		      cinfo->max_h_samp_factor) / compptr->h_samp_factor),
@@ -315,7 +315,7 @@ create_context_buffer (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+LJPEG9_jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_prep_ptr prep;
   int ci;
@@ -325,9 +325,9 @@ jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 
   prep = (my_prep_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_prep_controller));
-  cinfo->prep = (struct jpeg_c_prep_controller *) prep;
+  cinfo->prep = (struct LJPEG9_jpeg_c_prep_controller *) prep;
   prep->pub.start_pass = start_pass_prep;
 
   /* Allocate the color conversion buffer.
@@ -348,7 +348,7 @@ jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	 ci++, compptr++) {
       prep->color_buf[ci] = (*cinfo->mem->alloc_sarray)
-	((j_common_ptr) cinfo, JPOOL_IMAGE,
+	((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 	 (LJPEG9_JDIMENSION) (((long) compptr->width_in_blocks *
 			cinfo->min_DCT_h_scaled_size *
 			cinfo->max_h_samp_factor) / compptr->h_samp_factor),

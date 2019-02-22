@@ -463,7 +463,7 @@ main (int argc, char **argv)
 
   /* Now safe to enable signal catcher. */
 #ifdef LJPEG9_NEED_SIGNAL_CATCHER
-  LJPEG9_enable_signal_catcher((j_common_ptr) &cinfo);
+  LJPEG9_enable_signal_catcher((LJPEG9_j_common_ptr) &cinfo);
 #endif
 
   /* Scan command line to find file names. */
@@ -523,7 +523,7 @@ main (int argc, char **argv)
   }
 
 #ifdef LJPEG9_PROGRESS_REPORT
-  LJPEG9_start_progress_monitor((j_common_ptr) &cinfo, &progress);
+  LJPEG9_start_progress_monitor((LJPEG9_j_common_ptr) &cinfo, &progress);
 #endif
 
   /* Specify data source for decompression */
@@ -608,7 +608,7 @@ main (int argc, char **argv)
     fclose(output_file);
 
 #ifdef LJPEG9_PROGRESS_REPORT
-  LJPEG9_end_progress_monitor((j_common_ptr) &cinfo);
+  LJPEG9_end_progress_monitor((LJPEG9_j_common_ptr) &cinfo);
 #endif
 
   /* All done. */

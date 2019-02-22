@@ -944,20 +944,20 @@ jdatadst.c don't work if you open a file in your application and then pass
 the pointer to the DLL.  One workaround is to make jdatasrc.c/jdatadst.c
 part of your main application rather than part of the DLL.
 
-  3. You'll probably need to modify the macros LJPEG9_GLOBAL() and EXTERN() to
+  3. You'll probably need to modify the macros LJPEG9_GLOBAL() and LJPEG9_EXTERN() to
 attach suitable linkage keywords to the exported routine names.  Similarly,
 you'll want to modify LJPEG9_METHODDEF() and LJPEG9_JMETHOD() to ensure function pointers
 are declared in a way that lets application routines be called back through
 the function pointers.  These macros are in jmorecfg.h.  Typical definitions
 for a 16-bit DLL are:
 	#define LJPEG9_GLOBAL(type)		type _far _pascal _loadds _export
-	#define EXTERN(type)		extern type _far _pascal _loadds
+	#define LJPEG9_EXTERN(type)		extern type _far _pascal _loadds
 	#define LJPEG9_METHODDEF(type)		static type _far _pascal
 	#define LJPEG9_JMETHOD(type,methodname,arglist)  \
 		type (_far _pascal *methodname) arglist
 For a 32-bit DLL you may want something like
 	#define LJPEG9_GLOBAL(type)		__declspec(dllexport) type
-	#define EXTERN(type)		extern __declspec(dllexport) type
+	#define LJPEG9_EXTERN(type)		extern __declspec(dllexport) type
 Although not all the LJPEG9_GLOBAL routines are actually intended to be called by
 the application, the performance cost of making them all DLL entry points is
 negligible.

@@ -21,7 +21,7 @@
 /* Private subobject for this module */
 
 typedef struct {
-  struct jpeg_forward_dct pub;	/* public fields */
+  struct LJPEG9_jpeg_forward_dct pub;	/* public fields */
 
   /* Pointer to the DCT routine actually in use */
   forward_DCT_method_ptr do_dct[MAX_COMPONENTS];
@@ -201,127 +201,127 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
     switch ((compptr->DCT_h_scaled_size << 8) + compptr->DCT_v_scaled_size) {
 #ifdef DCT_SCALING_SUPPORTED
     case ((1 << 8) + 1):
-      fdct->do_dct[ci] = jpeg_fdct_1x1;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_1x1;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((2 << 8) + 2):
-      fdct->do_dct[ci] = jpeg_fdct_2x2;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_2x2;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((3 << 8) + 3):
-      fdct->do_dct[ci] = jpeg_fdct_3x3;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_3x3;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((4 << 8) + 4):
-      fdct->do_dct[ci] = jpeg_fdct_4x4;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_4x4;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((5 << 8) + 5):
-      fdct->do_dct[ci] = jpeg_fdct_5x5;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_5x5;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((6 << 8) + 6):
-      fdct->do_dct[ci] = jpeg_fdct_6x6;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_6x6;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((7 << 8) + 7):
-      fdct->do_dct[ci] = jpeg_fdct_7x7;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_7x7;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((9 << 8) + 9):
-      fdct->do_dct[ci] = jpeg_fdct_9x9;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_9x9;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((10 << 8) + 10):
-      fdct->do_dct[ci] = jpeg_fdct_10x10;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_10x10;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((11 << 8) + 11):
-      fdct->do_dct[ci] = jpeg_fdct_11x11;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_11x11;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((12 << 8) + 12):
-      fdct->do_dct[ci] = jpeg_fdct_12x12;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_12x12;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((13 << 8) + 13):
-      fdct->do_dct[ci] = jpeg_fdct_13x13;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_13x13;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((14 << 8) + 14):
-      fdct->do_dct[ci] = jpeg_fdct_14x14;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_14x14;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((15 << 8) + 15):
-      fdct->do_dct[ci] = jpeg_fdct_15x15;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_15x15;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((16 << 8) + 16):
-      fdct->do_dct[ci] = jpeg_fdct_16x16;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_16x16;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((16 << 8) + 8):
-      fdct->do_dct[ci] = jpeg_fdct_16x8;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_16x8;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((14 << 8) + 7):
-      fdct->do_dct[ci] = jpeg_fdct_14x7;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_14x7;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((12 << 8) + 6):
-      fdct->do_dct[ci] = jpeg_fdct_12x6;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_12x6;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((10 << 8) + 5):
-      fdct->do_dct[ci] = jpeg_fdct_10x5;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_10x5;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((8 << 8) + 4):
-      fdct->do_dct[ci] = jpeg_fdct_8x4;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_8x4;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((6 << 8) + 3):
-      fdct->do_dct[ci] = jpeg_fdct_6x3;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_6x3;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((4 << 8) + 2):
-      fdct->do_dct[ci] = jpeg_fdct_4x2;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_4x2;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((2 << 8) + 1):
-      fdct->do_dct[ci] = jpeg_fdct_2x1;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_2x1;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((8 << 8) + 16):
-      fdct->do_dct[ci] = jpeg_fdct_8x16;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_8x16;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((7 << 8) + 14):
-      fdct->do_dct[ci] = jpeg_fdct_7x14;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_7x14;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((6 << 8) + 12):
-      fdct->do_dct[ci] = jpeg_fdct_6x12;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_6x12;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((5 << 8) + 10):
-      fdct->do_dct[ci] = jpeg_fdct_5x10;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_5x10;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((4 << 8) + 8):
-      fdct->do_dct[ci] = jpeg_fdct_4x8;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_4x8;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((3 << 8) + 6):
-      fdct->do_dct[ci] = jpeg_fdct_3x6;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_3x6;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((2 << 8) + 4):
-      fdct->do_dct[ci] = jpeg_fdct_2x4;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_2x4;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
     case ((1 << 8) + 2):
-      fdct->do_dct[ci] = jpeg_fdct_1x2;
+      fdct->do_dct[ci] = LJPEG9_jpeg_fdct_1x2;
       method = JDCT_ISLOW;	/* jfdctint uses islow-style table */
       break;
 #endif
@@ -329,19 +329,19 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
       switch (cinfo->dct_method) {
 #ifdef DCT_ISLOW_SUPPORTED
       case JDCT_ISLOW:
-	fdct->do_dct[ci] = jpeg_fdct_islow;
+	fdct->do_dct[ci] = LJPEG9_jpeg_fdct_islow;
 	method = JDCT_ISLOW;
 	break;
 #endif
 #ifdef DCT_IFAST_SUPPORTED
       case JDCT_IFAST:
-	fdct->do_dct[ci] = jpeg_fdct_ifast;
+	fdct->do_dct[ci] = LJPEG9_jpeg_fdct_ifast;
 	method = JDCT_IFAST;
 	break;
 #endif
 #ifdef DCT_FLOAT_SUPPORTED
       case JDCT_FLOAT:
-	fdct->do_float_dct[ci] = jpeg_fdct_float;
+	fdct->do_float_dct[ci] = LJPEG9_jpeg_fdct_float;
 	method = JDCT_FLOAT;
 	break;
 #endif
@@ -455,14 +455,14 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_forward_dct (j_compress_ptr cinfo)
+LJPEG9_jinit_forward_dct (j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct;
   int ci;
   jpeg_component_info *compptr;
 
   fdct = (my_fdct_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_fdct_controller));
   cinfo->fdct = &fdct->pub;
   fdct->pub.start_pass = start_pass_fdctmgr;
@@ -471,7 +471,7 @@ jinit_forward_dct (j_compress_ptr cinfo)
        ci++, compptr++) {
     /* Allocate a divisor table for each component */
     compptr->dct_table =
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(divisor_table));
   }
 }

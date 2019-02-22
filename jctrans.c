@@ -38,18 +38,18 @@ LOCAL(void) transencode_coef_controller
 LJPEG9_GLOBAL(void)
 jpeg_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
 {
-  if (cinfo->global_state != CSTATE_START)
+  if (cinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Mark all tables to be written */
   jpeg_suppress_tables(cinfo, FALSE);
   /* (Re)initialize error mgr and destination modules */
-  (*cinfo->err->reset_error_mgr) ((j_common_ptr) cinfo);
+  (*cinfo->err->reset_error_mgr) ((LJPEG9_j_common_ptr) cinfo);
   (*cinfo->dest->init_destination) (cinfo);
   /* Perform master selection of active modules */
   transencode_master_selection(cinfo, coef_arrays);
   /* Wait for jpeg_finish_compress() call */
   cinfo->next_scanline = 0;	/* so jpeg_write_marker works */
-  cinfo->global_state = CSTATE_WRCOEFS;
+  cinfo->global_state = LJPEG9_CSTATE_WRCOEFS;
 }
 
 
@@ -70,7 +70,7 @@ jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
   int tblno, ci, coefi;
 
   /* Safety check to ensure start_compress not called yet. */
-  if (dstinfo->global_state != CSTATE_START)
+  if (dstinfo->global_state != LJPEG9_CSTATE_START)
     ERREXIT1(dstinfo, JERR_BAD_STATE, dstinfo->global_state);
   /* Copy fundamental image dimensions */
   dstinfo->image_width = srcinfo->image_width;
@@ -97,7 +97,7 @@ jpeg_copy_critical_parameters (LJPEG9_j_decompress_ptr srcinfo,
     if (srcinfo->quant_tbl_ptrs[tblno] != NULL) {
       qtblptr = & dstinfo->quant_tbl_ptrs[tblno];
       if (*qtblptr == NULL)
-	*qtblptr = jpeg_alloc_quant_table((j_common_ptr) dstinfo);
+	*qtblptr = jpeg_alloc_quant_table((LJPEG9_j_common_ptr) dstinfo);
       MEMCOPY((*qtblptr)->quantval,
 	      srcinfo->quant_tbl_ptrs[tblno]->quantval,
 	      SIZEOF((*qtblptr)->quantval));
@@ -167,22 +167,22 @@ transencode_master_selection (j_compress_ptr cinfo,
 			      jvirt_barray_ptr * coef_arrays)
 {
   /* Initialize master control (includes parameter checking/processing) */
-  jinit_c_master_control(cinfo, TRUE /* transcode only */);
+  LJPEG9_jinit_c_master_control(cinfo, TRUE /* transcode only */);
 
   /* Entropy encoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code)
-    jinit_arith_encoder(cinfo);
+    LJPEG9_jinit_arith_encoder(cinfo);
   else {
-    jinit_huff_encoder(cinfo);
+    LJPEG9_jinit_huff_encoder(cinfo);
   }
 
   /* We need a special coefficient buffer controller. */
   transencode_coef_controller(cinfo, coef_arrays);
 
-  jinit_marker_writer(cinfo);
+  LJPEG9_jinit_marker_writer(cinfo);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
-  (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
+  (*cinfo->mem->realize_virt_arrays) ((LJPEG9_j_common_ptr) cinfo);
 
   /* Write the datastream header (SOI, JFIF) immediately.
    * Frame and scan headers are postponed till later.
@@ -203,7 +203,7 @@ transencode_master_selection (j_compress_ptr cinfo,
 /* Private buffer controller object */
 
 typedef struct {
-  struct jpeg_c_coef_controller pub; /* public fields */
+  struct LJPEG9_jpeg_c_coef_controller pub; /* public fields */
 
   LJPEG9_JDIMENSION iMCU_row_num;	/* iMCU row # within image */
   LJPEG9_JDIMENSION mcu_ctr;		/* counts MCUs processed in current row */
@@ -249,11 +249,11 @@ start_iMCU_row (j_compress_ptr cinfo)
  */
 
 LJPEG9_METHODDEF(void)
-start_pass_coef (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
+start_pass_coef (j_compress_ptr cinfo, LJPEG9_J_BUF_MODE pass_mode)
 {
   my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
 
-  if (pass_mode != JBUF_CRANK_DEST)
+  if (pass_mode != LJPEG9_JBUF_CRANK_DEST)
     ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);
 
   coef->iMCU_row_num = 0;
@@ -289,7 +289,7 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
   for (ci = 0; ci < cinfo->comps_in_scan; ci++) {
     compptr = cinfo->cur_comp_info[ci];
     buffer[ci] = (*cinfo->mem->access_virt_barray)
-      ((j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
+      ((LJPEG9_j_common_ptr) cinfo, coef->whole_image[compptr->component_index],
        coef->iMCU_row_num * compptr->v_samp_factor,
        (LJPEG9_JDIMENSION) compptr->v_samp_factor, FALSE);
   }
@@ -365,7 +365,7 @@ transencode_coef_controller (j_compress_ptr cinfo,
   int i;
 
   coef = (my_coef_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_coef_controller));
   cinfo->coef = &coef->pub;
   coef->pub.start_pass = start_pass_coef;
@@ -376,7 +376,7 @@ transencode_coef_controller (j_compress_ptr cinfo,
 
   /* Allocate and pre-zero space for dummy DCT blocks. */
   buffer = (JBLOCKROW)
-    (*cinfo->mem->alloc_large) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_large) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				C_MAX_BLOCKS_IN_MCU * SIZEOF(JBLOCK));
   FMEMZERO((void FAR *) buffer, C_MAX_BLOCKS_IN_MCU * SIZEOF(JBLOCK));
   for (i = 0; i < C_MAX_BLOCKS_IN_MCU; i++) {

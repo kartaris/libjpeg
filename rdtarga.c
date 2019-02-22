@@ -105,7 +105,7 @@ read_colormap (tga_source_ptr sinfo, int cmaplen, int mapentrysize)
 
   /* Presently only handles 24-bit BGR format */
   if (mapentrysize != 24)
-    ERREXIT(sinfo->cinfo, JERR_TGA_BADCMAP);
+    ERREXIT(sinfo->cinfo, LJPEG9_JERR_TGA_BADCMAP);
 
   for (i = 0; i < cmaplen; i++) {
     sinfo->colormap[2][i] = (JSAMPLE) read_byte(sinfo);
@@ -282,7 +282,7 @@ get_memory_row (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
   /* Fetch that row from virtual array */
   source->pub.buffer = (*cinfo->mem->access_virt_sarray)
-    ((j_common_ptr) cinfo, source->whole_image,
+    ((LJPEG9_j_common_ptr) cinfo, source->whole_image,
      source_row, (LJPEG9_JDIMENSION) 1, FALSE);
 
   source->current_row++;
@@ -308,10 +308,10 @@ preload_image (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     if (progress != NULL) {
       progress->pub.pass_counter = (long) row;
       progress->pub.pass_limit = (long) cinfo->image_height;
-      (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+      (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
     }
     source->pub.buffer = (*cinfo->mem->access_virt_sarray)
-      ((j_common_ptr) cinfo, source->whole_image, row, (LJPEG9_JDIMENSION) 1, TRUE);
+      ((LJPEG9_j_common_ptr) cinfo, source->whole_image, row, (LJPEG9_JDIMENSION) 1, TRUE);
     (*source->get_pixel_rows) (cinfo, sinfo);
   }
   if (progress != NULL)
@@ -364,7 +364,7 @@ start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
       source->pixel_size < 1 || source->pixel_size > 4 ||
       (UCH(targaheader[16]) & 7) != 0 || /* bits/pixel must be multiple of 8 */
       interlace_type != 0)	/* currently don't allow interlaced image */
-    ERREXIT(cinfo, JERR_TGA_BADPARMS);
+    ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
   
   if (subtype > 8) {
     /* It's an RLE-coded file */
@@ -385,8 +385,8 @@ start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     if (source->pixel_size == 1 && cmaptype == 1)
       source->get_pixel_rows = get_8bit_row;
     else
-      ERREXIT(cinfo, JERR_TGA_BADPARMS);
-    TRACEMS2(cinfo, 1, JTRC_TGA_MAPPED, width, height);
+      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_TGA_MAPPED, width, height);
     break;
   case 2:			/* RGB image */
     switch (source->pixel_size) {
@@ -400,10 +400,10 @@ start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
       source->get_pixel_rows = get_32bit_row;
       break;
     default:
-      ERREXIT(cinfo, JERR_TGA_BADPARMS);
+      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
       break;
     }
-    TRACEMS2(cinfo, 1, JTRC_TGA, width, height);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_TGA, width, height);
     break;
   case 3:			/* Grayscale image */
     components = 1;
@@ -411,18 +411,18 @@ start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     if (source->pixel_size == 1)
       source->get_pixel_rows = get_8bit_gray_row;
     else
-      ERREXIT(cinfo, JERR_TGA_BADPARMS);
-    TRACEMS2(cinfo, 1, JTRC_TGA_GRAY, width, height);
+      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
+    TRACEMS2(cinfo, 1, LJPEG9_JTRC_TGA_GRAY, width, height);
     break;
   default:
-    ERREXIT(cinfo, JERR_TGA_BADPARMS);
+    ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
     break;
   }
 
   if (is_bottom_up) {
     /* Create a virtual array to buffer the upside-down image. */
     source->whole_image = (*cinfo->mem->request_virt_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
        (LJPEG9_JDIMENSION) width * components, (LJPEG9_JDIMENSION) height, (LJPEG9_JDIMENSION) 1);
     if (cinfo->progress != NULL) {
       LJPEG9_cd_progress_ptr progress = (LJPEG9_cd_progress_ptr) cinfo->progress;
@@ -435,7 +435,7 @@ start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
     /* Don't need a virtual array, but do need a one-row input buffer. */
     source->whole_image = NULL;
     source->pub.buffer = (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
        (LJPEG9_JDIMENSION) width * components, (LJPEG9_JDIMENSION) 1);
     source->pub.buffer_height = 1;
     source->pub.get_pixel_rows = source->get_pixel_rows;
@@ -446,15 +446,15 @@ start_input_tga (j_compress_ptr cinfo, LJPEG9_cjpeg_source_ptr sinfo)
 
   if (maplen > 0) {
     if (maplen > 256 || GET_2B(3) != 0)
-      ERREXIT(cinfo, JERR_TGA_BADCMAP);
+      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADCMAP);
     /* Allocate space to store the colormap */
     source->colormap = (*cinfo->mem->alloc_sarray)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE, (LJPEG9_JDIMENSION) maplen, (LJPEG9_JDIMENSION) 3);
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, (LJPEG9_JDIMENSION) maplen, (LJPEG9_JDIMENSION) 3);
     /* and read it from the file */
     read_colormap(source, (int) maplen, UCH(targaheader[7]));
   } else {
     if (cmaptype)		/* but you promised a cmap! */
-      ERREXIT(cinfo, JERR_TGA_BADPARMS);
+      ERREXIT(cinfo, LJPEG9_JERR_TGA_BADPARMS);
     source->colormap = NULL;
   }
 
@@ -487,7 +487,7 @@ LJPEG9_jinit_read_targa (j_compress_ptr cinfo)
 
   /* Create module interface object */
   source = (tga_source_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(tga_source_struct));
   source->cinfo = cinfo;	/* make back link for subroutines */
   /* Fill in method ptrs, except get_pixel_rows which start_input sets */

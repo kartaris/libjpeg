@@ -220,7 +220,7 @@ typedef struct {
 
 
 typedef struct {
-  struct jpeg_entropy_decoder pub; /* public fields */
+  struct LJPEG9_jpeg_entropy_decoder pub; /* public fields */
 
   /* These fields are loaded into local variables at start of each MCU.
    * In case of suspension, we exit WITHOUT updating them.
@@ -257,7 +257,7 @@ typedef struct {
 typedef huff_entropy_decoder * huff_entropy_ptr;
 
 
-static const int jpeg_zigzag_order[8][8] = {
+static const int LJPEG9_jpeg_zigzag_order[8][8] = {
   {  0,  1,  5,  6, 14, 15, 27, 28 },
   {  2,  4,  7, 13, 16, 26, 29, 42 },
   {  3,  8, 12, 17, 25, 30, 41, 43 },
@@ -268,7 +268,7 @@ static const int jpeg_zigzag_order[8][8] = {
   { 35, 36, 48, 49, 57, 58, 62, 63 }
 };
 
-static const int jpeg_zigzag_order7[7][7] = {
+static const int LJPEG9_jpeg_zigzag_order7[7][7] = {
   {  0,  1,  5,  6, 14, 15, 27 },
   {  2,  4,  7, 13, 16, 26, 28 },
   {  3,  8, 12, 17, 25, 29, 38 },
@@ -278,7 +278,7 @@ static const int jpeg_zigzag_order7[7][7] = {
   { 21, 33, 34, 42, 43, 47, 48 }
 };
 
-static const int jpeg_zigzag_order6[6][6] = {
+static const int LJPEG9_jpeg_zigzag_order6[6][6] = {
   {  0,  1,  5,  6, 14, 15 },
   {  2,  4,  7, 13, 16, 25 },
   {  3,  8, 12, 17, 24, 26 },
@@ -287,7 +287,7 @@ static const int jpeg_zigzag_order6[6][6] = {
   { 20, 21, 29, 30, 34, 35 }
 };
 
-static const int jpeg_zigzag_order5[5][5] = {
+static const int LJPEG9_jpeg_zigzag_order5[5][5] = {
   {  0,  1,  5,  6, 14 },
   {  2,  4,  7, 13, 15 },
   {  3,  8, 12, 16, 21 },
@@ -295,20 +295,20 @@ static const int jpeg_zigzag_order5[5][5] = {
   { 10, 18, 19, 23, 24 }
 };
 
-static const int jpeg_zigzag_order4[4][4] = {
+static const int LJPEG9_jpeg_zigzag_order4[4][4] = {
   { 0,  1,  5,  6 },
   { 2,  4,  7, 12 },
   { 3,  8, 11, 13 },
   { 9, 10, 14, 15 }
 };
 
-static const int jpeg_zigzag_order3[3][3] = {
+static const int LJPEG9_jpeg_zigzag_order3[3][3] = {
   { 0, 1, 5 },
   { 2, 4, 6 },
   { 3, 7, 8 }
 };
 
-static const int jpeg_zigzag_order2[2][2] = {
+static const int LJPEG9_jpeg_zigzag_order2[2][2] = {
   { 0, 1 },
   { 2, 3 }
 };
@@ -346,7 +346,7 @@ jpeg_make_d_derived_tbl (LJPEG9_j_decompress_ptr cinfo, boolean isDC, int tblno,
   /* Allocate a workspace if we haven't already done so. */
   if (*pdtbl == NULL)
     *pdtbl = (d_derived_tbl *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(d_derived_tbl));
   dtbl = *pdtbl;
   dtbl->pub = htbl;		/* fill in back link */
@@ -754,7 +754,7 @@ decode_mcu_DC_first (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
       /* Convert DC difference to actual value, update last_dc_val */
       s += state.last_dc_val[ci];
       state.last_dc_val[ci] = s;
-      /* Scale and output the coefficient (assumes jpeg_natural_order[0]=0) */
+      /* Scale and output the coefficient (assumes LJPEG9_jpeg_natural_order[0]=0) */
       (*block)[0] = (JCOEF) (s << Al);
     }
 
@@ -1263,10 +1263,10 @@ decode_mcu (LJPEG9_j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	    r = GET_BITS(s);
 	    s = HUFF_EXTEND(r, s);
 	    /* Output coefficient in natural (dezigzagged) order.
-	     * Note: the extra entries in jpeg_natural_order[] will save us
+	     * Note: the extra entries in LJPEG9_jpeg_natural_order[] will save us
 	     * if k >= DCTSIZE2, which could happen if the data is corrupted.
 	     */
-	    (*block)[jpeg_natural_order[k]] = (JCOEF) s;
+	    (*block)[LJPEG9_jpeg_natural_order[k]] = (JCOEF) s;
 	  } else {
 	    if (r != 15)
 	      goto EndOfBlock;
@@ -1464,37 +1464,37 @@ start_pass_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
 	case (2*2-1):
 	  if (ci <= 0 || ci > 2) ci = 2;
 	  if (i <= 0 || i > 2) i = 2;
-	  entropy->coef_limit[blkn] = 1 + jpeg_zigzag_order2[ci - 1][i - 1];
+	  entropy->coef_limit[blkn] = 1 + LJPEG9_jpeg_zigzag_order2[ci - 1][i - 1];
 	  break;
 	case (3*3-1):
 	  if (ci <= 0 || ci > 3) ci = 3;
 	  if (i <= 0 || i > 3) i = 3;
-	  entropy->coef_limit[blkn] = 1 + jpeg_zigzag_order3[ci - 1][i - 1];
+	  entropy->coef_limit[blkn] = 1 + LJPEG9_jpeg_zigzag_order3[ci - 1][i - 1];
 	  break;
 	case (4*4-1):
 	  if (ci <= 0 || ci > 4) ci = 4;
 	  if (i <= 0 || i > 4) i = 4;
-	  entropy->coef_limit[blkn] = 1 + jpeg_zigzag_order4[ci - 1][i - 1];
+	  entropy->coef_limit[blkn] = 1 + LJPEG9_jpeg_zigzag_order4[ci - 1][i - 1];
 	  break;
 	case (5*5-1):
 	  if (ci <= 0 || ci > 5) ci = 5;
 	  if (i <= 0 || i > 5) i = 5;
-	  entropy->coef_limit[blkn] = 1 + jpeg_zigzag_order5[ci - 1][i - 1];
+	  entropy->coef_limit[blkn] = 1 + LJPEG9_jpeg_zigzag_order5[ci - 1][i - 1];
 	  break;
 	case (6*6-1):
 	  if (ci <= 0 || ci > 6) ci = 6;
 	  if (i <= 0 || i > 6) i = 6;
-	  entropy->coef_limit[blkn] = 1 + jpeg_zigzag_order6[ci - 1][i - 1];
+	  entropy->coef_limit[blkn] = 1 + LJPEG9_jpeg_zigzag_order6[ci - 1][i - 1];
 	  break;
 	case (7*7-1):
 	  if (ci <= 0 || ci > 7) ci = 7;
 	  if (i <= 0 || i > 7) i = 7;
-	  entropy->coef_limit[blkn] = 1 + jpeg_zigzag_order7[ci - 1][i - 1];
+	  entropy->coef_limit[blkn] = 1 + LJPEG9_jpeg_zigzag_order7[ci - 1][i - 1];
 	  break;
 	default:
 	  if (ci <= 0 || ci > 8) ci = 8;
 	  if (i <= 0 || i > 8) i = 8;
-	  entropy->coef_limit[blkn] = 1 + jpeg_zigzag_order[ci - 1][i - 1];
+	  entropy->coef_limit[blkn] = 1 + LJPEG9_jpeg_zigzag_order[ci - 1][i - 1];
 	  break;
 	}
       } else {
@@ -1518,13 +1518,13 @@ start_pass_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy;
   int i;
 
   entropy = (huff_entropy_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(huff_entropy_decoder));
   cinfo->entropy = &entropy->pub;
   entropy->pub.start_pass = start_pass_huff_decoder;
@@ -1534,7 +1534,7 @@ jinit_huff_decoder (LJPEG9_j_decompress_ptr cinfo)
     /* Create progression status table */
     int *coef_bit_ptr, ci;
     cinfo->coef_bits = (int (*)[DCTSIZE2])
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  cinfo->num_components*DCTSIZE2*SIZEOF(int));
     coef_bit_ptr = & cinfo->coef_bits[0][0];
     for (ci = 0; ci < cinfo->num_components; ci++)

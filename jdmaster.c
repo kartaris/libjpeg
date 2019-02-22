@@ -20,7 +20,7 @@
 /* Private state */
 
 typedef struct {
-  struct jpeg_decomp_master pub; /* public fields */
+  struct LJPEG9_jpeg_decomp_master pub; /* public fields */
 
   int pass_number;		/* # of passes completed */
 
@@ -29,8 +29,8 @@ typedef struct {
   /* Saved references to initialized quantizer modules,
    * in case we need to switch modes.
    */
-  struct jpeg_color_quantizer * quantizer_1pass;
-  struct jpeg_color_quantizer * quantizer_2pass;
+  struct LJPEG9_jpeg_color_quantizer * quantizer_1pass;
+  struct LJPEG9_jpeg_color_quantizer * quantizer_2pass;
 } my_decomp_master;
 
 typedef my_decomp_master * my_master_ptr;
@@ -97,7 +97,7 @@ jpeg_calc_output_dimensions (LJPEG9_j_decompress_ptr cinfo)
 #endif
 
   /* Prevent application from calling me at wrong times */
-  if (cinfo->global_state != DSTATE_READY)
+  if (cinfo->global_state != LJPEG9_DSTATE_READY)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   /* Compute core output image dimensions and DCT scaling choices. */
@@ -141,11 +141,11 @@ jpeg_calc_output_dimensions (LJPEG9_j_decompress_ptr cinfo)
        ci++, compptr++) {
     /* Size in samples, after IDCT scaling */
     compptr->downsampled_width = (LJPEG9_JDIMENSION)
-      jdiv_round_up((long) cinfo->image_width *
+      LJPEG9_jdiv_round_up((long) cinfo->image_width *
 		    (long) (compptr->h_samp_factor * compptr->DCT_h_scaled_size),
 		    (long) (cinfo->max_h_samp_factor * cinfo->block_size));
     compptr->downsampled_height = (LJPEG9_JDIMENSION)
-      jdiv_round_up((long) cinfo->image_height *
+      LJPEG9_jdiv_round_up((long) cinfo->image_height *
 		    (long) (compptr->v_samp_factor * compptr->DCT_v_scaled_size),
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
   }
@@ -236,7 +236,7 @@ prepare_range_limit_table (LJPEG9_j_decompress_ptr cinfo)
   int i;
 
   table = (JSAMPLE *)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 		(5 * (MAXJSAMPLE+1) + CENTERJSAMPLE) * SIZEOF(JSAMPLE));
   table += (MAXJSAMPLE+1);	/* allow negative subscripts of simple table */
   cinfo->sample_range_limit = table;
@@ -327,7 +327,7 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
 
     if (cinfo->enable_1pass_quant) {
 #ifdef QUANT_1PASS_SUPPORTED
-      jinit_1pass_quantizer(cinfo);
+      LJPEG9_jinit_1pass_quantizer(cinfo);
       master->quantizer_1pass = cinfo->cquantize;
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -337,7 +337,7 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
     /* We use the 2-pass code to map to external colormaps. */
     if (cinfo->enable_2pass_quant || cinfo->enable_external_quant) {
 #ifdef QUANT_2PASS_SUPPORTED
-      jinit_2pass_quantizer(cinfo);
+      LJPEG9_jinit_2pass_quantizer(cinfo);
       master->quantizer_2pass = cinfo->cquantize;
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -352,34 +352,34 @@ master_selection (LJPEG9_j_decompress_ptr cinfo)
   if (! cinfo->raw_data_out) {
     if (master->using_merged_upsample) {
 #ifdef UPSAMPLE_MERGING_SUPPORTED
-      jinit_merged_upsampler(cinfo); /* does color conversion too */
+      LJPEG9_jinit_merged_upsampler(cinfo); /* does color conversion too */
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else {
-      jinit_color_deconverter(cinfo);
-      jinit_upsampler(cinfo);
+      LJPEG9_jinit_color_deconverter(cinfo);
+      LJPEG9_jinit_upsampler(cinfo);
     }
-    jinit_d_post_controller(cinfo, cinfo->enable_2pass_quant);
+    LJPEG9_jinit_d_post_controller(cinfo, cinfo->enable_2pass_quant);
   }
   /* Inverse DCT */
-  jinit_inverse_dct(cinfo);
+  LJPEG9_jinit_inverse_dct(cinfo);
   /* Entropy decoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code)
-    jinit_arith_decoder(cinfo);
+    LJPEG9_jinit_arith_decoder(cinfo);
   else {
-    jinit_huff_decoder(cinfo);
+    LJPEG9_jinit_huff_decoder(cinfo);
   }
 
   /* Initialize principal buffer controllers. */
   use_c_buffer = cinfo->inputctl->has_multiple_scans || cinfo->buffered_image;
-  jinit_d_coef_controller(cinfo, use_c_buffer);
+  LJPEG9_jinit_d_coef_controller(cinfo, use_c_buffer);
 
   if (! cinfo->raw_data_out)
-    jinit_d_main_controller(cinfo, FALSE /* never need full buffer here */);
+    LJPEG9_jinit_d_main_controller(cinfo, FALSE /* never need full buffer here */);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
-  (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
+  (*cinfo->mem->realize_virt_arrays) ((LJPEG9_j_common_ptr) cinfo);
 
   /* Initialize input side of decompressor to consume first scan. */
   (*cinfo->inputctl->start_input_pass) (cinfo);
@@ -430,8 +430,8 @@ prepare_for_output_pass (LJPEG9_j_decompress_ptr cinfo)
     /* Final pass of 2-pass quantization */
     master->pub.is_dummy_pass = FALSE;
     (*cinfo->cquantize->start_pass) (cinfo, FALSE);
-    (*cinfo->post->start_pass) (cinfo, JBUF_CRANK_DEST);
-    (*cinfo->main->start_pass) (cinfo, JBUF_CRANK_DEST);
+    (*cinfo->post->start_pass) (cinfo, LJPEG9_JBUF_CRANK_DEST);
+    (*cinfo->main->start_pass) (cinfo, LJPEG9_JBUF_CRANK_DEST);
 #else
     ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif /* QUANT_2PASS_SUPPORTED */
@@ -456,8 +456,8 @@ prepare_for_output_pass (LJPEG9_j_decompress_ptr cinfo)
       if (cinfo->quantize_colors)
 	(*cinfo->cquantize->start_pass) (cinfo, master->pub.is_dummy_pass);
       (*cinfo->post->start_pass) (cinfo,
-	    (master->pub.is_dummy_pass ? JBUF_SAVE_AND_PASS : JBUF_PASS_THRU));
-      (*cinfo->main->start_pass) (cinfo, JBUF_PASS_THRU);
+	    (master->pub.is_dummy_pass ? LJPEG9_JBUF_SAVE_AND_PASS : LJPEG9_JBUF_PASS_THRU));
+      (*cinfo->main->start_pass) (cinfo, LJPEG9_JBUF_PASS_THRU);
     }
   }
 
@@ -503,7 +503,7 @@ jpeg_new_colormap (LJPEG9_j_decompress_ptr cinfo)
   my_master_ptr master = (my_master_ptr) cinfo->master;
 
   /* Prevent application from calling me at wrong times */
-  if (cinfo->global_state != DSTATE_BUFIMAGE)
+  if (cinfo->global_state != LJPEG9_DSTATE_BUFIMAGE)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (cinfo->quantize_colors && cinfo->enable_external_quant &&
@@ -526,12 +526,12 @@ jpeg_new_colormap (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_master_decompress (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_master_decompress (LJPEG9_j_decompress_ptr cinfo)
 {
   my_master_ptr master;
 
   master = (my_master_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(my_decomp_master));
   cinfo->master = &master->pub;
   master->pub.prepare_for_output_pass = prepare_for_output_pass;

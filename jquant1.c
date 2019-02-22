@@ -141,7 +141,7 @@ typedef FSERROR FAR *FSERRPTR;	/* pointer to error array (in FAR storage!) */
 #define MAX_Q_COMPS 4		/* max components I can handle */
 
 typedef struct {
-  struct jpeg_color_quantizer pub; /* public fields */
+  struct LJPEG9_jpeg_color_quantizer pub; /* public fields */
 
   /* Initially allocated colormap is saved here */
   LJPEG9_JSAMPARRAY sv_colormap;	/* The color map as a 2-D pixel array */
@@ -294,7 +294,7 @@ create_colormap (LJPEG9_j_decompress_ptr cinfo)
   /* i.e. rightmost (highest-indexed) color changes most rapidly. */
 
   colormap = (*cinfo->mem->alloc_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
      (LJPEG9_JDIMENSION) total_colors, (LJPEG9_JDIMENSION) cinfo->out_color_components);
 
   /* blksize is number of adjacent repeated entries for a component */
@@ -351,7 +351,7 @@ create_colorindex (LJPEG9_j_decompress_ptr cinfo)
   }
 
   cquantize->colorindex = (*cinfo->mem->alloc_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
      (LJPEG9_JDIMENSION) (MAXJSAMPLE+1 + pad),
      (LJPEG9_JDIMENSION) cinfo->out_color_components);
 
@@ -401,7 +401,7 @@ make_odither_array (LJPEG9_j_decompress_ptr cinfo, int ncolors)
   INT32 num,den;
 
   odither = (ODITHER_MATRIX_PTR)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(ODITHER_MATRIX));
   /* The inter-value distance for this color is MAXJSAMPLE/(ncolors-1).
    * Hence the dither value for the matrix cell with fill order f
@@ -729,7 +729,7 @@ alloc_fs_workspace (LJPEG9_j_decompress_ptr cinfo)
   arraysize = (size_t) ((cinfo->output_width + 2) * SIZEOF(FSERROR));
   for (i = 0; i < cinfo->out_color_components; i++) {
     cquantize->fserrors[i] = (FSERRPTR)
-      (*cinfo->mem->alloc_large)((j_common_ptr) cinfo, JPOOL_IMAGE, arraysize);
+      (*cinfo->mem->alloc_large)((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, arraysize);
   }
 }
 
@@ -819,14 +819,14 @@ new_color_map_1_quant (LJPEG9_j_decompress_ptr cinfo)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_1pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
+LJPEG9_jinit_1pass_quantizer (LJPEG9_j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize;
 
   cquantize = (my_cquantize_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_cquantizer));
-  cinfo->cquantize = (struct jpeg_color_quantizer *) cquantize;
+  cinfo->cquantize = (struct LJPEG9_jpeg_color_quantizer *) cquantize;
   cquantize->pub.start_pass = start_pass_1_quant;
   cquantize->pub.finish_pass = finish_pass_1_quant;
   cquantize->pub.new_color_map = new_color_map_1_quant;

@@ -97,15 +97,15 @@ start_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
    */
 
   if (cinfo->output_width > 32767 || cinfo->output_height > 32767)
-    ERREXIT2(cinfo, JERR_RLE_DIMENSIONS, cinfo->output_width, 
+    ERREXIT2(cinfo, LJPEG9_JERR_RLE_DIMENSIONS, cinfo->output_width,
 	     cinfo->output_height);
 
   if (cinfo->out_color_space != JCS_GRAYSCALE &&
       cinfo->out_color_space != JCS_RGB)
-    ERREXIT(cinfo, JERR_RLE_COLORSPACE);
+    ERREXIT(cinfo, LJPEG9_JERR_RLE_COLORSPACE);
 
   if (cinfo->output_components != 1 && cinfo->output_components != 3)
-    ERREXIT1(cinfo, JERR_RLE_TOOMANYCHANNELS, cinfo->num_components);
+    ERREXIT1(cinfo, LJPEG9_JERR_RLE_TOOMANYCHANNELS, cinfo->num_components);
 
   /* Convert colormap, if any, to RLE format. */
 
@@ -115,7 +115,7 @@ start_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
     /* Allocate storage for RLE-style cmap, zero any extra entries */
     cmapsize = cinfo->out_color_components * CMAPLENGTH * SIZEOF(rle_map);
     dest->colormap = (rle_map *) (*cinfo->mem->alloc_small)
-      ((j_common_ptr) cinfo, JPOOL_IMAGE, cmapsize);
+      ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, cmapsize);
     MEMZERO(dest->colormap, cmapsize);
 
     /* Save away data in RLE format --- note 8-bit left shift! */
@@ -130,7 +130,7 @@ start_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 
   /* Set the output buffer to the first row */
   dest->pub.buffer = (*cinfo->mem->access_virt_sarray)
-    ((j_common_ptr) cinfo, dest->image, (LJPEG9_JDIMENSION) 0, (LJPEG9_JDIMENSION) 1, TRUE);
+    ((LJPEG9_j_common_ptr) cinfo, dest->image, (LJPEG9_JDIMENSION) 0, (LJPEG9_JDIMENSION) 1, TRUE);
   dest->pub.buffer_height = 1;
 
   dest->pub.put_pixel_rows = rle_put_pixel_rows;
@@ -157,7 +157,7 @@ rle_put_pixel_rows (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo,
 
   if (cinfo->output_scanline < cinfo->output_height) {
     dest->pub.buffer = (*cinfo->mem->access_virt_sarray)
-      ((j_common_ptr) cinfo, dest->image,
+      ((LJPEG9_j_common_ptr) cinfo, dest->image,
        cinfo->output_scanline, (LJPEG9_JDIMENSION) 1, TRUE);
   }
 }
@@ -215,20 +215,20 @@ finish_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
   if (progress != NULL) {
     progress->pub.pass_limit = cinfo->output_height;
     progress->pub.pass_counter = 0;
-    (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+    (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
   }
 #endif
 
   if (cinfo->output_components == 1) {
     for (row = cinfo->output_height-1; row >= 0; row--) {
       rle_row = (rle_pixel **) (*cinfo->mem->access_virt_sarray)
-        ((j_common_ptr) cinfo, dest->image,
+        ((LJPEG9_j_common_ptr) cinfo, dest->image,
 	 (LJPEG9_JDIMENSION) row, (LJPEG9_JDIMENSION) 1, FALSE);
       rle_putrow(rle_row, (int) cinfo->output_width, &header);
 #ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
       }
 #endif
     }
@@ -236,7 +236,7 @@ finish_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
     for (row = cinfo->output_height-1; row >= 0; row--) {
       rle_row = (rle_pixel **) dest->rle_row;
       output_row = * (*cinfo->mem->access_virt_sarray)
-        ((j_common_ptr) cinfo, dest->image,
+        ((LJPEG9_j_common_ptr) cinfo, dest->image,
 	 (LJPEG9_JDIMENSION) row, (LJPEG9_JDIMENSION) 1, FALSE);
       red = rle_row[0];
       green = rle_row[1];
@@ -250,7 +250,7 @@ finish_output_rle (LJPEG9_j_decompress_ptr cinfo, LJPEG9_djpeg_dest_ptr dinfo)
 #ifdef LJPEG9_PROGRESS_REPORT
       if (progress != NULL) {
         progress->pub.pass_counter++;
-        (*progress->pub.LJPEG9_progress_monitor) ((j_common_ptr) cinfo);
+        (*progress->pub.LJPEG9_progress_monitor) ((LJPEG9_j_common_ptr) cinfo);
       }
 #endif
     }
@@ -280,7 +280,7 @@ LJPEG9_jinit_write_rle (LJPEG9_j_decompress_ptr cinfo)
 
   /* Create module interface object, fill in method pointers */
   dest = (rle_dest_ptr)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+      (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
                                   SIZEOF(rle_dest_struct));
   dest->pub.start_output = start_output_rle;
   dest->pub.finish_output = finish_output_rle;
@@ -290,12 +290,12 @@ LJPEG9_jinit_write_rle (LJPEG9_j_decompress_ptr cinfo)
 
   /* Allocate a work array for output to the RLE library. */
   dest->rle_row = (*cinfo->mem->alloc_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
      cinfo->output_width, (LJPEG9_JDIMENSION) cinfo->output_components);
 
   /* Allocate a virtual array to hold the image. */
   dest->image = (*cinfo->mem->request_virt_sarray)
-    ((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
+    ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
      (LJPEG9_JDIMENSION) (cinfo->output_width * cinfo->output_components),
      cinfo->output_height, (LJPEG9_JDIMENSION) 1);
 

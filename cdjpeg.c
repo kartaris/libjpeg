@@ -29,7 +29,7 @@
 
 #ifdef LJPEG9_NEED_SIGNAL_CATCHER
 
-static j_common_ptr LJPEG9_sig_cinfo;
+static LJPEG9_j_common_ptr LJPEG9_sig_cinfo;
 
 void				/* must be global for Manx C */
 LJPEG9_signal_catcher (int signum)
@@ -44,7 +44,7 @@ LJPEG9_signal_catcher (int signum)
 
 
 LJPEG9_GLOBAL(void)
-LJPEG9_enable_signal_catcher (j_common_ptr cinfo)
+LJPEG9_enable_signal_catcher (LJPEG9_j_common_ptr cinfo)
 {
   LJPEG9_sig_cinfo = cinfo;
 #ifdef SIGINT			/* not all systems have SIGINT */
@@ -65,7 +65,7 @@ LJPEG9_enable_signal_catcher (j_common_ptr cinfo)
 #ifdef LJPEG9_PROGRESS_REPORT
 
 LJPEG9_METHODDEF(void)
-LJPEG9_progress_monitor (j_common_ptr cinfo)
+LJPEG9_progress_monitor (LJPEG9_j_common_ptr cinfo)
 {
   LJPEG9_cd_progress_ptr prog = (LJPEG9_cd_progress_ptr) cinfo->progress;
   int total_passes = prog->pub.total_passes + prog->total_extra_passes;
@@ -86,7 +86,7 @@ LJPEG9_progress_monitor (j_common_ptr cinfo)
 
 
 LJPEG9_GLOBAL(void)
-LJPEG9_start_progress_monitor (j_common_ptr cinfo, LJPEG9_cd_progress_ptr progress)
+LJPEG9_start_progress_monitor (LJPEG9_j_common_ptr cinfo, LJPEG9_cd_progress_ptr progress)
 {
   /* Enable progress display, unless trace output is on */
   if (cinfo->err->trace_level == 0) {
@@ -100,7 +100,7 @@ LJPEG9_start_progress_monitor (j_common_ptr cinfo, LJPEG9_cd_progress_ptr progre
 
 
 LJPEG9_GLOBAL(void)
-LJPEG9_end_progress_monitor (j_common_ptr cinfo)
+LJPEG9_end_progress_monitor (LJPEG9_j_common_ptr cinfo)
 {
   /* Clear away progress display */
   if (cinfo->err->trace_level == 0) {

@@ -21,7 +21,7 @@
 /* Expanded entropy encoder object for arithmetic encoding. */
 
 typedef struct {
-  struct jpeg_entropy_encoder pub; /* public fields */
+  struct LJPEG9_jpeg_entropy_encoder pub; /* public fields */
 
   INT32 c; /* C register, base of coding interval, layout as in sec. D.1.3 */
   INT32 a;               /* A register, normalized size of coding interval */
@@ -227,7 +227,7 @@ arith_encode (j_compress_ptr cinfo, unsigned char *st, int val)
    * Qe values and probability estimation state machine
    */
   sv = *st;
-  qe = jpeg_aritab[sv & 0x7F];	/* => Qe_Value */
+  qe = LJPEG9_jpeg_aritab[sv & 0x7F];	/* => Qe_Value */
   nl = qe & 0xFF; qe >>= 8;	/* Next_Index_LPS + Switch_MPS */
   nm = qe & 0xFF; qe >>= 8;	/* Next_Index_MPS */
 
@@ -879,7 +879,7 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
 	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->dc_stats[tbl] == NULL)
 	entropy->dc_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
-	  ((j_common_ptr) cinfo, JPOOL_IMAGE, DC_STAT_BINS);
+	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, DC_STAT_BINS);
       MEMZERO(entropy->dc_stats[tbl], DC_STAT_BINS);
       /* Initialize DC predictions to 0 */
       entropy->last_dc_val[ci] = 0;
@@ -892,7 +892,7 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
 	ERREXIT1(cinfo, JERR_NO_ARITH_TABLE, tbl);
       if (entropy->ac_stats[tbl] == NULL)
 	entropy->ac_stats[tbl] = (unsigned char *) (*cinfo->mem->alloc_small)
-	  ((j_common_ptr) cinfo, JPOOL_IMAGE, AC_STAT_BINS);
+	  ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE, AC_STAT_BINS);
       MEMZERO(entropy->ac_stats[tbl], AC_STAT_BINS);
 #ifdef CALCULATE_SPECTRAL_CONDITIONING
       if (cinfo->progressive_mode)
@@ -921,13 +921,13 @@ start_pass (j_compress_ptr cinfo, boolean gather_statistics)
  */
 
 LJPEG9_GLOBAL(void)
-jinit_arith_encoder (j_compress_ptr cinfo)
+LJPEG9_jinit_arith_encoder (j_compress_ptr cinfo)
 {
   arith_entropy_ptr entropy;
   int i;
 
   entropy = (arith_entropy_ptr)
-    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+    (*cinfo->mem->alloc_small) ((LJPEG9_j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(arith_entropy_encoder));
   cinfo->entropy = &entropy->pub;
   entropy->pub.start_pass = start_pass;

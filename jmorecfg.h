@@ -245,7 +245,7 @@ typedef unsigned int LJPEG9_JDIMENSION;
 /* a function referenced thru EXTERNs: */
 #define LJPEG9_GLOBAL(type)		type
 /* a reference to a LJPEG9_GLOBAL function: */
-#define EXTERN(type)		extern type
+#define LJPEG9_EXTERN(type)		extern type
 
 
 /* This macro is used to declare a "method", that is, a function pointer.
